@@ -1,13 +1,14 @@
 #!/bin/bash
-###########################################
-# IN THE NAME OF ALLAH                    #
-# @file tester.sh                         #
-# NewJudge                                #
-# Written by Mohammad Javad Naderi        #
-###########################################
+
+########################################################
+# IN THE NAME OF ALLAH                                 #
+# Sharif Judge                                         #
+# @file tester.sh                                      #
+# @author Mohammad Javad Naderi <mjnaderi@gmail.com    #
+########################################################
 
 # Example run:
-# tester.sh /home/mohammad/newjudge/homeworks/hw6/p1 mjnaderi tartib c 1 50000 7 -iw
+# tester.sh /home/mohammad/newjudge/homeworks/hw6/p1 mjnaderi tartib c 1 50000 7 diff -iw 
 
 ################ Settings ###############
 # if you want to use dietlibc instead of glibc, set path to diet executable file here
@@ -15,8 +16,7 @@
 DIET=""
 #DIET="dietlibc/bin-i386/diet"
 SECCOMP_ON=true # turn seccomp sandboxing for c/c++ on or off
-SHIELD_ON=true # turn shield for c on or off
-# shield is not enabled for c++. Because it causes some problems if the code includes cstdio
+SHIELD_ON=true # turn shield for C/C++ on or off
 
 ################### Initialization ####################
 TIMEOUT_EXISTS=true
@@ -30,7 +30,8 @@ EXT=$4 # file extension
 TIMELIMIT=$5
 MEMLIMIT=$6
 HEADER=$7
-DIFFPARAM=$8
+DIFFTOOL=$8
+DIFFPARAM=$9
 if [ "$DIFFPARAM" = "" ]; then
 	DIFFPARAM="-bB"
 fi
@@ -108,17 +109,18 @@ if [ "$EXT" = "c" ] || [ "$EXT" = "cpp" ]; then
 	if $SECCOMP_ON; then
 		echo -e "Using Seccomp\n" >>$LOG
 		cp seccomp/* $JAIL/
-		if $SHIELD_ON && [ "$EXT" = "c" ]; then #overwrite def.h
+		if $SHIELD_ON; then #overwrite def.h
 			echo -e "Using Shield\n" >>$LOG
-			cp shield/def.h $JAIL/def.h
+			cp shield/def$EXT.h $JAIL/def.h
 		fi
 		cp $PROBLEMPATH/$UN/$FILENAME.$EXT $JAIL/code.c
 		# adding define to beginning of code
 		echo '#define main themainmainfunction' | cat - $JAIL/code.c > $JAIL/thetemp && mv $JAIL/thetemp $JAIL/code.c
 		$DIET $COMPILER $JAIL/shield.$EXT -lm -O2 -o $JAIL/$FILENAME >/dev/null 2>$JAIL/cerr
-	elif $SHIELD_ON && [ "$EXT" = "c" ]; then
+	elif $SHIELD_ON; then
 		echo -e "Using Shield\n" >>$LOG
-		cp shield/* $JAIL/
+		cp shield/shield.$EXT $JAIL/shield.$EXT
+		cp shield/def$EXT.h $JAIL/def.h
 		cp $PROBLEMPATH/$UN/$FILENAME.$EXT $JAIL/code.c
 		# adding define to beginning of code
 		echo '#define main themainmainfunction' | cat - $JAIL/code.c > $JAIL/thetemp && mv $JAIL/thetemp $JAIL/code.c
@@ -130,7 +132,7 @@ if [ "$EXT" = "c" ] || [ "$EXT" = "cpp" ]; then
 	echo -e "Compiled. Exit Code="$EXITCODE"\n" >>$LOG
 	if [ $EXITCODE -ne 0 ]; then
 		echo -e "Compile Error\n" >>$LOG
-		echo '<pre style="color:blue">Compile Error</pre>' >$PROBLEMPATH/$UN/result.html
+		echo '<pre style="color:blue">Compile Error<br><br>Error Messages: (line numbers are not correct)</pre>' >$PROBLEMPATH/$UN/result.html
 		echo '<pre style="color: red;">' >> $PROBLEMPATH/$UN/result.html
 		SHIELD_ACT=false
 		if $SHIELD_ON; then
@@ -142,10 +144,18 @@ if [ "$EXT" = "c" ] || [ "$EXT" = "cpp" ]; then
 						break
 					fi
 				fi
-			done <shield/def.h
+			done <$JAIL/def.h
 		fi
 		if ! $SHIELD_ACT; then
-			(cat $JAIL/cerr | head -10 | sed 's/&/\&amp;/g' | sed 's/</\&lt;/g' | sed 's/>/\&gt;/g' | sed 's/"/\&quot;/g') >> $PROBLEMPATH/$UN/result.html
+			echo -e "\n" >> $JAIL/cerr
+			echo "" > $JAIL/cerr2
+			while read line; do
+				if [ "`echo $line|cut -d- -f1`" = "jail" ]; then
+					echo ${line#$JAIL/code.c:} >>$JAIL/cerr2
+				fi
+			done <$JAIL/cerr
+			(cat $JAIL/cerr2 | head -10 | sed 's/themainmainfunction/main/g' ) > $JAIL/cerr;
+			(cat $JAIL/cerr | sed 's/&/\&amp;/g' | sed 's/</\&lt;/g' | sed 's/>/\&gt;/g' | sed 's/"/\&quot;/g') >> $PROBLEMPATH/$UN/result.html
 		fi
 		echo "</pre>" >> $PROBLEMPATH/$UN/result.html
 		rm -r $JAIL >/dev/null 2>/dev/null
@@ -230,7 +240,7 @@ for((i=1;i<=TST;i++)); do
 	
 	if [ $EXITCODE -eq 159 ]; then
 		echo -e "Bad System Call (Exit code=$EXITCODE)" >>$LOG
-		echo "<pre style='color: red;'>Potentially Harmful Code</pre>" >>$PROBLEMPATH/$UN/result.html
+		echo "<pre style='color: red;'>Potentially Harmful Code. Process terminated.</pre>" >>$PROBLEMPATH/$UN/result.html
 		echo "-3"
 		rm -r $JAIL >/dev/null 2>/dev/null
 		exit 1
@@ -242,7 +252,7 @@ for((i=1;i<=TST;i++)); do
 		continue
 	fi
 	
-	if diff $JAIL/out $PROBLEMPATH/out/test$i.out $DIFFPARAM >/dev/null 2>/dev/null
+	if $DIFFTOOL $JAIL/out $PROBLEMPATH/out/test$i.out $DIFFPARAM >/dev/null 2>/dev/null
 	then
 		echo -e "ACCEPTED" >>$LOG
 		echo "<pre style='color: green;'>ACCEPT</pre>" >>$PROBLEMPATH/$UN/result.html
