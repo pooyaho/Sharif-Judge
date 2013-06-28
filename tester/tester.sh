@@ -250,7 +250,7 @@ for((i=1;i<=TST;i++)); do
 	fi
 done
 
-((SCORE=$PASSEDTESTS*100/TST))
+((SCORE=PASSEDTESTS*10000/TST))
 echo $SCORE
 
 rm -r $JAIL >/dev/null 2>/dev/null
