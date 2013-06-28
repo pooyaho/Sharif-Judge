@@ -15,7 +15,8 @@
 DIET=""
 #DIET="dietlibc/bin-i386/diet"
 SECCOMP_ON=true # turn seccomp sandboxing for c/c++ on or off
-SHIELD_ON=true # turn shield for c/c++ on or off
+SHIELD_ON=true # turn shield for c on or off
+# shield is not enabled for c++. Because it causes some problems if the code includes cstdio
 
 ################### Initialization ####################
 TIMEOUT_EXISTS=true
@@ -107,7 +108,7 @@ if [ "$EXT" = "c" ] || [ "$EXT" = "cpp" ]; then
 	if $SECCOMP_ON; then
 		echo -e "Using Seccomp\n" >>$LOG
 		cp seccomp/* $JAIL/
-		if $SHIELD_ON; then #overwrite def.h
+		if $SHIELD_ON && [ "$EXT" = "c" ]; then #overwrite def.h
 			echo -e "Using Shield\n" >>$LOG
 			cp shield/def.h $JAIL/def.h
 		fi
@@ -115,7 +116,7 @@ if [ "$EXT" = "c" ] || [ "$EXT" = "cpp" ]; then
 		# adding define to beginning of code
 		echo '#define main themainmainfunction' | cat - $JAIL/code.c > $JAIL/thetemp && mv $JAIL/thetemp $JAIL/code.c
 		$DIET $COMPILER $JAIL/shield.$EXT -lm -O2 -o $JAIL/$FILENAME >/dev/null 2>$JAIL/cerr
-	elif $SHIELD_ON; then
+	elif $SHIELD_ON && [ "$EXT" = "c" ]; then
 		echo -e "Using Shield\n" >>$LOG
 		cp shield/* $JAIL/
 		cp $PROBLEMPATH/$UN/$FILENAME.$EXT $JAIL/code.c
@@ -215,6 +216,7 @@ for((i=1;i<=TST;i++)); do
 	else
 		echo -e "EXT not supported" >>$LOG
 		echo "-1"
+		rm -r $JAIL >/dev/null 2>/dev/null
 		exit 1
 	fi
 
@@ -230,6 +232,7 @@ for((i=1;i<=TST;i++)); do
 		echo -e "Bad System Call (Exit code=$EXITCODE)" >>$LOG
 		echo "<pre style='color: red;'>Potentially Harmful Code</pre>" >>$PROBLEMPATH/$UN/result.html
 		echo "-3"
+		rm -r $JAIL >/dev/null 2>/dev/null
 		exit 1
 	fi
 
