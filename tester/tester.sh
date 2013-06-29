@@ -17,12 +17,13 @@ DIET=""
 #DIET="dietlibc/bin-i386/diet"
 SECCOMP_ON=true # turn seccomp sandboxing for c/c++ on or off
 SHIELD_ON=true # turn shield for C/C++ on or off
+JAVA_POLICY="-Djava.security.manager -Djava.security.policy=java.policy" # if you want to turn off java policy, leave this blank
 
 ################### Initialization ####################
 TIMEOUT_EXISTS=true
 hash timeout 2>/dev/null || TIMEOUT_EXISTS=false
 
-########### saving arguments ###########
+################### Getting Arguments ##################
 PROBLEMPATH=$1 # problem dir
 UN=$2 # username
 FILENAME=$3 # file name without extension
@@ -41,6 +42,7 @@ TST="$(ls $PROBLEMPATH/in | wc -l)"  # Number of Test Cases
 LOG="$PROBLEMPATH/$UN/log"
 JAIL=jail-$RANDOM
 mkdir $JAIL
+cd $JAIL
 
 #TZ='Asia/Tehran' date >$LOG
 date >$LOG
@@ -50,21 +52,19 @@ date >$LOG
 ############################################ COMPILING JAVA ############################################
 ########################################################################################################
 if [ "$EXT" = "java" ]; then
-	cp $PROBLEMPATH/$UN/$FILENAME.$EXT $JAIL/$FILENAME.$EXT
+	cp $PROBLEMPATH/$UN/$FILENAME.$EXT $FILENAME.$EXT
 	echo -e "Compiling as Java\n" >>$LOG
-	javac $JAIL/$FILENAME.$EXT >/dev/null 2>$JAIL/cerr
+	javac $FILENAME.$EXT >/dev/null 2>cerr
 	EXITCODE=$?
 	if [ $EXITCODE -ne 0 ]; then
 		echo -e "Compile Error\n" >>$LOG
 		echo '<pre style="color:blue;">Compile Error</pre>' >$PROBLEMPATH/$UN/result.html
 		echo '<pre style="color:red;">' >> $PROBLEMPATH/$UN/result.html
 		#filepath="$(echo "${JAIL}/${FILENAME}.${EXT}" | sed 's/\//\\\//g')" #replacing / with \/
-		filepath=$JAIL/$FILENAME.$EXT
-		filepath=${s//\//\\\/} #replacing / with \/
-		#echo "$filepath" >>$LOG
-		(cat $JAIL/cerr | head -10 | sed "s/$filepath//g" | sed 's/&/\&amp;/g' | sed 's/</\&lt;/g' | sed 's/>/\&gt;/g' | sed 's/"/\&quot;/g') >> $PROBLEMPATH/$UN/result.html
+		(cat cerr | head -10 | sed 's/&/\&amp;/g' | sed 's/</\&lt;/g' | sed 's/>/\&gt;/g' | sed 's/"/\&quot;/g') >> $PROBLEMPATH/$UN/result.html
 		#(cat $JAIL/cerr) >> $PROBLEMPATH/$UN/result.html
 		echo "</pre>" >> $PROBLEMPATH/$UN/result.html
+		cd ..
 		rm -r $JAIL >/dev/null 2>/dev/null
 		echo "-1"
 		exit 1
@@ -75,21 +75,18 @@ fi
 ########################################## COMPILING PYTHON 3 ##########################################
 ########################################################################################################
 if [ "$EXT" = "py" ]; then
-	cp $PROBLEMPATH/$UN/$FILENAME.$EXT $JAIL/$FILENAME.$EXT
+	cp $PROBLEMPATH/$UN/$FILENAME.$EXT $FILENAME.$EXT
 	echo -e "Checking Python Syntax\n" >>$LOG
-	python3 -O -m py_compile $JAIL/$FILENAME.$EXT >/dev/null 2>$JAIL/cerr
+	python3 -O -m py_compile $FILENAME.$EXT >/dev/null 2>cerr
 	EXITCODE=$?
 	echo -e "Syntax checked. Exit Code="$EXITCODE"\n" >>$LOG
 	if [ $EXITCODE -ne 0 ]; then
 		echo -e "Syntax Error\n" >>$LOG
 		echo '<pre style="color:blue">Syntax Error</pre>' >$PROBLEMPATH/$UN/result.html
 		echo '<pre style="color: red;">' >> $PROBLEMPATH/$UN/result.html
-		#filepath="$(echo "${JAIL}/${FILENAME}.${EXT}" | sed 's/\//\\\//g')" #replacing / with \/
-		filepath=$JAIL/$FILENAME.$EXT
-		filepath=${s//\//\\\/} #replacing / with \/
-		#echo "$filepath" >>$LOG
-		(cat $JAIL/cerr | head -10 | sed "s/$filepath//g" | sed 's/&/\&amp;/g' | sed 's/</\&lt;/g' | sed 's/>/\&gt;/g' | sed 's/"/\&quot;/g') >> $PROBLEMPATH/$UN/result.html
+		(cat cerr | head -10 | sed 's/&/\&amp;/g' | sed 's/</\&lt;/g' | sed 's/>/\&gt;/g' | sed 's/"/\&quot;/g') >> $PROBLEMPATH/$UN/result.html
 		echo "</pre>" >> $PROBLEMPATH/$UN/result.html
+		cd ..
 		rm -r $JAIL >/dev/null 2>/dev/null
 		echo "-2"
 		exit 1
@@ -104,29 +101,29 @@ if [ "$EXT" = "c" ] || [ "$EXT" = "cpp" ]; then
 	if [ "$EXT" = "cpp" ]; then
 		COMPILER="g++"
 	fi
-	cp $PROBLEMPATH/$UN/$FILENAME.$EXT $JAIL/code.c
+	cp $PROBLEMPATH/$UN/$FILENAME.$EXT code.c
 	echo -e "Compiling as $EXT\n" >>$LOG
 	if $SECCOMP_ON; then
 		echo -e "Using Seccomp\n" >>$LOG
-		cp seccomp/* $JAIL/
+		cp ../seccomp/* .
 		if $SHIELD_ON; then #overwrite def.h
 			echo -e "Using Shield\n" >>$LOG
-			cp shield/def$EXT.h $JAIL/def.h
+			cp ../shield/def$EXT.h def.h
 		fi
-		cp $PROBLEMPATH/$UN/$FILENAME.$EXT $JAIL/code.c
+		cp $PROBLEMPATH/$UN/$FILENAME.$EXT code.c
 		# adding define to beginning of code
-		echo '#define main themainmainfunction' | cat - $JAIL/code.c > $JAIL/thetemp && mv $JAIL/thetemp $JAIL/code.c
-		$DIET $COMPILER $JAIL/shield.$EXT -lm -O2 -o $JAIL/$FILENAME >/dev/null 2>$JAIL/cerr
+		echo '#define main themainmainfunction' | cat - code.c > thetemp && mv thetemp code.c
+		$DIET $COMPILER shield.$EXT -lm -O2 -o $FILENAME >/dev/null 2>cerr
 	elif $SHIELD_ON; then
 		echo -e "Using Shield\n" >>$LOG
-		cp shield/shield.$EXT $JAIL/shield.$EXT
-		cp shield/def$EXT.h $JAIL/def.h
-		cp $PROBLEMPATH/$UN/$FILENAME.$EXT $JAIL/code.c
+		cp ../shield/shield.$EXT shield.$EXT
+		cp ../shield/def$EXT.h def.h
+		cp $PROBLEMPATH/$UN/$FILENAME.$EXT code.c
 		# adding define to beginning of code
-		echo '#define main themainmainfunction' | cat - $JAIL/code.c > $JAIL/thetemp && mv $JAIL/thetemp $JAIL/code.c
-		$DIET $COMPILER $JAIL/shield.$EXT -lm -O2 -o $JAIL/$FILENAME >/dev/null 2>$JAIL/cerr
+		echo '#define main themainmainfunction' | cat - code.c > thetemp && mv thetemp code.c
+		$DIET $COMPILER shield.$EXT -lm -O2 -o $FILENAME >/dev/null 2>cerr
 	else
-		$DIET $COMPILER $JAIL/code.$EXT -lm -O2 -o $JAIL/$FILENAME >/dev/null 2>$JAIL/cerr
+		$DIET $COMPILER code.$EXT -lm -O2 -o $FILENAME >/dev/null 2>cerr
 	fi
 	EXITCODE=$?
 	echo -e "Compiled. Exit Code="$EXITCODE"\n" >>$LOG
@@ -138,26 +135,27 @@ if [ "$EXT" = "c" ] || [ "$EXT" = "cpp" ]; then
 		if $SHIELD_ON; then
 			while read line; do
 				if [ "`echo $line|cut -d" " -f1`" = "#define" ]; then
-					if grep -wq $(echo $line|cut -d" " -f3) $JAIL/cerr; then
+					if grep -wq $(echo $line|cut -d" " -f3) cerr; then
 						echo `echo $line|cut -d"/" -f3` >> $PROBLEMPATH/$UN/result.html
 						SHIELD_ACT=true
 						break
 					fi
 				fi
-			done <$JAIL/def.h
+			done <def.h
 		fi
 		if ! $SHIELD_ACT; then
-			echo -e "\n" >> $JAIL/cerr
-			echo "" > $JAIL/cerr2
+			echo -e "\n" >> cerr
+			echo "" > cerr2
 			while read line; do
-				if [ "`echo $line|cut -d- -f1`" = "jail" ]; then
-					echo ${line#$JAIL/code.c:} >>$JAIL/cerr2
+				if [ "`echo $line|cut -d: -f1`" = "code.c" ]; then
+					echo ${line#code.c:} >>cerr2
 				fi
-			done <$JAIL/cerr
-			(cat $JAIL/cerr2 | head -10 | sed 's/themainmainfunction/main/g' ) > $JAIL/cerr;
-			(cat $JAIL/cerr | sed 's/&/\&amp;/g' | sed 's/</\&lt;/g' | sed 's/>/\&gt;/g' | sed 's/"/\&quot;/g') >> $PROBLEMPATH/$UN/result.html
+			done <cerr
+			(cat cerr2 | head -10 | sed 's/themainmainfunction/main/g' ) > cerr;
+			(cat cerr | sed 's/&/\&amp;/g' | sed 's/</\&lt;/g' | sed 's/>/\&gt;/g' | sed 's/"/\&quot;/g') >> $PROBLEMPATH/$UN/result.html
 		fi
 		echo "</pre>" >> $PROBLEMPATH/$UN/result.html
+		cd ..
 		rm -r $JAIL >/dev/null 2>/dev/null
 		echo "-1"
 		exit 1
@@ -184,48 +182,47 @@ for((i=1;i<=TST;i++)); do
 	ulimit -t $TIMELIMIT # kar az mohkamkari eyb nemikone!
 	if [ "$EXT" = "java" ]; then
 		echo -e "Running as java" >>$LOG
+		cp ../java.policy java.policy
 		if $TIMEOUT_EXISTS; then
-			timeout -s9 $TIMELIMIT java -cp $JAIL -Djava.security.manager -Djava.security.policy=java.policy $FILENAME  <$PROBLEMPATH/in/test$i.in >$JAIL/out 2>/dev/null
+			timeout -s9 $TIMELIMIT java $JAVA_POLICY $FILENAME  <$PROBLEMPATH/in/test$i.in >out 2>/dev/null
 		else
-			java -cp $JAIL -Djava.security.manager -Djava.security.policy=java.policy $FILENAME  <$PROBLEMPATH/in/test$i.in >$JAIL/out 2>/dev/null
+			java $JAVA_POLICY $FILENAME  <$PROBLEMPATH/in/test$i.in >out 2>/dev/null
 		fi
 		#echo "java -cp $PROBLEMPATH/$UN/jail $FILENAME <$PROBLEMPATH/in/test$i.in >$PROBLEMPATH/$UN/jail/$UN.out 2>$PROBLEMPATH/$UN/tmp" >>$LOG
 		#java -cp $PROBLEMPATH/$UN/jail $FILENAME <$PROBLEMPATH/in/test$i.in >$PROBLEMPATH/$UN/jail/$UN.out 2>$PROBLEMPATH/$UN/tmp
 		EXITCODE=$?
-		echo "$EXITCODE" >>$LOG
 	elif [ "$EXT" = "c" ]; then
 		echo -e "Running as C" >>$LOG
 		if $TIMEOUT_EXISTS; then
-			timeout -s9 $TIMELIMIT $JAIL/$FILENAME <$PROBLEMPATH/in/test$i.in >$JAIL/out 2>/dev/null
+			timeout -s9 $TIMELIMIT ./$FILENAME <$PROBLEMPATH/in/test$i.in >out 2>/dev/null
 		else
-			$JAIL/$FILENAME <$PROBLEMPATH/in/test$i.in >$JAIL/out 2>/dev/null
+			./$FILENAME <$PROBLEMPATH/in/test$i.in >out 2>/dev/null
 		fi
 		EXITCODE=$?
 	elif [ "$EXT" = "cpp" ]; then
 		echo -e "Running as C++" >>$LOG
 		if $TIMEOUT_EXISTS; then
-			timeout -s9 $TIMELIMIT $JAIL/$FILENAME <$PROBLEMPATH/in/test$i.in >$JAIL/out 2>/dev/null
+			timeout -s9 $TIMELIMIT ./$FILENAME <$PROBLEMPATH/in/test$i.in >out 2>/dev/null
 		else
-			$JAIL/$FILENAME <$PROBLEMPATH/in/test$i.in >$JAIL/out 2>/dev/null
+			./$FILENAME <$PROBLEMPATH/in/test$i.in >out 2>/dev/null
 		fi
 		EXITCODE=$?
 	elif [ "$EXT" = "py" ]; then
 		echo -e "Running as python" >>$LOG
 		if $TIMEOUT_EXISTS; then
-			timeout -s9 $TIMELIMIT python3 -O $JAIL/$FILENAME.$EXT <$PROBLEMPATH/in/test$i.in >$JAIL/out 2>$JAIL/tmp
+			timeout -s9 $TIMELIMIT python3 -O $FILENAME.$EXT <$PROBLEMPATH/in/test$i.in >out 2>tmp
 		else
-			python3 -O $JAIL/$FILENAME.$EXT <$PROBLEMPATH/in/test$i.in >$JAIL/out 2>$JAIL/tmp
+			python3 -O $FILENAME.$EXT <$PROBLEMPATH/in/test$i.in >out 2>tmp
 		fi
 		EXITCODE=$?
 		echo "<pre>" >>$PROBLEMPATH/$UN/result.html
-		filepath=$JAIL/$FILENAME.$EXT
-		filepath=${s//\//\\\/} #replacing / with \/
-		(cat $JAIL/tmp | head -5 | sed "s/$filepath//g" | sed 's/&/\&amp;/g' | sed 's/</\&lt;/g' | sed 's/>/\&gt;/g' | sed 's/"/\&quot;/g') >> $PROBLEMPATH/$UN/result.html
+		(cat tmp | head -5 | sed "s/$FILENAME.$EXT//g" | sed 's/&/\&amp;/g' | sed 's/</\&lt;/g' | sed 's/>/\&gt;/g' | sed 's/"/\&quot;/g') >> $PROBLEMPATH/$UN/result.html
 		echo "</pre>" >>$PROBLEMPATH/$UN/result.html
-		rm $JAIL/tmp
+		rm tmp
 	else
 		echo -e "EXT not supported" >>$LOG
 		echo "-1"
+		cd ..
 		rm -r $JAIL >/dev/null 2>/dev/null
 		exit 1
 	fi
@@ -242,6 +239,7 @@ for((i=1;i<=TST;i++)); do
 		echo -e "Bad System Call (Exit code=$EXITCODE)" >>$LOG
 		echo "<pre style='color: red;'>Potentially Harmful Code. Process terminated.</pre>" >>$PROBLEMPATH/$UN/result.html
 		echo "-3"
+		cd ..
 		rm -r $JAIL >/dev/null 2>/dev/null
 		exit 1
 	fi
@@ -252,7 +250,7 @@ for((i=1;i<=TST;i++)); do
 		continue
 	fi
 	
-	if $DIFFTOOL $JAIL/out $PROBLEMPATH/out/test$i.out $DIFFPARAM >/dev/null 2>/dev/null
+	if $DIFFTOOL out $PROBLEMPATH/out/test$i.out $DIFFPARAM >/dev/null 2>/dev/null
 	then
 		echo -e "ACCEPTED" >>$LOG
 		echo "<pre style='color: green;'>ACCEPT</pre>" >>$PROBLEMPATH/$UN/result.html
@@ -266,4 +264,5 @@ done
 ((SCORE=PASSEDTESTS*10000/TST))
 echo $SCORE
 
+cd ..
 rm -r $JAIL >/dev/null 2>/dev/null
