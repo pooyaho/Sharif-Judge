@@ -1,3 +1,3 @@
 ##Sharif Judge
 ------------------------------------------
-A judge for assignment submission.
+An online judge for assignment submission.
