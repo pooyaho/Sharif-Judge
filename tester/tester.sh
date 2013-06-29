@@ -1,11 +1,21 @@
 #!/bin/bash
 
-########################################################
-# IN THE NAME OF ALLAH                                 #
-# Sharif Judge                                         #
-# @file tester.sh                                      #
-# @author Mohammad Javad Naderi <mjnaderi@gmail.com    #
-########################################################
+#    In the name of ALLAH
+#    Sharif Judge
+#    Copyright (C) 2013  Mohammad Javad Naderi <mjnaderi@gmail.com>
+#
+#    This program is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 3 of the License, or
+#    (at your option) any later version.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License
+#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # Example run:
 # tester.sh /home/mohammad/newjudge/homeworks/hw6/p1 mjnaderi tartib c 1 50000 7 diff -iw 
@@ -250,8 +260,27 @@ for((i=1;i<=TST;i++)); do
 		continue
 	fi
 	
-	if $DIFFTOOL out $PROBLEMPATH/out/test$i.out $DIFFPARAM >/dev/null 2>/dev/null
+	# checking correctness of output
+	ACCEPTED=false
+	if [ -e "$PROBLEMPATH/tester.cpp" ]; then
+		cp $PROBLEMPATH/tester.cpp tester.cpp
+		g++ tester.cpp -otester
+		EC=$?
+		if [ $EC -ne 0 ]; then
+			echo "-5"
+			cd ..
+			rm -r $JAIL >/dev/null 2>/dev/null
+			exit 1
+		fi
+		if [ $(./tester $PROBLEMPATH/in/test$i.in out) -eq 1 ]; then
+			ACCEPTED=true
+		fi
+	elif $DIFFTOOL out $PROBLEMPATH/out/test$i.out $DIFFPARAM >/dev/null 2>/dev/null
 	then
+		ACCEPTED=true
+	fi
+
+	if $ACCEPTED; then
 		echo -e "ACCEPTED" >>$LOG
 		echo "<pre style='color: green;'>ACCEPT</pre>" >>$PROBLEMPATH/$UN/result.html
 		((PASSEDTESTS=$PASSEDTESTS+1))
@@ -263,6 +292,5 @@ done
 
 ((SCORE=PASSEDTESTS*10000/TST))
 echo $SCORE
-
 cd ..
 rm -r $JAIL >/dev/null 2>/dev/null
