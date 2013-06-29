@@ -17,10 +17,19 @@
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-# Example run:
-# tester.sh /home/mohammad/newjudge/homeworks/hw6/p1 mjnaderi tartib c 1 50000 7 diff -iw 
+##################### Example Usage #####################
+# tester.sh /home/mohammad/judge/homeworks/hw6/p1 mjnaderi problem c 1 50000 7 diff -iw 
 
-################ Settings ###############
+####################### Return Values #######################
+# RETURN VALUE        PRINTED MESSAGE
+#      0              score form 10000
+#      1              Compilation Error
+#      2              Syntax Error
+#      3              Bad System Call
+#      4              Special Judge Script is Invalid
+#      5              File format not supported
+
+######################## Settings #######################
 # if you want to use dietlibc instead of glibc, set path to diet executable file here
 # dietlibc uses less system calls and therefore, it brings more security
 DIET=""
@@ -29,11 +38,11 @@ SECCOMP_ON=true # turn seccomp sandboxing for c/c++ on or off
 SHIELD_ON=true # turn shield for C/C++ on or off
 JAVA_POLICY="-Djava.security.manager -Djava.security.policy=java.policy" # if you want to turn off java policy, leave this blank
 
-################### Initialization ####################
+#################### Initialization #####################
 TIMEOUT_EXISTS=true
 hash timeout 2>/dev/null || TIMEOUT_EXISTS=false
 
-################### Getting Arguments ##################
+################### Getting Arguments ###################
 PROBLEMPATH=$1 # problem dir
 UN=$2 # username
 FILENAME=$3 # file name without extension
@@ -76,7 +85,7 @@ if [ "$EXT" = "java" ]; then
 		echo "</pre>" >> $PROBLEMPATH/$UN/result.html
 		cd ..
 		rm -r $JAIL >/dev/null 2>/dev/null
-		echo "-1"
+		echo "Compilation Error"
 		exit 1
 	fi
 fi
@@ -98,8 +107,8 @@ if [ "$EXT" = "py" ]; then
 		echo "</pre>" >> $PROBLEMPATH/$UN/result.html
 		cd ..
 		rm -r $JAIL >/dev/null 2>/dev/null
-		echo "-2"
-		exit 1
+		echo "Syntax Error"
+		exit 2
 	fi
 fi
 
@@ -167,7 +176,7 @@ if [ "$EXT" = "c" ] || [ "$EXT" = "cpp" ]; then
 		echo "</pre>" >> $PROBLEMPATH/$UN/result.html
 		cd ..
 		rm -r $JAIL >/dev/null 2>/dev/null
-		echo "-1"
+		echo "Compilation Error"
 		exit 1
 	fi
 fi
@@ -230,11 +239,11 @@ for((i=1;i<=TST;i++)); do
 		echo "</pre>" >>$PROBLEMPATH/$UN/result.html
 		rm tmp
 	else
-		echo -e "EXT not supported" >>$LOG
-		echo "-1"
+		echo -e "File format not supported." >>$LOG
 		cd ..
 		rm -r $JAIL >/dev/null 2>/dev/null
-		exit 1
+		echo "File format not supported"
+		exit 5
 	fi
 
 	echo -e "Exit Code="$EXITCODE >>$LOG
@@ -248,10 +257,10 @@ for((i=1;i<=TST;i++)); do
 	if [ $EXITCODE -eq 159 ]; then
 		echo -e "Bad System Call (Exit code=$EXITCODE)" >>$LOG
 		echo "<pre style='color: red;'>Potentially Harmful Code. Process terminated.</pre>" >>$PROBLEMPATH/$UN/result.html
-		echo "-3"
+		echo "Bad System Call"
 		cd ..
 		rm -r $JAIL >/dev/null 2>/dev/null
-		exit 1
+		exit 3
 	fi
 
 	if [ $EXITCODE -ne 0 ]; then
@@ -267,12 +276,14 @@ for((i=1;i<=TST;i++)); do
 		g++ tester.cpp -otester
 		EC=$?
 		if [ $EC -ne 0 ]; then
-			echo "-5"
+			echo "Special Judge Script is Invalid"
 			cd ..
 			rm -r $JAIL >/dev/null 2>/dev/null
-			exit 1
+			exit 4
 		fi
-		if [ $(./tester $PROBLEMPATH/in/test$i.in out) -eq 1 ]; then
+		./tester $PROBLEMPATH/in/test$i.in out
+		EC=$?
+		if [ $EC -eq 0 ]; then
 			ACCEPTED=true
 		fi
 	elif $DIFFTOOL out $PROBLEMPATH/out/test$i.out $DIFFPARAM >/dev/null 2>/dev/null
@@ -294,3 +305,4 @@ done
 echo $SCORE
 cd ..
 rm -r $JAIL >/dev/null 2>/dev/null
+exit 0
