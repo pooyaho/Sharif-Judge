@@ -2,7 +2,7 @@
 # IN THE NAME OF ALLAH
 echo -e "\nLinux Kernel Version: $(uname -r)\n"
 echo "" > missing_syscalls.h
-rm ./example ./example.o ./syscall-reporter.o
+rm ./example ./example.o ./syscall-reporter.o >/dev/null 2>/dev/null
 autoconf
 ./configure
 make

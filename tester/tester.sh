@@ -124,7 +124,7 @@ if [ "$EXT" = "c" ] || [ "$EXT" = "cpp" ]; then
 	echo -e "Compiling as $EXT\n" >>$LOG
 	if $SECCOMP_ON; then
 		echo -e "Using Seccomp\n" >>$LOG
-		cp ../seccomp/* .
+		cp {../seccomp/shield.$EXT,../seccomp/config.h,../seccomp/seccomp-bpf.h,../seccomp/missing_syscalls.h,../seccomp/def.h} .
 		if $SHIELD_ON; then #overwrite def.h
 			echo -e "Using Shield\n" >>$LOG
 			cp ../shield/def$EXT.h def.h
