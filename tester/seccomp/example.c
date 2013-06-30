@@ -47,10 +47,15 @@ static int install_syscall_filter(void)
 #include "missing_syscalls.h"
 		KILL_PROCESS,
 	};
-	struct sock_fprog prog = {
+
+	struct sock_fprog prog;
+	memset(&prog, 0, sizeof(prog));
+	prog.len = (unsigned short)(sizeof(filter)/sizeof(filter[0]));
+	prog.filter = filter;
+	/*struct sock_fprog prog = {
 		.len = (unsigned short)(sizeof(filter)/sizeof(filter[0])),
 		.filter = filter,
-	};
+	};*/
 
 	if (prctl(PR_SET_NO_NEW_PRIVS, 1, 0, 0, 0)) {
 		perror("prctl(NO_NEW_PRIVS)");
@@ -83,8 +88,10 @@ int main(int argc, char *argv[])
 	if (install_syscall_filter())
 		return 1;
 
-	char c;
-	scanf("%c",&c);
+	int a, b, c;
+	scanf("%d",&a);
+	scanf("%d",&b);
+	scanf("%d",&c);
 	printf("Success!\n");
 	return 0;
 }

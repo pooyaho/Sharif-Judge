@@ -6,7 +6,7 @@ rm ./example ./example.o ./syscall-reporter.o >/dev/null 2>/dev/null
 autoconf
 ./configure
 make
-while ! ./example <example.c >tmp ; do
+while ! ./example <in >tmp ; do
 	out=$(cat tmp)
 	if [ "$(echo $out|cut -d" " -f1)" != "Looks" ]; then
 		echo -e "\nCannot enable.\n";
