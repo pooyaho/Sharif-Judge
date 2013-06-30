@@ -6,7 +6,7 @@ Put the message displayed to user after // in each line
 
 */
 
-#define system errorNo1        //"System" is not allowed
+#define system errorNo1        //"system" is not allowed
 #define freopen errorNo2       //File operation is not allowed
 #define fopen errorNo3         //File operation is not allowed
 #define fprintf errorNo4       //File operation is not allowed

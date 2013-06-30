@@ -9,7 +9,7 @@ make
 while ! ./example <example.c >tmp ; do
 	out=$(cat tmp)
 	if [ "$(echo $out|cut -d" " -f1)" != "Looks" ]; then
-		echo "Cannot enable.";
+		echo -e "\nCannot enable.\n";
 		exit 1;
 	fi
 	echo -e "\n$out\n"

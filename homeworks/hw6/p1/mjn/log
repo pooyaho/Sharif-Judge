@@ -1,0 +1,27 @@
+Sat Jun 29 17:28:37 IRDT 2013
+Checking Python Syntax
+
+Syntax checked. Exit Code=0
+
+
+Testing...
+
+TEST1
+Running as python
+Exit Code=0
+ACCEPTED
+
+TEST2
+Running as python
+Exit Code=0
+ACCEPTED
+
+TEST3
+Running as python
+Exit Code=0
+ACCEPTED
+
+TEST4
+Running as python
+Exit Code=0
+ACCEPTED
