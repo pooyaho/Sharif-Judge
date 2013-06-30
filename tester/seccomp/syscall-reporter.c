@@ -44,11 +44,11 @@ static void reporter(int nr, siginfo_t *info, void *void_context)
 	strcpy(buf, msg_needed);
 	if (syscall < sizeof(syscall_names)) {
 		strcat(buf, syscall_names[syscall]);
-		strcat(buf, "(");
+		//strcat(buf, "(");
 	}
-	write_uint(buf + strlen(buf), syscall);
-	if (syscall < sizeof(syscall_names))
-		strcat(buf, ")");
+	//write_uint(buf + strlen(buf), syscall);
+	//if (syscall < sizeof(syscall_names))
+	//	strcat(buf, ")");
 	strcat(buf, "\n");
 	write(STDOUT_FILENO, buf, strlen(buf));
 	_exit(1);

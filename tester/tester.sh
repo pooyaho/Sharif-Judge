@@ -34,7 +34,7 @@
 # dietlibc uses less system calls and therefore, it brings more security
 DIET=""
 #DIET="dietlibc/bin-i386/diet"
-SECCOMP_ON=true # turn seccomp sandboxing for c/c++ on or off
+SECCOMP_ON=false # turn seccomp sandboxing for c/c++ on or off
 SHIELD_ON=true # turn shield for C/C++ on or off
 JAVA_POLICY="-Djava.security.manager -Djava.security.policy=java.policy" # if you want to turn off java policy, leave this blank
 

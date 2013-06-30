@@ -44,16 +44,7 @@ static int install_syscall_filter(void)
 		ALLOW_SYSCALL(read),
 		ALLOW_SYSCALL(write),
 		/* Add more syscalls here. */
-		ALLOW_SYSCALL(fstat64),
-		ALLOW_SYSCALL(mmap2),
-		//ALLOW_SYSCALL(brk), // for file operation
-		//ALLOW_SYSCALL(open), // for file operation
-		//ALLOW_SYSCALL(close), // for file operation
-		//ALLOW_SYSCALL(munmap), // for file operation
-		//ALLOW_SYSCALL(rt_sigprocmask),
-		//ALLOW_SYSCALL(rt_sigaction),
-		//ALLOW_SYSCALL(nanosleep),
-		//ALLOW_SYSCALL(clone),
+#include "missing_syscalls.h"
 		KILL_PROCESS,
 	};
 	struct sock_fprog prog = {
@@ -64,11 +55,15 @@ static int install_syscall_filter(void)
 	if (prctl(PR_SET_NO_NEW_PRIVS, 1, 0, 0, 0)) {
 		perror("prctl(NO_NEW_PRIVS)");
 		//goto failed;
+		if (errno == EINVAL)
+			fprintf(stderr, "SECCOMP_FILTER is not available. :(\n");
 		return 1;
 	}
 	if (prctl(PR_SET_SECCOMP, SECCOMP_MODE_FILTER, &prog)) {
 		perror("prctl(SECCOMP)");
 		//goto failed;
+		if (errno == EINVAL)
+			fprintf(stderr, "SECCOMP_FILTER is not available. :(\n");
 		return 1;
 	}
 	return 0;
@@ -88,6 +83,9 @@ int main(int argc, char *argv[])
 	if (install_syscall_filter())
 		return 1;
 
+	char c;
+	scanf("%c",&c);
+	printf("Success!\n");
 	return 0;
 }
 
