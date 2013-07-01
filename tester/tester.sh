@@ -18,7 +18,7 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 ##################### Example Usage #####################
-# tester.sh /home/mohammad/judge/homeworks/hw6/p1 mjnaderi problem c 1 50000 7 diff -iw 
+# tester.sh /home/mohammad/judge/homeworks/hw6/p1 mjn problem c 1 50000 7 diff -iw 
 
 ####################### Return Values #######################
 # RETURN VALUE        PRINTED MESSAGE
