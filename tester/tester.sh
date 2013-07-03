@@ -18,10 +18,15 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 ##################### Example Usage #####################
-# tester.sh /home/mohammad/judge/homeworks/hw6/p1 mjn problem c 1 50000 7 diff -iw 
+# tester.sh /home/mohammad/judge/homeworks/hw6/p1 mjn problem c 1 50000 7 diff -iw
+# In this example judge assumes that the file is located at:
+# /home/mohammad/judge/homeworks/hw6/p1/mjn/problem.c
+# And test cases are located at:
+# /home/mohammad/judge/homeworks/hw6/p1/in/  {test1.in, test2.in, ...}
+# /home/mohammad/judge/homeworks/hw6/p1/out/ {test1.out, test2.out, ...}
 
 ####################### Return Values #######################
-# RETURN VALUE        PRINTED MESSAGE
+# RETURN VALUE         PRINTED MESSAGE
 #      0              score form 10000
 #      1              Compilation Error
 #      2              Syntax Error
@@ -30,20 +35,19 @@
 #      5              File format not supported
 
 ######################## Settings #######################
-# if you want to use dietlibc instead of glibc, set path to diet executable file here
-# dietlibc uses less system calls and therefore, it brings more security
-DIET=""
-#DIET="dietlibc/bin-i386/diet"
-SECCOMP_ON=false # turn seccomp sandboxing for c/c++ on or off
-SHIELD_ON=true # turn shield for C/C++ on or off
-JAVA_POLICY="-Djava.security.manager -Djava.security.policy=java.policy" # if you want to turn off java policy, leave this blank
-
-#################### Initialization #####################
-TIMEOUT_EXISTS=true
-hash timeout 2>/dev/null || TIMEOUT_EXISTS=false
+# If you want to use "diet libc" instead of glibc, set path to diet executable file here.
+# "diet libc" uses less system calls and therefore, it brings more security.
+# But in my case, it caused compilation problems. So here is an option for turning it off.
+DIET="" # Don't use diet libc
+#DIET="dietlibc/bin-i386/diet" # Path to diet executable file
+SECCOMP_ON=false # turn seccomp filter for c/c++ on/off
+SHIELD_ON=false # turn Shield for C/C++ on/off
+# If you want to turn off java policy, leave this blank:
+JAVA_POLICY="-Djava.security.manager -Djava.security.policy=java.policy"
+LOG_ON=true
 
 ################### Getting Arguments ###################
-PROBLEMPATH=$1 # problem dir
+PROBLEMPATH=$1 # problem directory
 UN=$2 # username
 FILENAME=$3 # file name without extension
 EXT=$4 # file extension
@@ -51,32 +55,51 @@ TIMELIMIT=$5
 MEMLIMIT=$6
 HEADER=$7
 DIFFTOOL=$8
-DIFFPARAM=$9
-if [ "$DIFFPARAM" = "" ]; then
-	DIFFPARAM="-bB"
+DIFFOPTION=$9
+# DIFFOPTION can be "ignore_all_whitespace". In this case, before diff command,
+# all newlines and whitespaces will be removed from both files.
+if [ "$DIFFOPTION" = "" ]; then
+	DIFFOPTION="-bB"
+fi
+if [ "$DIFFOPTION" != "ignore_all_whitespace" ]; then
+	DIFFARGUMENT=$DIFFOPTION
 fi
 
-#########################################
+#################### Initialization #####################
+# Using 'timeout' command, Sharif Judge can detect
+# "Time limit exceeded" error. Without it, submitted program
+# still will be killed after TIMELIMIT (with ulimit), but
+# it will be reported as "Runtime Error".
+# So "timeout" is not necessary.
+TIMEOUT="timeout -s9 $TIMELIMIT"
+hash timeout 2>/dev/null || TIMEOUT=""
+
 TST="$(ls $PROBLEMPATH/in | wc -l)"  # Number of Test Cases
-LOG="$PROBLEMPATH/$UN/log"
 JAIL=jail-$RANDOM
 mkdir $JAIL
 cd $JAIL
 
-#TZ='Asia/Tehran' date >$LOG
-date >$LOG
-#echo -e "\nJAILPATH="$PROBLEMPATH/$UN/jail"\nEXT="$EXT"\nTIME LIMIT="$TIMELIMIT"\nMEM LIMIT="$MEMLIMIT"\nSECURITY HEADER="$HEADER"\nTEST CASES="$TST"\nDIFF PARAM="$DIFFPARAM"\n" >>$LOG
+LOG="$PROBLEMPATH/$UN/log"; echo "" >$LOG
+function judge_log {
+	if $LOG_ON; then
+		echo -e "$1" >>$LOG
+	fi
+}
+
+judge_log "$(date)"
+#echo -e "\nJAILPATH="$PROBLEMPATH/$UN/jail"\nEXT="$EXT"\nTIME LIMIT="$TIMELIMIT"\nMEM LIMIT="$MEMLIMIT"\nSECURITY HEADER="$HEADER"\nTEST CASES="$TST"\nDIFF PARAM="$DIFFOPTION"\n" >>$LOG
 
 ########################################################################################################
 ############################################ COMPILING JAVA ############################################
 ########################################################################################################
 if [ "$EXT" = "java" ]; then
 	cp $PROBLEMPATH/$UN/$FILENAME.$EXT $FILENAME.$EXT
-	echo -e "Compiling as Java\n" >>$LOG
+	judge_log "Compiling as Java"
 	javac $FILENAME.$EXT >/dev/null 2>cerr
 	EXITCODE=$?
 	if [ $EXITCODE -ne 0 ]; then
-		echo -e "Compile Error\n" >>$LOG
+		judge_log "Compile Error"
+		judge_log "$(cat cerr|head -10)"
 		echo '<pre style="color:blue;">Compile Error</pre>' >$PROBLEMPATH/$UN/result.html
 		echo '<pre style="color:red;">' >> $PROBLEMPATH/$UN/result.html
 		#filepath="$(echo "${JAIL}/${FILENAME}.${EXT}" | sed 's/\//\\\//g')" #replacing / with \/
@@ -95,12 +118,13 @@ fi
 ########################################################################################################
 if [ "$EXT" = "py" ]; then
 	cp $PROBLEMPATH/$UN/$FILENAME.$EXT $FILENAME.$EXT
-	echo -e "Checking Python Syntax\n" >>$LOG
+	judge_log "Checking Python Syntax"
 	python3 -O -m py_compile $FILENAME.$EXT >/dev/null 2>cerr
 	EXITCODE=$?
-	echo -e "Syntax checked. Exit Code="$EXITCODE"\n" >>$LOG
+	judge_log "Syntax checked. Exit Code=$EXITCODE"
 	if [ $EXITCODE -ne 0 ]; then
-		echo -e "Syntax Error\n" >>$LOG
+		judge_log "Syntax Error"
+		judge_log "$(cat cerr | head -10)"
 		echo '<pre style="color:blue">Syntax Error</pre>' >$PROBLEMPATH/$UN/result.html
 		echo '<pre style="color: red;">' >> $PROBLEMPATH/$UN/result.html
 		(cat cerr | head -10 | sed 's/&/\&amp;/g' | sed 's/</\&lt;/g' | sed 's/>/\&gt;/g' | sed 's/"/\&quot;/g') >> $PROBLEMPATH/$UN/result.html
@@ -121,12 +145,12 @@ if [ "$EXT" = "c" ] || [ "$EXT" = "cpp" ]; then
 		COMPILER="g++"
 	fi
 	cp $PROBLEMPATH/$UN/$FILENAME.$EXT code.c
-	echo -e "Compiling as $EXT\n" >>$LOG
+	judge_log "Compiling as $EXT"
 	if $SECCOMP_ON; then
-		echo -e "Using Seccomp\n" >>$LOG
+		judge_log "Using Seccomp\n"
 		cp {../seccomp/shield.$EXT,../seccomp/config.h,../seccomp/seccomp-bpf.h,../seccomp/missing_syscalls.h,../seccomp/def.h} .
 		if $SHIELD_ON; then #overwrite def.h
-			echo -e "Using Shield\n" >>$LOG
+			judge_log "Using Shield\n"
 			cp ../shield/def$EXT.h def.h
 		fi
 		cp $PROBLEMPATH/$UN/$FILENAME.$EXT code.c
@@ -134,7 +158,7 @@ if [ "$EXT" = "c" ] || [ "$EXT" = "cpp" ]; then
 		echo '#define main themainmainfunction' | cat - code.c > thetemp && mv thetemp code.c
 		$DIET $COMPILER shield.$EXT -lm -O2 -o $FILENAME >/dev/null 2>cerr
 	elif $SHIELD_ON; then
-		echo -e "Using Shield\n" >>$LOG
+		judge_log "Using Shield"
 		cp ../shield/shield.$EXT shield.$EXT
 		cp ../shield/def$EXT.h def.h
 		cp $PROBLEMPATH/$UN/$FILENAME.$EXT code.c
@@ -145,9 +169,10 @@ if [ "$EXT" = "c" ] || [ "$EXT" = "cpp" ]; then
 		$DIET $COMPILER code.$EXT -lm -O2 -o $FILENAME >/dev/null 2>cerr
 	fi
 	EXITCODE=$?
-	echo -e "Compiled. Exit Code="$EXITCODE"\n" >>$LOG
+	judge_log "Compiled. Exit Code=$EXITCODE"
 	if [ $EXITCODE -ne 0 ]; then
-		echo -e "Compile Error\n" >>$LOG
+		judge_log "Compile Error"
+		judge_log "$(cat cerr | head -10)"
 		echo '<pre style="color:blue">Compile Error<br><br>Error Messages: (line numbers are not correct)</pre>' >$PROBLEMPATH/$UN/result.html
 		echo '<pre style="color: red;">' >> $PROBLEMPATH/$UN/result.html
 		SHIELD_ACT=false
@@ -184,14 +209,14 @@ fi
 ########################################################################################################
 ################################################ TESTING ###############################################
 ########################################################################################################
-echo -e "\nTesting..." >>$LOG
+judge_log "Testing..."
 
 echo "" >$PROBLEMPATH/$UN/result.html
 
 PASSEDTESTS=0
 
 for((i=1;i<=TST;i++)); do
-	echo -e "\nTEST"$i >>$LOG
+	judge_log "TEST$i"
 	sleep 0.05
 	echo "<pre style='color : blue;'>Test $i </pre>" >>$PROBLEMPATH/$UN/result.html
 	if [ "$EXT" != "java" ]; then
@@ -200,62 +225,42 @@ for((i=1;i<=TST;i++)); do
 	fi
 	ulimit -t $TIMELIMIT # kar az mohkamkari eyb nemikone!
 	if [ "$EXT" = "java" ]; then
-		echo -e "Running as java" >>$LOG
 		cp ../java.policy java.policy
-		if $TIMEOUT_EXISTS; then
-			timeout -s9 $TIMELIMIT java $JAVA_POLICY $FILENAME  <$PROBLEMPATH/in/test$i.in >out 2>/dev/null
-		else
-			java $JAVA_POLICY $FILENAME  <$PROBLEMPATH/in/test$i.in >out 2>/dev/null
-		fi
+		$TIMEOUT java $JAVA_POLICY $FILENAME  <$PROBLEMPATH/in/test$i.in >out 2>/dev/null
 		#echo "java -cp $PROBLEMPATH/$UN/jail $FILENAME <$PROBLEMPATH/in/test$i.in >$PROBLEMPATH/$UN/jail/$UN.out 2>$PROBLEMPATH/$UN/tmp" >>$LOG
 		#java -cp $PROBLEMPATH/$UN/jail $FILENAME <$PROBLEMPATH/in/test$i.in >$PROBLEMPATH/$UN/jail/$UN.out 2>$PROBLEMPATH/$UN/tmp
 		EXITCODE=$?
 	elif [ "$EXT" = "c" ]; then
-		echo -e "Running as C" >>$LOG
-		if $TIMEOUT_EXISTS; then
-			timeout -s9 $TIMELIMIT ./$FILENAME <$PROBLEMPATH/in/test$i.in >out 2>/dev/null
-		else
-			./$FILENAME <$PROBLEMPATH/in/test$i.in >out 2>/dev/null
-		fi
+		$TIMEOUT ./$FILENAME <$PROBLEMPATH/in/test$i.in >out 2>/dev/null
 		EXITCODE=$?
 	elif [ "$EXT" = "cpp" ]; then
-		echo -e "Running as C++" >>$LOG
-		if $TIMEOUT_EXISTS; then
-			timeout -s9 $TIMELIMIT ./$FILENAME <$PROBLEMPATH/in/test$i.in >out 2>/dev/null
-		else
-			./$FILENAME <$PROBLEMPATH/in/test$i.in >out 2>/dev/null
-		fi
+		$TIMEOUT ./$FILENAME <$PROBLEMPATH/in/test$i.in >out 2>/dev/null
 		EXITCODE=$?
 	elif [ "$EXT" = "py" ]; then
-		echo -e "Running as python" >>$LOG
-		if $TIMEOUT_EXISTS; then
-			timeout -s9 $TIMELIMIT python3 -O $FILENAME.$EXT <$PROBLEMPATH/in/test$i.in >out 2>tmp
-		else
-			python3 -O $FILENAME.$EXT <$PROBLEMPATH/in/test$i.in >out 2>tmp
-		fi
+		$TIMEOUT python3 -O $FILENAME.$EXT <$PROBLEMPATH/in/test$i.in >out 2>tmp
 		EXITCODE=$?
 		echo "<pre>" >>$PROBLEMPATH/$UN/result.html
 		(cat tmp | head -5 | sed "s/$FILENAME.$EXT//g" | sed 's/&/\&amp;/g' | sed 's/</\&lt;/g' | sed 's/>/\&gt;/g' | sed 's/"/\&quot;/g') >> $PROBLEMPATH/$UN/result.html
 		echo "</pre>" >>$PROBLEMPATH/$UN/result.html
 		rm tmp
 	else
-		echo -e "File format not supported." >>$LOG
+		judge_log "File format not supported."
 		cd ..
 		rm -r $JAIL >/dev/null 2>/dev/null
 		echo "File format not supported"
 		exit 5
 	fi
 
-	echo -e "Exit Code="$EXITCODE >>$LOG
+	judge_log "Exit Code=$EXITCODE"
 
 	if [ $EXITCODE -eq 137 ]; then
-		echo -e "Time Limit Exceeded (Exit code=$EXITCODE)" >>$LOG
+		judge_log "Time Limit Exceeded (Exit code=$EXITCODE)"
 		echo "<pre style='color: orange;'>Time Limit Exceeded</pre>" >>$PROBLEMPATH/$UN/result.html
 		continue
 	fi
 	
 	if [ $EXITCODE -eq 159 ]; then
-		echo -e "Bad System Call (Exit code=$EXITCODE)" >>$LOG
+		judge_log "Bad System Call (Exit code=$EXITCODE)"
 		echo "<pre style='color: red;'>Potentially Harmful Code. Process terminated.</pre>" >>$PROBLEMPATH/$UN/result.html
 		echo "Bad System Call"
 		cd ..
@@ -264,7 +269,7 @@ for((i=1;i<=TST;i++)); do
 	fi
 
 	if [ $EXITCODE -ne 0 ]; then
-		echo -e "Runtime Error" >>$LOG
+		judge_log "Runtime Error"
 		echo "<pre style='color: orange;'>Runtime Error</pre>" >>$PROBLEMPATH/$UN/result.html
 		continue
 	fi
@@ -286,23 +291,30 @@ for((i=1;i<=TST;i++)); do
 		if [ $EC -eq 0 ]; then
 			ACCEPTED=true
 		fi
-	elif $DIFFTOOL out $PROBLEMPATH/out/test$i.out $DIFFPARAM >/dev/null 2>/dev/null
-	then
-		ACCEPTED=true
+	else
+		cp $PROBLEMPATH/out/test$i.out correctout
+		if [ "$DIFFOPTION" = "ignore_all_whitespace" ];then #removing all newlines and whitespaces before diff
+			tr -d ' \t\n\r\f' <out >tmp1 && mv tmp1 out;
+			tr -d ' \t\n\r\f' <correctout >tmp1 && mv tmp1 correctout;
+		fi
+		if $DIFFTOOL out correctout $DIFFARGUMENT >/dev/null 2>/dev/null
+		then
+			ACCEPTED=true
+		fi
 	fi
 
 	if $ACCEPTED; then
-		echo -e "ACCEPTED" >>$LOG
+		judge_log "ACCEPTED"
 		echo "<pre style='color: green;'>ACCEPT</pre>" >>$PROBLEMPATH/$UN/result.html
 		((PASSEDTESTS=$PASSEDTESTS+1))
 	else
-		echo -e "WRONG" >>$LOG
+		judge_log "WRONG"
 		echo "<pre style='color: red;'>WRONG</pre>" >>$PROBLEMPATH/$UN/result.html
 	fi
 done
 
-((SCORE=PASSEDTESTS*10000/TST))
+((SCORE=PASSEDTESTS*10000/TST)) # give score from 10,000
 echo $SCORE
 cd ..
-rm -r $JAIL >/dev/null 2>/dev/null
+rm -r $JAIL >/dev/null 2>/dev/null # removing files
 exit 0
