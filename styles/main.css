@@ -1,0 +1,151 @@
+* {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+body {
+	font-family: sans-serif;
+	font-size: 13px;
+	color: #2d2d2d;
+	padding: 0;
+	margin: 0 0 20px 0;
+}
+a {
+	color: #2d2d2d;
+}
+/********************************************/
+div#top_bar {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	font-size: 14px;
+	color: #f0f0f0;
+	padding: 0;
+	height: 37px;
+	z-index: 2;
+	background-color: #2c2c2c;
+	background-image: -moz-linear-gradient(top, #333333, #222222);
+	background-image: -ms-linear-gradient(top, #333333, #222222);
+	background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#333333), to(#222222));
+	background-image: -webkit-linear-gradient(top, #333333, #222222);
+	background-image: -o-linear-gradient(top, #333333, #222222);
+	background-image: linear-gradient(top, #333333, #222222);
+	background-repeat: repeat-x;
+}
+
+div#shj_logo {
+	position: relative;
+	left: 5px;
+	top: 0;
+	width: 0;
+}
+div#shj_logo img {
+	height:37px;
+}
+
+div#user_menu {
+	margin: 10px;
+	float: right;
+}
+
+div#user_menu a {
+	color: #f0f0f0;
+}
+/*********************************************/
+div#side_bar_parent {
+	position: relative;
+	width:160px;
+}
+div#side_bar {
+	background-color: #f0f0f0;
+	position: fixed;
+	width: 170px;
+	top: 37px;
+	left: 0;
+	bottom: 0;
+	z-index: 1;
+	border-right: 1px solid #a3a3a3;
+	box-shadow: #a9a9a9 0 0 5px 2px;
+}
+div#side_bar ul {
+	padding: 0;
+	margin: 0;
+	list-style: none;
+}
+div#side_bar ul li {
+	padding: 10px 0 10px 10px;
+	font-size:14px;
+}
+
+div#side_bar ul a {
+	text-decoration: none;
+}
+
+/*********************************************/
+
+div#main_container {
+	margin-left: 170px;
+	margin-top: 37px;
+	z-index: -1;
+	color: #383838;
+	background-color: white;
+}
+
+div#page_title {
+	margin: 0 20px;
+	padding: 10px 0;
+	font-size: 20px;
+	border-bottom: 1px solid #cacaca;
+}
+
+div#page_title img {
+	float: left;
+	margin-right: 5px;
+}
+
+div#main_container div#main_content {
+	padding: 10px 20px;
+}
+
+div.error {
+	color: red;
+	font-size: 12px;
+}
+
+/**********************************************/
+
+div#about {
+	position: absolute;
+	font-size: 10px;
+	bottom: 0;
+	width: 100%;
+	z-index: 2;
+	padding: 0 7px;
+}
+
+/***********************************************/
+
+
+input.sharif_input{
+	transition: box-shadow 200ms ease;
+	-webkit-transition: box-shadow 200ms ease;
+	background-color: #f0f0f0;
+	border: 1px solid #c4c4c4;
+	line-height: 1;
+	font-size: 24px;
+	border-radius: 2px;
+	padding: 3px;
+	margin-top: 4px;
+	margin-right: 5px;
+}
+
+input.sharif_input:focus{
+	box-shadow: rgba(82,168,236,0.6) 0 0 4px 2px;
+	border-color: rgba(82,168,236,0.6);
+}
+
+input.sharif_button{
+	padding: 5px 15px;
+}
