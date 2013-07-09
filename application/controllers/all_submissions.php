@@ -6,12 +6,16 @@
  */
 
 class All_submissions extends CI_Controller{
-
-	public function index(){
+	var $username;
+	var $assignment;
+	public function __construct(){
+		parent::__construct();
 		$this->load->helper('url');
-		$username = $this->session->userdata('username');
+		$this->username = $this->session->userdata('username');
+	}
+	public function index(){
 		$data = array(
-			'username'=>$username,
+			'username'=>$this->username,
 			'title'=>'All Submissions',
 			'style'=>'main.css'
 		);

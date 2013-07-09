@@ -27,14 +27,14 @@
 					<?php echo form_error('password','<div class="error">','</div>'); ?>
 				</p>
 				<p>
-					<label for="password-again">Password, Again</label><br/>
-					<input type="password" name="password-again" class="sharif_input"/>
-					<?php echo form_error('password-again','<div class="error">','</div>'); ?>
+					<label for="password_again">Password, Again</label><br/>
+					<input type="password" name="password_again" class="sharif_input"/>
+					<?php echo form_error('password_again','<div class="error">','</div>'); ?>
 				</p>
 			</div>
 			<div class="login2">
 				<p style="margin:0;">
-					<?php echo anchor("login","Login") ?> | <a href="#">Lost?</a>
+					<?php echo anchor("login","Login") ?></a>
 					<input type="submit" value="Register" id="sharif_submit"/>
 				</p>
 			</div>

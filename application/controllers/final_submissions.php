@@ -6,12 +6,16 @@
  */
 
 class Final_submissions extends CI_Controller{
-
+	var $username;
+	var $assignment;
+	public function __construct(){
+		parent::__construct();
+		$this->username = $this->session->userdata('username');
+	}
 	public function index(){
 		$this->load->helper('url');
-		$username = $this->session->userdata('username');
 		$data = array(
-			'username'=>$username,
+			'username'=>$this->username,
 			'title'=>'Final Submissions',
 			'style'=>'main.css'
 		);

@@ -28,7 +28,7 @@
 			</div>
 			<div class="login2">
 				<p style="margin:0;">
-					<?php echo anchor("register","Register") ?> | <a href="#">Lost?</a>
+					<?php echo anchor("register","Register") ?> | <?php echo anchor('login/lost','Lost?') ?>
 					<input type="submit" value="Login" id="sharif_submit"/>
 				</p>
 			</div>

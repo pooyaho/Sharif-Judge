@@ -12,7 +12,7 @@ class Assignment_model extends CI_Model{
 	}
 
 	public function all_assignments(){
-		return $this->db->select('id, name')->get('assignments')->result_array();
+		return $this->db->get('assignments')->result_array();
 	}
 
 	public function assignment_info($assignment_id){

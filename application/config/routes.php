@@ -38,7 +38,6 @@
 |
 */
 $route['default_controller'] = "dashboard";
-$route['login'] = "login";
 $route['register'] = "login/register";
 $route['logout'] = "login/logout";
 $route['submit'] = "submit";

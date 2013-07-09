@@ -16,6 +16,11 @@ class User_model extends CI_Model{
 		return ($query->num_rows()>=1);
 	}
 
+	public function have_email($email){
+		$query = $this->db->get_where('users',array('email'=>$email));
+		return ($query->num_rows()>=1);
+	}
+
 	public function add_user(){
 		$this->load->helper('password_hash');
 		$t_hasher = new PasswordHash(8, FALSE);
@@ -46,4 +51,30 @@ class User_model extends CI_Model{
 		$this->db->where('username',$username)->update('users',array('selected_assignment'=>$assignment_id));
 	}
 
+	public function get_user($username){
+		return $this->db->select('display_name, email')->get_where('users',array('username'=>$username))->row();
+	}
+
+	public function update_profile(){
+		$this->load->helper('password_hash');
+		$t_hasher = new PasswordHash(8, FALSE);
+		$user=array(
+			'display_name' => $this->input->post('display_name'),
+			'email' => $this->input->post('email'),
+			'password' => $t_hasher->HashPassword($this->input->post('password'))
+		);
+		$this->db->where('username',$this->session->userdata('username'))->update('users',$user);
+	}
+
+	public function send_passchange_mail($email){
+		$this->load->library('email');
+
+		$this->email->from('info@mjnaderi.ir', 'Mohammad Javad');
+		$this->email->to('mjnaderi@gmail.com');
+
+		$this->email->subject('Email Test');
+		$this->email->message('Testing the email class.');
+
+		$this->email->send();
+	}
 }

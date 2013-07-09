@@ -1,5 +1,8 @@
 #!/bin/bash
 # IN THE NAME OF ALLAH
+# file: enable_sandbox.sh
+# author: Mohammad Javad Naderi <mjnaderi@gmail.com>
+
 echo -e "\nLinux Kernel Version: $(uname -r)\n"
 echo "" > missing_syscalls.h
 rm ./example ./example.o ./syscall-reporter.o >/dev/null 2>/dev/null

@@ -78,6 +78,13 @@ div#side_bar ul li {
 	padding: 10px 0 10px 10px;
 	font-size:14px;
 }
+div#side_bar ul li:hover {
+	background-color: #ced6d6;
+}
+div#side_bar ul li.selected {
+	background-color: #a5c3c8;
+	border-right: 5px solid #2d2d2d;
+}
 
 div#side_bar ul a {
 	text-decoration: none;
@@ -109,10 +116,6 @@ div#main_container div#main_content {
 	padding: 10px 20px;
 }
 
-div.error {
-	color: red;
-	font-size: 12px;
-}
 
 /**********************************************/
 
@@ -148,4 +151,22 @@ input.sharif_input:focus{
 
 input.sharif_button{
 	padding: 5px 15px;
+}
+
+span.form_comment {
+	font-size: 11px;
+	color: #828282;
+}
+
+p.input_p{
+	margin: 10px 6px 0 0;
+	padding: 0;
+}
+div.error {
+	color: red;
+	font-size: 12px;
+}
+
+#codeigniter_profiler{
+	z-index:-50;
 }

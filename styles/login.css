@@ -96,6 +96,11 @@ div.error{
 	font-size: 12px;
 }
 
+div.ok{
+	color: green;
+	font-size: 12px;
+}
+
 input#sharif_submit{
 	border: 0;
 	height: 30px;
