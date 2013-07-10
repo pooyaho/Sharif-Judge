@@ -7,7 +7,7 @@
 <?php $this->view('templates/top_bar'); ?>
 <?php $this->view('templates/side_bar',array('selected'=>'profile')); ?>
 	<div id="main_container">
-		<div id="page_title"><img src="<?php echo site_url('images/icons/profile.png') ?>"/> <span><?php echo $title ?></span></div>
+		<div id="page_title"><img src="<?php echo site_url('assets/images/icons/profile.png') ?>"/> <span><?php echo $title ?></span></div>
 		<div id="main_content">
 			<?php echo form_open('profile/update') ?>
 			<p class="input_p">

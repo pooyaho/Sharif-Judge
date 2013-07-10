@@ -61,19 +61,32 @@ class User_model extends CI_Model{
 		$user=array(
 			'display_name' => $this->input->post('display_name'),
 			'email' => $this->input->post('email'),
-			'password' => $t_hasher->HashPassword($this->input->post('password'))
+			'password' => $t_hasher->HashPassword($this->input->post('password')),
 		);
 		$this->db->where('username',$this->session->userdata('username'))->update('users',$user);
 	}
 
 	public function send_passchange_mail($email){
+		if ( !$this->have_email($email) )
+			return;
+
+		$this->load->helper('url');
+
+		$passchange_key = random_string('alnum',50);
+
+		$now = shj_now();
+		$this->db->where('email',$email)->update('users',array('passchange_key'=>$passchange_key,'passchange_time'=>$now));
+
 		$this->load->library('email');
 
-		$this->email->from('info@mjnaderi.ir', 'Mohammad Javad');
-		$this->email->to('mjnaderi@gmail.com');
+		$this->email->from('info@mjnaderi.ir', 'Sharif Judge');
+		$this->email->to($email);
 
-		$this->email->subject('Email Test');
-		$this->email->message('Testing the email class.');
+		$this->email->subject('Password Reset');
+		$this->email->message('<p>Someone requested to reset the password for account with this email address at '.site_url().'.</p>
+		<p>To change your password, visit this link:</p>
+		<p><a href="'.site_url('login/reset/'.$passchange_key).'">Reset Password</a></p>
+		<p>You can ignore this message, and nothing will happen.</p>');
 
 		$this->email->send();
 	}

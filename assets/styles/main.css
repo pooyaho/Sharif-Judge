@@ -54,10 +54,6 @@ div#user_menu a {
 	color: #f0f0f0;
 }
 /*********************************************/
-div#side_bar_parent {
-	position: relative;
-	width:160px;
-}
 div#side_bar {
 	background-color: #f0f0f0;
 	position: fixed;
@@ -113,7 +109,7 @@ div#page_title img {
 }
 
 div#main_container div#main_content {
-	padding: 10px 20px;
+	padding: 0 20px;
 }
 
 
@@ -121,19 +117,24 @@ div#main_container div#main_content {
 
 div#about {
 	position: absolute;
-	font-size: 10px;
 	bottom: 0;
 	width: 100%;
 	z-index: 2;
 	padding: 0 7px;
 }
 
+div#about p {
+	font-size: 11px;
+	margin: 0 0 7px 0;
+}
+
 /***********************************************/
 
 
-input.sharif_input{
+input.sharif_input {
 	transition: box-shadow 200ms ease;
 	-webkit-transition: box-shadow 200ms ease;
+	width: 300px;
 	background-color: #f0f0f0;
 	border: 1px solid #c4c4c4;
 	line-height: 1;
@@ -144,12 +145,16 @@ input.sharif_input{
 	margin-right: 5px;
 }
 
-input.sharif_input:focus{
+input.sharif_input:disabled {
+	color: #aaa;
+}
+
+input.sharif_input:focus {
 	box-shadow: rgba(82,168,236,0.6) 0 0 4px 2px;
 	border-color: rgba(82,168,236,0.6);
 }
 
-input.sharif_button{
+input.sharif_button {
 	padding: 5px 15px;
 }
 
@@ -158,7 +163,7 @@ span.form_comment {
 	color: #828282;
 }
 
-p.input_p{
+p.input_p {
 	margin: 10px 6px 0 0;
 	padding: 0;
 }
@@ -167,6 +172,11 @@ div.error {
 	font-size: 12px;
 }
 
-#codeigniter_profiler{
+#codeigniter_profiler {
 	z-index:-50;
+}
+
+select.sharif_time {
+	width: 300px;
+	font-size: 16px;
 }

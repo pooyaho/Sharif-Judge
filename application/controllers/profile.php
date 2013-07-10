@@ -10,11 +10,16 @@ class Profile extends CI_Controller{
 	var $assignment;
 	public function __construct(){
 		parent::__construct();
+		$this->load->helper('url');
+		if ( ! $this->session->userdata('logged_in')){ // if not logged in
+			redirect('login');
+		}
 		$this->username = $this->session->userdata('username');
+		$this->assignment = $this->assignment_model->assignment_info($this->user_model->selected_assignment($this->username));/*needed?*/
 	}
 
 	public function index(){
-		$this->load->helper('url');
+
 		$this->load->helper('form');
 		$this->load->model('user_model');
 		$user=$this->user_model->get_user($this->username);
@@ -23,16 +28,12 @@ class Profile extends CI_Controller{
 			'title'=>'Profile',
 			'style'=>'main.css',
 			'email' => $user->email,
-			'display_name' => $user->display_name
+			'display_name' => $user->display_name,
 		);
-		if ( ! $this->session->userdata('logged_in')){ // if not logged in
-			redirect('login');
-		}
-		else{ // if has logged in
-			$this->load->view('templates/header',$data);
-			$this->load->view('pages/profile',$data);
-			$this->load->view('templates/footer');
-		}
+
+		$this->load->view('templates/header',$data);
+		$this->load->view('pages/profile',$data);
+		$this->load->view('templates/footer');
 	}
 
 	public function check_password($str){
@@ -44,9 +45,9 @@ class Profile extends CI_Controller{
 	public function update(){
 		$this->load->library('form_validation');
 		$this->load->model('user_model');
+		$this->form_validation->set_message('check_password','Password must be between 6 and 30 characters in length.');
 		$this->form_validation->set_rules('display_name','Display Name','max_length[40]|xss_clean|strip_tags');
 		$this->form_validation->set_rules('email','Email Address','required|max_length[40]|valid_email');
-		$this->form_validation->set_message('check_password','Password must be between 6 and 30 characters in length.');
 		$this->form_validation->set_rules('password','Password','callback_check_password|alpha_numeric');
 		$this->form_validation->set_rules('password_again','Password Confirmation','matches[password]');
 		if ($this->form_validation->run()){

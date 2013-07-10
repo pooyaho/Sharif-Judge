@@ -6,7 +6,7 @@
  */?>
 <div class="box success">
 	<div class="judge_logo">
-		<a href="#"><img src="<?php echo site_url("images/logo.png") ?>"/></a>
+		<a href="#"><img src="<?php echo site_url("assets/images/logo.png") ?>"/></a>
 	</div>
 	<div class="login_form">
 		<div class="login1">

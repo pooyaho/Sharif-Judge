@@ -10,22 +10,24 @@ class Final_submissions extends CI_Controller{
 	var $assignment;
 	public function __construct(){
 		parent::__construct();
-		$this->username = $this->session->userdata('username');
-	}
-	public function index(){
 		$this->load->helper('url');
-		$data = array(
-			'username'=>$this->username,
-			'title'=>'Final Submissions',
-			'style'=>'main.css'
-		);
 		if ( ! $this->session->userdata('logged_in')){ // if not logged in
 			redirect('login');
 		}
-		else{ // if has logged in
-			$this->load->view('templates/header',$data);
-			$this->load->view('pages/final_submissions',$data);
-			$this->load->view('templates/footer');
-		}
+		$this->username = $this->session->userdata('username');
+		$this->assignment = $this->assignment_model->assignment_info($this->user_model->selected_assignment($this->username));
+	}
+	public function index(){
+
+		$data = array(
+			'username'=>$this->username,
+			'assignment' => $this->assignment,
+			'title'=>'Final Submissions',
+			'style'=>'main.css'
+		);
+
+		$this->load->view('templates/header',$data);
+		$this->load->view('pages/final_submissions',$data);
+		$this->load->view('templates/footer');
 	}
 }

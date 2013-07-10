@@ -7,5 +7,6 @@
 <?php $this->view('templates/top_bar'); ?>
 <?php $this->view('templates/side_bar',array('selected'=>'submit')); ?>
 	<div id="main_container">
-		<div id="page_title"><img src="<?php echo site_url('images/icons/submit.png') ?>"/> <span><?php echo $title ?></span></div>
+		<div id="page_title"><img src="<?php echo site_url('assets/images/icons/submit.png') ?>"/> <span><?php echo $title ?></span></div>
+		<div id="main_content">Submit</div>
 	</div>
