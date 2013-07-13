@@ -8,12 +8,12 @@
 <?php $this->view('templates/top_bar'); ?>
 <?php $this->view('templates/side_bar',array('selected'=>'settings')); ?>
 <div id="main_container">
-	<div id="page_title"><img src="<?php echo site_url('assets/images/icons/profile.png') ?>"/> <span><?php echo $title ?></span></div>
+	<div id="page_title"><img src="<?php echo base_url('assets/images/icons/settings.png') ?>"/> <span><?php echo $title ?></span></div>
 	<div id="main_content">
 		<?php echo form_open('settings/update') ?>
 		<p class="input_p">
 			<label for="timezones">Timezone:</label><br/>
-			<?php echo timezone_menu($tz,'sharif_time') ?>
+			<?php echo timezone_menu($tz,'sharif_button') ?>
 			<?php echo form_error('timezone','<div class="error">','</div>'); ?>
 		</p>
 		<p class="input_p">

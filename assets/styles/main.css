@@ -45,13 +45,40 @@ div#shj_logo img {
 	height:37px;
 }
 
-div#user_menu {
-	margin: 10px;
-	float: right;
+#profile_link , #select_assignment_top .assignment_name {
+	color: #f0f0f0;
 }
 
-div#user_menu a {
-	color: #f0f0f0;
+div.top_object {
+	display: inline-block;
+	float:right;
+	height: 37px;
+	padding: 10px 10px 0 10px;
+	border-left: 1px solid #5d5b69;
+	position: relative;
+}
+
+
+#select_assignment_top {
+	cursor: default;
+}
+
+#user_top , #select_assignment_top {
+	cursor: pointer;
+}
+
+.top_menu {
+	font-size: 13px;
+	display: none;
+	background-color: white;
+	color: black;
+	box-shadow: rgba(0, 0, 0, 0.27) 0 0 7px 3px;
+	position: absolute;
+	min-width: 140px;
+	top: 100%;
+	right: 0;
+	padding: 10px;
+	cursor: auto;
 }
 /*********************************************/
 div#side_bar {
@@ -76,10 +103,12 @@ div#side_bar ul li {
 }
 div#side_bar ul li:hover {
 	background-color: #ced6d6;
+	border-right: 5px solid #9c9c9c;
 }
 div#side_bar ul li.selected {
 	background-color: #a5c3c8;
-	border-right: 5px solid #2d2d2d;
+	border-right: 5px solid #4f4f4f;
+	font-weight: bold;
 }
 
 div#side_bar ul a {
@@ -152,10 +181,26 @@ input.sharif_input:disabled {
 input.sharif_input:focus {
 	box-shadow: rgba(82,168,236,0.6) 0 0 4px 2px;
 	border-color: rgba(82,168,236,0.6);
+	outline: 0;
 }
 
-input.sharif_button {
-	padding: 5px 15px;
+
+.sharif_button {
+	outline: none;
+	border:1px solid #b7b7b7;
+	border-radius: 2px;
+	background-color: white;
+	box-shadow: rgba(0, 0, 0, 0.1) 0 0 2px 1px;
+	padding: 5px 10px;
+}
+
+.sharif_button:hover {
+	border-color: #8d8d8d;
+}
+
+.sharif_button:focus {
+	border-color: rgba(82,168,236,0.6);
+	box-shadow: rgba(82,168,236,0.6) 0 0 2px 1px;
 }
 
 span.form_comment {
@@ -172,11 +217,50 @@ div.error {
 	font-size: 12px;
 }
 
+div.ok{
+	color: green;
+	font-size: 12px;
+}
+
+
 #codeigniter_profiler {
 	z-index:-50;
 }
 
+
+
 select.sharif_time {
 	width: 300px;
 	font-size: 16px;
+}
+
+
+.c1 {
+	float:left;
+	margin-right: 5px;
+}
+.assignment_block {
+	height: 24px;
+}
+.assignment_item {
+	padding-top: 3px;
+}
+.check {
+	background: url(../images/icheck/green.png) no-repeat 0 0;
+	width: 22px;
+	height: 22px;
+	border: none;
+	cursor: pointer;
+}
+
+.check:hover {
+	background-position: -24px 0;
+}
+
+.check.checked {
+	background-position: -48px 0;
+}
+
+.checked {
+	background-position: -48px 0;
 }

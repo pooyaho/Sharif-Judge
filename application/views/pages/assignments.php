@@ -7,19 +7,16 @@
 <?php $this->view('templates/top_bar'); ?>
 <?php $this->view('templates/side_bar',array('selected'=>'assignments')); ?>
 <div id="main_container">
-	<div id="page_title"><img src="<?php echo site_url('assets/images/icons/assignments.png') ?>"/> <span><?php echo $title ?></span></div>
+	<div id="page_title"><img src="<?php echo base_url('assets/images/icons/assignments.png') ?>"/> <span><?php echo $title ?></span></div>
 	<div id="main_content">
-		<?php echo form_open('assignments') ?>
-		<p>Selected Homework: <?php echo $assignment->name ?></p>
-		<p><label for="assignment_select">Homework:</label>
-			<select id="assignment_select" name ="assignment_select">
-				<?php foreach($all_assignments as $item): ?>
-					<option value="<?php echo $item['id'] ?>" <?php echo ($item['id']==$assignment->id?' selected="selected" ':"") ?> > <?php echo $item['name'] ?></option>
-				<?php endforeach ?>
-			</select>
-			<?php echo form_error('assignment_select','<div class="error">','</div>'); ?>
-		</p>
-		<p><input type="submit" value="Select" class="button" /></p>
-		</form>
+		<p>Selected Assignment: <span class="assignment_name"><?php echo $assignment['name'] ?></span></p>
+		<?php foreach($all_assignments as $item): ?>
+			<div class="assignment_block" id="<?php echo $item['id'] ?>">
+				<div class="c1">
+					<div class="<?php echo ($item['id']==$assignment['id']?'check checked':'check') ?> i<?php echo $item['id'] ?>" id="<?php echo $item['id'] ?>"></div>
+				</div>
+				<div class="assignment_item"><?php echo $item['name'] ?></div>
+			</div>
+		<?php endforeach ?>
 	</div>
 </div>

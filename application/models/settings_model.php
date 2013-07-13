@@ -1,8 +1,12 @@
-<?php
+<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 /**
  * Sharif Judge online judge
  * @file settings_model.php
  * @author Mohammad Javad Naderi <mjnaderi@gmail.com>
+ */
+
+/*
+ * This model deals with global settings
  */
 
 class Settings_model extends CI_Model {
@@ -10,10 +14,13 @@ class Settings_model extends CI_Model {
 		parent::__construct();
 		$this->load->database();
 	}
-	public function get_timezone(){
-		return $this->db->get_where('settings',array('key'=>'timezone'))->row()->value;
+
+	public function get_setting($key){
+		return $this->db->get_where('settings',array('key'=>$key))->row()->value;
 	}
-	public function set_timezone($tz){
-		$this->db->where('key','timezone')->update('settings',array('value'=>$tz));
+
+	public function set_setting($key,$value){
+		$this->db->where('key',$key)->update('settings',array('value'=>$value));
 	}
+
 }

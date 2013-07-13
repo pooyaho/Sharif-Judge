@@ -1,4 +1,4 @@
-<?php
+<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 /**
  * Sharif Judge online judge
  * @file login.php
@@ -9,18 +9,16 @@ class Login extends CI_Controller{
 
 	public function __construct(){
 		parent::__construct();
-		$this->load->helper('url');
-		$this->load->helper('form');
-		$this->load->library('form_validation');
 		$this->load->model('user_model');
+		/*$this->output->enable_profiler(TRUE);*/
 	}
 
-	public function username_check($username){ // checks whether a user with this username exists (used for validating registration)
+	public function _username_check($username){ // checks whether a user with this username exists (used for validating registration)
 		if ($this->user_model->have_user($username))
 			return FALSE;
 		return TRUE;
 	}
-	public function email_check($email){ // checks whether a user with this email exists (used for validating registration)
+	public function _email_check($email){ // checks whether a user with this email exists (used for validating registration)
 		if ($this->user_model->have_email($email))
 			return FALSE;
 		return TRUE;
@@ -57,10 +55,10 @@ class Login extends CI_Controller{
 	}
 
 	public function register(){
-		$this->form_validation->set_message('username_check','User with same %s exists.');
-		$this->form_validation->set_message('email_check','User with same %s exists.');
-		$this->form_validation->set_rules('username','username','required|min_length[3]|max_length[20]|alpha_numeric|callback_username_check');
-		$this->form_validation->set_rules('email','email','required|max_length[40]|valid_email|callback_email_check');
+		$this->form_validation->set_message('_username_check','User with same %s exists.');
+		$this->form_validation->set_message('_email_check','User with same %s exists.');
+		$this->form_validation->set_rules('username','username','required|min_length[3]|max_length[20]|alpha_numeric|callback__username_check');
+		$this->form_validation->set_rules('email','email','required|max_length[40]|valid_email|callback__email_check');
 		$this->form_validation->set_rules('password','password','required|min_length[6]|max_length[30]|alpha_numeric');
 		$this->form_validation->set_rules('password_again','password confirmation','required|matches[password]');
 		$data = array(
@@ -78,10 +76,12 @@ class Login extends CI_Controller{
 		$this->load->view('templates/footer');
 	}
 
+
 	public function logout(){ // logging out and redirecting to login page
 		$this->session->sess_destroy();
 		redirect('login');
 	}
+
 
 	public function lost(){
 		$this->form_validation->set_rules('email','email','required|max_length[40]|valid_email');
@@ -97,5 +97,26 @@ class Login extends CI_Controller{
 		}
 		$this->load->view('pages/authentication/lost', $data);
 		$this->load->view('templates/footer');
+	}
+
+
+	public function reset($passchange_key){
+		$this->form_validation->set_rules('password','password','required|min_length[6]|max_length[30]|alpha_numeric');
+		$this->form_validation->set_rules('password_again','password confirmation','required|matches[password]');
+		$data = array(
+			'title' => "Set New Password",
+			'style' => "login.css",
+			'key' => $passchange_key,
+			'result' => $this->user_model->have_passchange($passchange_key),
+			'reset' => FALSE
+		);
+		$this->load->view('templates/header', $data);
+		if ($this->form_validation->run()){
+			$this->user_model->reset_password($passchange_key, $this->input->post('password'));
+			$data['reset']=TRUE;
+		}
+		$this->load->view('pages/authentication/reset_password', $data);
+		$this->load->view('templates/footer');
+		//$user = $this->user_model->get_
 	}
 }

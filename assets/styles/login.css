@@ -89,6 +89,7 @@ input.sharif_input{
 input.sharif_input:focus{
 	box-shadow: rgba(82,168,236,0.6) 0 0 4px 2px;
 	border-color: rgba(82,168,236,0.6);
+	outline: 0;
 }
 
 div.error{

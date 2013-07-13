@@ -1,21 +1,16 @@
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-/**
- * Get "now" time
- *
- * Returns time() or its GMT equivalent based on the config file preference
- *
- * @access	public
- * @return	integer
- */
-
 if ( ! function_exists('shj_now'))
 {
+
+	/*
+	 * Returns server time (uses time zone in settings table)
+	 */
 	function shj_now()
 	{
 		$CI =& get_instance();
 		$CI->load->model('settings_model');
-		return gmt_to_local(now(),$CI->settings_model->get_timezone(),TRUE);
+		return gmt_to_local(now(),$CI->settings_model->get_setting('timezone'),TRUE);
 	}
 }
 

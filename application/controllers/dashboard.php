@@ -1,4 +1,4 @@
-<?php
+<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 /**
  * Sharif Judge online judge
  * @file dashboard.php
@@ -10,7 +10,6 @@ class Dashboard extends CI_Controller{
 	var $assignment;
 	public function __construct(){
 		parent::__construct();
-		$this->load->helper('url');
 		if ( ! $this->session->userdata('logged_in')){ // if not logged in
 			redirect('login');
 		}
@@ -22,6 +21,7 @@ class Dashboard extends CI_Controller{
 
 		$data = array(
 			'username'=>$this->username,
+			'all_assignments'=>$this->assignment_model->all_assignments(),
 			'assignment' => $this->assignment,
 			'title'=>'Dashboard',
 			'style'=>'main.css'

@@ -40,7 +40,7 @@
 $route['default_controller'] = "dashboard";
 $route['register'] = "login/register";
 $route['logout'] = "login/logout";
-$route['submit'] = "submit";
+$route['submissions/final']="submissions/the_final";
 $route['404_override'] = '';
 
 
