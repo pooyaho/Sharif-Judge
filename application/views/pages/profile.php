@@ -13,31 +13,31 @@
 			<p class="input_p">
 				<label for="username">Username:</label><br/>
 				<span class="form_comment">You cannot change your username.</span><br/>
-				<input type="text" class="sharif_input" value="<?php echo $username ?>"  disabled/>
+				<input type="text" class="sharif_input medium" value="<?php echo $username ?>"  disabled/>
 			</p>
 			<p class="input_p">
 				<label for="display_name">Display Name:</label><br/>
-				<input type="text" name="display_name" class="sharif_input" value="<?php echo $display_name ?>"/>
+				<input type="text" name="display_name" class="sharif_input medium" value="<?php echo $display_name ?>"/>
 				<?php echo form_error('display_name','<div class="error">','</div>'); ?>
 			</p>
 			<p class="input_p">
 				<label for="email">Email Address:</label><br/>
-				<input type="text" name="email" class="sharif_input" value="<?php echo $email ?>"/>
+				<input type="text" name="email" class="sharif_input medium" value="<?php echo $email ?>"/>
 				<?php echo form_error('email','<div class="error">','</div>'); ?>
 			</p>
 			<p class="input_p">
 				<label for="password">Password:</label><br/>
 				<span class="form_comment">If you don't want to change your password, leave this blank.</span><br/>
-				<input type="password" name="password" class="sharif_input"/>
+				<input type="password" name="password" class="sharif_input medium"/>
 				<?php echo form_error('password','<div class="error">','</div>'); ?>
 			</p>
 			<p class="input_p">
 				<label for="password_again">Password, Again:</label><br/>
-				<input type="password" name="password_again" class="sharif_input"/>
+				<input type="password" name="password_again" class="sharif_input medium"/>
 				<?php echo form_error('password_again','<div class="error">','</div>'); ?>
 			</p>
 			<p class="input_p">
-				<input type="submit" value="Save" class="sharif_button"/>
+				<input type="submit" value="Save" class="sharif_input"/>
 			</p>
 			</form>
 		</div>

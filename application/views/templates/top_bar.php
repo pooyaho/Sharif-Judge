@@ -22,7 +22,7 @@
 				$('#user_menu').hide();
 			}
 		);
-		$(".check").click(
+		$(".select_assignment").click(
 			function(){
 				var id = $(this).attr('id');
 				$.ajax({
@@ -33,7 +33,7 @@
 					success: function(a) {
 						//if (a != "shj_failed"){
 						if (a == "shj_success"){
-							$(".check").removeClass('checked');
+							$(".select_assignment").removeClass('checked');
 							$(".i"+id).addClass('checked');
 							$(".assignment_name").html($("#"+id+" .assignment_item").html());
 						}
@@ -57,7 +57,7 @@
 			<?php foreach($all_assignments as $item): ?>
 				<div class="assignment_block" id="<?php echo $item['id'] ?>">
 					<div class="c1">
-						<div class="<?php echo ($item['id']==$assignment['id']?'check checked':'check') ?> i<?php echo $item['id'] ?>" id="<?php echo $item['id'] ?>"></div>
+						<div class="select_assignment <?php echo ($item['id']==$assignment['id']?'check checked':'check') ?> i<?php echo $item['id'] ?>" id="<?php echo $item['id'] ?>"></div>
 					</div>
 					<div class="assignment_item"><?php echo $item['name'] ?></div>
 				</div>

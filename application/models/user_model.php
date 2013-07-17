@@ -25,11 +25,17 @@ class User_model extends CI_Model{
 
 
 	/*
-	 * Returns TRUE if there is a user with email $email in database
+	 * Returns TRUE if there is a user (except $username) with email $email in database
 	 */
-	public function have_email($email){
+	public function have_email($email,$username=FALSE){
 		$query = $this->db->get_where('users',array('email'=>$email));
-		return ($query->num_rows()>=1);
+		if ($query->num_rows()>=1){
+			if($username !== FALSE && $query->row()->username==$username)
+				return FALSE;
+			else
+				return TRUE;
+		}
+		return FALSE;
 	}
 
 
@@ -39,7 +45,7 @@ class User_model extends CI_Model{
 	 */
 	public function add_user(){
 		$this->load->helper('password_hash');
-		$t_hasher = new PasswordHash(8, TRUE);
+		$t_hasher = new PasswordHash(8, FALSE);
 		$user=array(
 			'username' => $this->input->post('username'),
 			'email' => $this->input->post('email'),
@@ -55,7 +61,7 @@ class User_model extends CI_Model{
 	 */
 	public function validate_user($username, $password){
 		$this->load->helper('password_hash');
-		$t_hasher = new PasswordHash(8, TRUE);
+		$t_hasher = new PasswordHash(8, FALSE);
 		$query = $this->db->get_where('users',array('username'=>$username));
 		if ($query->num_rows() != 1)
 			return FALSE;
@@ -111,13 +117,15 @@ class User_model extends CI_Model{
 	 * Update user profile
 	 */
 	public function update_profile(){
-		$this->load->helper('password_hash');
-		$t_hasher = new PasswordHash(8, TRUE);
 		$user=array(
 			'display_name' => $this->input->post('display_name'),
-			'email' => $this->input->post('email'),
-			'password' => $t_hasher->HashPassword($this->input->post('password'))
+			'email' => $this->input->post('email')
 		);
+		if ($this->input->post('password')!=""){
+			$this->load->helper('password_hash');
+			$t_hasher = new PasswordHash(8, FALSE);
+			$user['password'] = $t_hasher->HashPassword($this->input->post('password'));
+		}
 		$this->db->where('username',$this->session->userdata('username'))->update('users',$user);
 	}
 
@@ -172,7 +180,7 @@ class User_model extends CI_Model{
 		if ($query->num_rows() != 1)
 			return FALSE;
 		$this->load->helper('password_hash');
-		$t_hasher = new PasswordHash(8, TRUE);
+		$t_hasher = new PasswordHash(8, FALSE);
 		$this->db->where('username',$query->row()->username)->update('users',array('passchange_key'=>'','password' => $t_hasher->HashPassword($newpassword)));
 		return TRUE;
 	}

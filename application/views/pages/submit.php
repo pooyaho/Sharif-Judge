@@ -48,7 +48,7 @@
 				<?php echo form_open_multipart('submit') ?>
 				<p class="input_p">
 					<label for="problem">Problem:</label><br>
-					<select id="problems" name ="problem" class="sharif_button">
+					<select id="problems" name ="problem" class="sharif_input">
 						<option value="0" selected="selected">-- Select One --</option>
 						<?php foreach ($problems as $problem): ?>
 							<option value="<?php echo $problem['id'] ?>"><?php echo $problem['name'] ?></option>
@@ -58,14 +58,14 @@
 				</p>
 				<p class="input_p">
 					<label for="problem">File Type:</label><br>
-					<select id="filetypes" name="filetype" class="sharif_button">
+					<select id="filetypes" name="filetype" class="sharif_input">
 						<option value="0" selected="selected">-- Select One --</option>
 					</select>
 					<?php echo form_error('filetype','<div class="error">','</div>'); ?>
 				</p>
 				<p class="input_p">
 					<label for="userfile">File:</label><br>
-					<input type="file" id="file" class="sharif_button" name="userfile" />
+					<input type="file" id="file" class="sharif_input" name="userfile" />
 					<?php if ($upload_state==='error'): ?>
 					<div class="error">Error uploading file.</div>
 					<?php elseif ($upload_state==='ok'): ?>
@@ -74,7 +74,7 @@
 					<?php echo $this->upload->display_errors('<div class="error">','</div>'); ?>
 				</p>
 				<p class="input_p">
-					<input type="submit" value="Submit" class="sharif_button"/>
+					<input type="submit" value="Submit" class="sharif_input"/>
 				</p>
 				</form>
 			<?php endif ?>

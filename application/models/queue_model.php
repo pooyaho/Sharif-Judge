@@ -21,4 +21,34 @@ class Queue_model extends CI_Model {
 			return TRUE;
 		return FALSE;
 	}
+
+
+	public function add_to_queue($submit_info){
+		$now = shj_now();
+
+		$submit_query = $this->db->get_where('final_submissions',array(
+			'username'=>$submit_info['username'],
+			'assignment'=>$submit_info['assignment'],
+			'problem'=>$submit_info['problem']
+		));
+
+		$submit_info['time']=date('Y-m-d H:i:s',$now);
+		$submit_info['late_time']=0; /* todo */
+		$submit_info['status']='PENDING';
+		$submit_info['pre_score']=0;
+
+		if ($submit_query->num_rows()==0)
+			$submit_info['submit_number'] = 1;
+		else
+			$submit_info['submit_number'] = $submit_query->row()->submit_count + 1;
+
+		$this->db->insert('all_submissions',$submit_info);
+
+		$this->db->insert('queue',array(
+			'submit_id'=>$submit_info['submit_id'],
+			'username'=>$submit_info['username'],
+			'assignment'=>$submit_info['assignment'],
+			'problem'=>$submit_info['problem']
+		));
+	}
 }

@@ -18,12 +18,12 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 ##################### Example Usage #####################
-# tester.sh /home/mohammad/judge/homeworks/hw6/p1 mjn problem c 1 50000 7 diff -iw
+# tester.sh /home/mohammad/judge/homeworks/hw6/p1 mjn problem problem c 1 50000 diff -iw
 # In this example judge assumes that the file is located at:
 # /home/mohammad/judge/homeworks/hw6/p1/mjn/problem.c
 # And test cases are located at:
-# /home/mohammad/judge/homeworks/hw6/p1/in/  {test1.in, test2.in, ...}
-# /home/mohammad/judge/homeworks/hw6/p1/out/ {test1.out, test2.out, ...}
+# /home/mohammad/judge/homeworks/hw6/p1/in/  {input1.txt, input2.txt, ...}
+# /home/mohammad/judge/homeworks/hw6/p1/out/ {output1.txt, output2.txt, ...}
 
 ####################### Return Values #######################
 # RETURN VALUE         PRINTED MESSAGE
@@ -40,8 +40,8 @@
 # But in my case, it caused compilation problems. So here is an option for turning it off.
 DIET="" # Don't use diet libc
 #DIET="dietlibc/bin-i386/diet" # Path to diet executable file
-SECCOMP_ON=false # turn seccomp filter for c/c++ on/off
-SHIELD_ON=false # turn Shield for C/C++ on/off
+SECCOMP_ON=true # turn seccomp filter for c/c++ on/off
+SHIELD_ON=true # turn Shield for C/C++ on/off
 # If you want to turn off java policy, leave this blank:
 JAVA_POLICY="-Djava.security.manager -Djava.security.policy=java.policy"
 LOG_ON=true
@@ -49,11 +49,11 @@ LOG_ON=true
 ################### Getting Arguments ###################
 PROBLEMPATH=$1 # problem directory
 UN=$2 # username
-FILENAME=$3 # file name without extension
-EXT=$4 # file extension
-TIMELIMIT=$5
-MEMLIMIT=$6
-HEADER=$7
+MAINFILENAME=$3 # for java
+FILENAME=$4 # file name without extension
+EXT=$5 # file extension
+TIMELIMIT=$6
+MEMLIMIT=$7
 DIFFTOOL=$8
 DIFFOPTION=$9
 # DIFFOPTION can be "ignore_all_whitespace". In this case, before diff command,
@@ -93,9 +93,9 @@ judge_log "$(date)"
 ############################################ COMPILING JAVA ############################################
 ########################################################################################################
 if [ "$EXT" = "java" ]; then
-	cp $PROBLEMPATH/$UN/$FILENAME.$EXT $FILENAME.$EXT
+	cp $PROBLEMPATH/$UN/$FILENAME.$EXT $MAINFILENAME.$EXT
 	judge_log "Compiling as Java"
-	javac $FILENAME.$EXT >/dev/null 2>cerr
+	javac $MAINFILENAME.$EXT >/dev/null 2>cerr
 	EXITCODE=$?
 	if [ $EXITCODE -ne 0 ]; then
 		judge_log "Compile Error"
@@ -226,18 +226,18 @@ for((i=1;i<=TST;i++)); do
 	ulimit -t $TIMELIMIT # kar az mohkamkari eyb nemikone!
 	if [ "$EXT" = "java" ]; then
 		cp ../java.policy java.policy
-		$TIMEOUT java $JAVA_POLICY $FILENAME  <$PROBLEMPATH/in/test$i.in >out 2>/dev/null
+		$TIMEOUT java $JAVA_POLICY $MAINFILENAME  <$PROBLEMPATH/in/input$i.txt >out 2>/dev/null
 		#echo "java -cp $PROBLEMPATH/$UN/jail $FILENAME <$PROBLEMPATH/in/test$i.in >$PROBLEMPATH/$UN/jail/$UN.out 2>$PROBLEMPATH/$UN/tmp" >>$LOG
 		#java -cp $PROBLEMPATH/$UN/jail $FILENAME <$PROBLEMPATH/in/test$i.in >$PROBLEMPATH/$UN/jail/$UN.out 2>$PROBLEMPATH/$UN/tmp
 		EXITCODE=$?
 	elif [ "$EXT" = "c" ]; then
-		$TIMEOUT ./$FILENAME <$PROBLEMPATH/in/test$i.in >out 2>/dev/null
+		$TIMEOUT ./$FILENAME <$PROBLEMPATH/in/input$i.txt >out 2>/dev/null
 		EXITCODE=$?
 	elif [ "$EXT" = "cpp" ]; then
-		$TIMEOUT ./$FILENAME <$PROBLEMPATH/in/test$i.in >out 2>/dev/null
+		$TIMEOUT ./$FILENAME <$PROBLEMPATH/in/input$i.txt >out 2>/dev/null
 		EXITCODE=$?
 	elif [ "$EXT" = "py" ]; then
-		$TIMEOUT python3 -O $FILENAME.$EXT <$PROBLEMPATH/in/test$i.in >out 2>tmp
+		$TIMEOUT python3 -O $FILENAME.$EXT <$PROBLEMPATH/in/input$i.txt >out 2>tmp
 		EXITCODE=$?
 		echo "<pre>" >>$PROBLEMPATH/$UN/result.html
 		(cat tmp | head -5 | sed "s/$FILENAME.$EXT//g" | sed 's/&/\&amp;/g' | sed 's/</\&lt;/g' | sed 's/>/\&gt;/g' | sed 's/"/\&quot;/g') >> $PROBLEMPATH/$UN/result.html
@@ -286,13 +286,13 @@ for((i=1;i<=TST;i++)); do
 			rm -r $JAIL >/dev/null 2>/dev/null
 			exit 4
 		fi
-		./tester $PROBLEMPATH/in/test$i.in out
+		./tester $PROBLEMPATH/in/input$i.txt out
 		EC=$?
 		if [ $EC -eq 0 ]; then
 			ACCEPTED=true
 		fi
 	else
-		cp $PROBLEMPATH/out/test$i.out correctout
+		cp $PROBLEMPATH/out/output$i.txt correctout
 		if [ "$DIFFOPTION" = "ignore_all_whitespace" ];then #removing all newlines and whitespaces before diff
 			tr -d ' \t\n\r\f' <out >tmp1 && mv tmp1 out;
 			tr -d ' \t\n\r\f' <correctout >tmp1 && mv tmp1 correctout;

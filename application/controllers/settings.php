@@ -40,7 +40,10 @@ class Settings extends CI_Controller{
 			'assignment' => $this->assignment,
 			'title'=>'Settings',
 			'style'=>'main.css',
-			'tz'=>$this->settings_model->get_setting('timezone')
+			'tz'=>$this->settings_model->get_setting('timezone'),
+			'tester_path'=>$this->settings_model->get_setting('tester_path'),
+			'assignments_root'=>$this->settings_model->get_setting('assignments_root'),
+			'file_size_limit'=>$this->settings_model->get_setting('file_size_limit')
 		);
 		$this->load->view('templates/header',$data);
 		$this->load->view('pages/admin/settings',$data);
@@ -52,6 +55,9 @@ class Settings extends CI_Controller{
 		$this->form_validation->set_rules('timezones','timezone','callback__check_timezone');
 		if($this->form_validation->run()){
 			$this->settings_model->set_setting('timezone',$this->input->post('timezones'));
+			$this->settings_model->set_setting('tester_path',$this->input->post('tester_path'));
+			$this->settings_model->set_setting('assignments_root',$this->input->post('assignments_root'));
+			$this->settings_model->set_setting('file_size_limit',$this->input->post('file_size_limit'));
 		}
 		$this->index();
 	}

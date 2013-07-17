@@ -160,32 +160,9 @@ div#about p {
 /***********************************************/
 
 
-input.sharif_input {
+.sharif_input {
 	transition: box-shadow 200ms ease;
 	-webkit-transition: box-shadow 200ms ease;
-	width: 300px;
-	background-color: #f0f0f0;
-	border: 1px solid #c4c4c4;
-	line-height: 1;
-	font-size: 24px;
-	border-radius: 2px;
-	padding: 3px;
-	margin-top: 4px;
-	margin-right: 5px;
-}
-
-input.sharif_input:disabled {
-	color: #aaa;
-}
-
-input.sharif_input:focus {
-	box-shadow: rgba(82,168,236,0.6) 0 0 4px 2px;
-	border-color: rgba(82,168,236,0.6);
-	outline: 0;
-}
-
-
-.sharif_button {
 	outline: none;
 	border:1px solid #b7b7b7;
 	border-radius: 2px;
@@ -194,13 +171,29 @@ input.sharif_input:focus {
 	padding: 5px 10px;
 }
 
-.sharif_button:hover {
+.sharif_input:hover {
 	border-color: #8d8d8d;
 }
 
-.sharif_button:focus {
+.sharif_input:focus {
 	border-color: rgba(82,168,236,0.6);
 	box-shadow: rgba(82,168,236,0.6) 0 0 2px 1px;
+}
+
+input.sharif_input:disabled {
+	color: #aaa;
+}
+
+.long {
+	width: 350px;
+}
+
+.medium {
+	width: 225px;
+}
+
+.short {
+	width: 100px;
 }
 
 span.form_comment {
@@ -217,7 +210,7 @@ div.error {
 	font-size: 12px;
 }
 
-div.ok{
+div.ok {
 	color: green;
 	font-size: 12px;
 }
@@ -263,4 +256,20 @@ select.sharif_time {
 
 .checked {
 	background-position: -48px 0;
+}
+
+/***************************************/
+
+#add , #remove {
+	cursor: pointer;
+}
+
+#problems_table {
+	border: 1px solid #a9a9a9;
+	border-radius: 5px;
+	padding: 5px;
+}
+
+#ui-datepicker-div {
+	font-size: 11px!important;
 }

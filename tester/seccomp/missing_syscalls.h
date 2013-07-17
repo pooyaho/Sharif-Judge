@@ -1,0 +1,3 @@
+
+ALLOW_SYSCALL(fstat64),
+ALLOW_SYSCALL(mmap2),

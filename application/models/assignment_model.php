@@ -54,4 +54,11 @@ class Assignment_model extends CI_Model{
 			return TRUE;
 		return FALSE;
 	}
+
+	public function add_total_submits($assignment_id){
+		$total = $this->db->select('total_submits')->get_where('assignments',array('id'=>$assignment_id))->row()->total_submits;
+		$this->db->where('id',$assignment_id)->update('assignments',array('total_submits'=>($total+1)));
+		return ($total+1);
+	}
+
 }

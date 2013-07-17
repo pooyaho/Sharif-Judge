@@ -13,7 +13,7 @@
 		<?php foreach($all_assignments as $item): ?>
 			<div class="assignment_block" id="<?php echo $item['id'] ?>">
 				<div class="c1">
-					<div class="<?php echo ($item['id']==$assignment['id']?'check checked':'check') ?> i<?php echo $item['id'] ?>" id="<?php echo $item['id'] ?>"></div>
+					<div class="select_assignment <?php echo ($item['id']==$assignment['id']?'check checked':'check') ?> i<?php echo $item['id'] ?>" id="<?php echo $item['id'] ?>"></div>
 				</div>
 				<div class="assignment_item"><?php echo $item['name'] ?></div>
 			</div>
