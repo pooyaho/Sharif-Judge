@@ -105,7 +105,7 @@ div#side_bar ul li {
 	padding: 10px 0 10px 10px;
 }
 
-div#side_bar ul li: hover {
+div#side_bar ul li:hover {
 	background-color: #ced6d6;
 	border-right: 5px solid #9c9c9c;
 }
@@ -176,16 +176,16 @@ div#about p {
 	box-shadow: rgba(0, 0, 0, 0.1) 0 0 2px 1px;
 }
 
-.sharif_input: hover {
+.sharif_input:hover {
 	border-color: #8d8d8d;
 }
 
-.sharif_input: focus {
+.sharif_input:focus {
 	border-color: rgba(82,168,236,0.6);
 	box-shadow: rgba(82,168,236,0.6) 0 0 2px 1px;
 }
 
-input.sharif_input: disabled {
+input.sharif_input:disabled {
 	color: #aaa;
 }
 
@@ -250,7 +250,7 @@ select.sharif_time {
 	background: url('../images/icheck/green.png') no-repeat 0 0;
 }
 
-.check: hover {
+.check:hover {
 	background-position: -24px 0;
 }
 
