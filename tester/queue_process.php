@@ -46,15 +46,20 @@ function addJudgeResultToDB($sr){
 	$r = mysql_fetch_assoc(mysql_query("SELECT * FROM {$prefix}final_submissions WHERE username='$username' AND assignment='$assignment' AND problem='$problem'"));
 
 	if($r==null){
-		mysql_query("INSERT INTO {$prefix}final_submissions ( submit_id, username, assignment, problem, time, late_time, status, pre_score, submit_count, file_name, main_file_name, file_type)
-		VALUES ('$submit_id','$username','$assignment','$problem','$time','$late_time','$status','$pre_score','$submit_count','$file_name','$main_file_name','$file_type') ");
+		mysql_query("INSERT INTO {$prefix}final_submissions
+					( submit_id, username, assignment, problem, time, late_time, status, pre_score, submit_count, file_name, main_file_name, file_type)
+					VALUES ('$submit_id','$username','$assignment','$problem','$time','$late_time','$status','$pre_score','$submit_count','$file_name','$main_file_name','$file_type') ");
 	}
 	else{
-		mysql_query("UPDATE {$prefix}final_submissions SET submit_id='$submit_id', time='$time', late_time='$late_time', status='$status', pre_score='$pre_score', submit_count='$submit_count', file_name='$file_name', main_file_name='$main_file_name', file_type='$file_type' WHERE username='$username' AND assignment='$assignment' AND problem='$problem' ");
+		mysql_query("UPDATE {$prefix}final_submissions
+					SET submit_id='$submit_id', time='$time', late_time='$late_time', status='$status', pre_score='$pre_score', submit_count='$submit_count', file_name='$file_name', main_file_name='$main_file_name', file_type='$file_type'
+					WHERE username='$username' AND assignment='$assignment' AND problem='$problem' ");
 	}
 
 
-	mysql_query("UPDATE {$prefix}all_submissions SET status='$status', pre_score='$pre_score' WHERE submit_id='$submit_id' AND username='$username' AND assignment='$assignment' AND problem='$problem'");
+	mysql_query("UPDATE {$prefix}all_submissions
+				SET status='$status', pre_score='$pre_score'
+				WHERE submit_id='$submit_id' AND username='$username' AND assignment='$assignment' AND problem='$problem'");
 }
 
 
@@ -83,7 +88,7 @@ if($q==1)
 
 mysql_query("UPDATE {$prefix}settings SET shj_value=1 WHERE shj_key='queue_is_working'");
 
-sleep(25.4+rand(0,50)/10);   // DO WE REALLY NEED THIS LINE ?????????????????????? ANSWER: NO :)
+//sleep(25.4+rand(0,50)/10);   // DO WE REALLY NEED THIS LINE ?????????????????????? ANSWER: NO :)
 
 do{
 
@@ -118,12 +123,11 @@ do{
 
 	$cmd = " cd $tester_path; ./tester.sh $problemdir $username $main_filename $raw_filename $file_type $time_limit $memory_limit diff -iw"; /* todo */
 
+	file_put_contents($userdir."/log",$cmd);
+
 	exec($cmd,$output, $ret);
 
 	$output=$output[0];
-
-	/*$score = shell_exec("cd $problemdir  && " .( __DIR__ ). "/tester/tester.sh $problemdir $username $raw_filename $file_type 1 50000 10 -bB");*/
-	/*$score = trim($score);*/
 
 	$score = trim($output);
 
@@ -154,5 +158,3 @@ do{
 }while($qr!=null);
 
 mysql_query("UPDATE {$prefix}settings SET shj_value=0 WHERE shj_key='queue_is_working'");
-
-//exec("php ".( __DIR__ )."/queue_process.php >/dev/null 2>/dev/null &"); // DO WE REALLY NEED THIS LINE ?????????? I think we don't...

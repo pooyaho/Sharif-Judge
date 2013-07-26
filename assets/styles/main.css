@@ -277,3 +277,117 @@ select.sharif_time {
 #ui-datepicker-div {
 	font-size: 11px!important;
 }
+
+/********************************************/
+
+/*table.sharif_table, table.sharif_table tr td {
+	border:1px solid #2d2d2d;
+	text-align: center;
+	vertical-align: middle;
+}*/
+
+.sharif_table {
+	*border-collapse: collapse; /* IE7 and lower */
+	border-spacing: 0;
+	width: 100%;
+	border: solid #ccc 1px;
+	-moz-border-radius: 6px;
+	-webkit-border-radius: 6px;
+	border-radius: 6px;
+	-webkit-box-shadow: 0 1px 1px #ccc;
+	-moz-box-shadow: 0 1px 1px #ccc;
+	box-shadow: 0 1px 1px #ccc;
+}
+
+.sharif_table .check {
+	margin:0 auto;
+	background-position: -120px 0;
+}
+
+.sharif_table .check:hover {
+	background-position: -144px 0;
+}
+
+.sharif_table .check.checked {
+	background-position: -168px 0;
+}
+
+
+.sharif_table tr.hl {
+	background:#E0E0E0 ;
+}
+
+.sharif_table tr.nhl {
+	background:#F5F5F5 ;
+}
+
+.sharif_table tr:hover {
+	background: #f0f0f0;
+}
+
+.sharif_table td, .sharif_table th {
+	border-left: 1px solid #AFAFAF;
+	border-top: 1px solid #AFAFAF;
+	padding: 3px 5px;
+	text-align: center;
+}
+
+.rank td, .rank th {
+	padding: 2px;
+}
+
+.sharif_table th {
+	background-color: #dce9f9;
+	background-image: -webkit-gradient(linear, left top, left bottom, from(#ebf3fc), to(#dce9f9));
+	background-image: -webkit-linear-gradient(top, #ebf3fc, #dce9f9);
+	background-image:    -moz-linear-gradient(top, #ebf3fc, #dce9f9);
+	background-image:     -ms-linear-gradient(top, #ebf3fc, #dce9f9);
+	background-image:      -o-linear-gradient(top, #ebf3fc, #dce9f9);
+	background-image:         linear-gradient(top, #ebf3fc, #dce9f9);
+	-webkit-box-shadow: 0 1px 0 rgba(255,255,255,.8) inset;
+	-moz-box-shadow:0 1px 0 rgba(255,255,255,.8) inset;
+	box-shadow: 0 1px 0 rgba(255,255,255,.8) inset;
+	border-top: none;
+	text-shadow: 0 1px 0 rgba(255,255,255,.5);
+}
+
+.sharif_table td:first-child, .sharif_table th:first-child {
+	border-left: none;
+}
+
+.sharif_table th:first-child {
+	-moz-border-radius: 6px 0 0 0;
+	-webkit-border-radius: 6px 0 0 0;
+	border-radius: 6px 0 0 0;
+}
+
+.sharif_table th:last-child {
+	-moz-border-radius: 0 6px 0 0;
+	-webkit-border-radius: 0 6px 0 0;
+	border-radius: 0 6px 0 0;
+}
+
+.sharif_table th:only-child {
+	-moz-border-radius: 6px 6px 0 0;
+	-webkit-border-radius: 6px 6px 0 0;
+	border-radius: 6px 6px 0 0;
+}
+
+.sharif_table tr:last-child td:first-child {
+	-moz-border-radius: 0 0 0 6px;
+	-webkit-border-radius: 0 0 0 6px;
+	border-radius: 0 0 0 6px;
+}
+
+.sharif_table tr:last-child td:last-child {
+	-moz-border-radius: 0 0 6px 0;
+	-webkit-border-radius: 0 0 6px 0;
+	border-radius: 0 0 6px 0;
+}
+
+
+.sharif_table th.score {
+	border-radius: 0;
+	border-top: 1px solid #AFAFAF;
+	border-left: 1px solid #AFAFAF;
+}

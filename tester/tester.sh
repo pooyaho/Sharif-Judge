@@ -17,6 +17,7 @@
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+
 ##################### Example Usage #####################
 # tester.sh /home/mohammad/judge/homeworks/hw6/p1 mjn problem problem c 1 50000 diff -iw
 # In this example judge assumes that the file is located at:
@@ -24,6 +25,7 @@
 # And test cases are located at:
 # /home/mohammad/judge/homeworks/hw6/p1/in/  {input1.txt, input2.txt, ...}
 # /home/mohammad/judge/homeworks/hw6/p1/out/ {output1.txt, output2.txt, ...}
+
 
 ####################### Return Values #######################
 # RETURN VALUE         PRINTED MESSAGE
@@ -34,22 +36,28 @@
 #      4              Special Judge Script is Invalid
 #      5              File format not supported
 
+
 ######################## Settings #######################
-# If you want to use "diet libc" instead of glibc, set path to diet executable file here.
-# "diet libc" uses less system calls and therefore, it brings more security.
-# But in my case, it caused compilation problems. So here is an option for turning it off.
-DIET="" # Don't use diet libc
-#DIET="dietlibc/bin-i386/diet" # Path to diet executable file
-SECCOMP_ON=true # turn seccomp filter for c/c++ on/off
+SANDBOX_ON=true # turn EasySandbox for C/C++ on/off
+# Run:
+#    $ cd easysandbox
+#    $ make runtests
+# If you see "All tests passed!", EasySandbox can be enabled on your system
+# For enabling EasySandbox, run:
+#    $ cd easysandbox
+#    $ make
+# and set "SANDBOX_ON" option (above) to "true"
+
 SHIELD_ON=true # turn Shield for C/C++ on/off
 # If you want to turn off java policy, leave this blank:
 JAVA_POLICY="-Djava.security.manager -Djava.security.policy=java.policy"
 LOG_ON=true
 
+
 ################### Getting Arguments ###################
 PROBLEMPATH=$1 # problem directory
 UN=$2 # username
-MAINFILENAME=$3 # for java
+MAINFILENAME=$3 # used only for java
 FILENAME=$4 # file name without extension
 EXT=$5 # file extension
 TIMELIMIT=$6
@@ -65,6 +73,7 @@ if [ "$DIFFOPTION" != "ignore_all_whitespace" ]; then
 	DIFFARGUMENT=$DIFFOPTION
 fi
 
+
 #################### Initialization #####################
 # Using 'timeout' command, Sharif Judge can detect
 # "Time limit exceeded" error. Without it, submitted program
@@ -79,10 +88,10 @@ JAIL=jail-$RANDOM
 mkdir $JAIL
 cd $JAIL
 
-LOG="$PROBLEMPATH/$UN/log"; echo "" >$LOG
+LOG="$PROBLEMPATH/$UN/log"; echo "" >>$LOG
 function judge_log {
 	if $LOG_ON; then
-		echo -e "$1" >>$LOG
+		echo -e "$1" >>$LOG 
 	fi
 }
 
@@ -146,27 +155,19 @@ if [ "$EXT" = "c" ] || [ "$EXT" = "cpp" ]; then
 	fi
 	cp $PROBLEMPATH/$UN/$FILENAME.$EXT code.c
 	judge_log "Compiling as $EXT"
-	if $SECCOMP_ON; then
-		judge_log "Using Seccomp\n"
-		cp {../seccomp/shield.$EXT,../seccomp/config.h,../seccomp/seccomp-bpf.h,../seccomp/missing_syscalls.h,../seccomp/def.h} .
-		if $SHIELD_ON; then #overwrite def.h
-			judge_log "Using Shield\n"
-			cp ../shield/def$EXT.h def.h
-		fi
-		cp $PROBLEMPATH/$UN/$FILENAME.$EXT code.c
-		# adding define to beginning of code
-		echo '#define main themainmainfunction' | cat - code.c > thetemp && mv thetemp code.c
-		$DIET $COMPILER shield.$EXT -lm -O2 -o $FILENAME >/dev/null 2>cerr
-	elif $SHIELD_ON; then
+	if $SANDBOX_ON; then
+		judge_log "Using EasySandbox\n"
+		cp ../easysandbox/EasySandbox.so EasySandbox.so
+	fi
+	if $SHIELD_ON; then
 		judge_log "Using Shield"
 		cp ../shield/shield.$EXT shield.$EXT
 		cp ../shield/def$EXT.h def.h
-		cp $PROBLEMPATH/$UN/$FILENAME.$EXT code.c
 		# adding define to beginning of code
 		echo '#define main themainmainfunction' | cat - code.c > thetemp && mv thetemp code.c
-		$DIET $COMPILER shield.$EXT -lm -O2 -o $FILENAME >/dev/null 2>cerr
+		$COMPILER shield.$EXT -lm -O2 -o $FILENAME >/dev/null 2>cerr
 	else
-		$DIET $COMPILER code.$EXT -lm -O2 -o $FILENAME >/dev/null 2>cerr
+		$COMPILER code.$EXT -lm -O2 -o $FILENAME >/dev/null 2>cerr
 	fi
 	EXITCODE=$?
 	judge_log "Compiled. Exit Code=$EXITCODE"
@@ -215,11 +216,11 @@ echo "" >$PROBLEMPATH/$UN/result.html
 
 PASSEDTESTS=0
 
-for((i=1;i<=TST;i++)); do
+for((i=1;i<=$TST;i++)); do
 	judge_log "TEST$i"
 	sleep 0.05
 	echo "<pre style='color : blue;'>Test $i </pre>" >>$PROBLEMPATH/$UN/result.html
-	if [ "$EXT" != "java" ]; then
+	if [ "$EXT" != "java" ]; then # TODO memory limit for java
 		ulimit -v $MEMLIMIT
 		ulimit -m $MEMLIMIT
 	fi
@@ -227,15 +228,18 @@ for((i=1;i<=TST;i++)); do
 	if [ "$EXT" = "java" ]; then
 		cp ../java.policy java.policy
 		$TIMEOUT java $JAVA_POLICY $MAINFILENAME  <$PROBLEMPATH/in/input$i.txt >out 2>/dev/null
-		#echo "java -cp $PROBLEMPATH/$UN/jail $FILENAME <$PROBLEMPATH/in/test$i.in >$PROBLEMPATH/$UN/jail/$UN.out 2>$PROBLEMPATH/$UN/tmp" >>$LOG
-		#java -cp $PROBLEMPATH/$UN/jail $FILENAME <$PROBLEMPATH/in/test$i.in >$PROBLEMPATH/$UN/jail/$UN.out 2>$PROBLEMPATH/$UN/tmp
 		EXITCODE=$?
-	elif [ "$EXT" = "c" ]; then
-		$TIMEOUT ./$FILENAME <$PROBLEMPATH/in/input$i.txt >out 2>/dev/null
-		EXITCODE=$?
-	elif [ "$EXT" = "cpp" ]; then
-		$TIMEOUT ./$FILENAME <$PROBLEMPATH/in/input$i.txt >out 2>/dev/null
-		EXITCODE=$?
+	elif [ "$EXT" = "c" ] || [ "$EXT" = "cpp" ]; then
+		#$TIMEOUT ./$FILENAME <$PROBLEMPATH/in/input$i.txt >out 2>/dev/null
+		if $SANDBOX_ON; then
+			LD_PRELOAD=./EasySandbox.so ./$FILENAME <$PROBLEMPATH/in/input$i.txt >out 2>/dev/null
+			EXITCODE=$?
+			# remove <<entering SECCOMP mode>> from beginning of output:
+			tail -n +2 out >thetemp && mv thetemp out
+		else
+			./$FILENAME <$PROBLEMPATH/in/input$i.txt >out 2>/dev/null
+			EXITCODE=$?
+		fi
 	elif [ "$EXT" = "py" ]; then
 		$TIMEOUT python3 -O $FILENAME.$EXT <$PROBLEMPATH/in/input$i.txt >out 2>tmp
 		EXITCODE=$?
@@ -254,19 +258,21 @@ for((i=1;i<=TST;i++)); do
 	judge_log "Exit Code=$EXITCODE"
 
 	if [ $EXITCODE -eq 137 ]; then
-		judge_log "Time Limit Exceeded (Exit code=$EXITCODE)"
-		echo "<pre style='color: orange;'>Time Limit Exceeded</pre>" >>$PROBLEMPATH/$UN/result.html
+		#judge_log "Time Limit Exceeded (Exit code=$EXITCODE)"
+		#echo "<pre style='color: orange;'>Time Limit Exceeded</pre>" >>$PROBLEMPATH/$UN/result.html
+		judge_log "Killed (Exit code=$EXITCODE)"
+		echo "<pre style='color: orange;'>Killed</pre>" >>$PROBLEMPATH/$UN/result.html
 		continue
 	fi
 	
-	if [ $EXITCODE -eq 159 ]; then
-		judge_log "Bad System Call (Exit code=$EXITCODE)"
-		echo "<pre style='color: red;'>Potentially Harmful Code. Process terminated.</pre>" >>$PROBLEMPATH/$UN/result.html
-		echo "Bad System Call"
-		cd ..
-		rm -r $JAIL >/dev/null 2>/dev/null
-		exit 3
-	fi
+	#if [ $EXITCODE -eq 159 ]; then
+	#	judge_log "Bad System Call (Exit code=$EXITCODE)"
+	#	echo "<pre style='color: red;'>Potentially Harmful Code. Process terminated.</pre>" >>$PROBLEMPATH/$UN/result.html
+	#	echo "Bad System Call"
+	#	cd ..
+	#	rm -r $JAIL >/dev/null 2>/dev/null
+	#	exit 3
+	#fi
 
 	if [ $EXITCODE -ne 0 ]; then
 		judge_log "Runtime Error"

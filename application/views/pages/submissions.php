@@ -35,7 +35,7 @@
 		<div id="page_title"><img src="<?php echo base_url("assets/images/icons/{$view}_submissions.png") ?>"/> <span><?php echo $title ?></span></div>
 		<div id="main_content">
 			<p><?php echo ucfirst($view); ?> Submissions of <?php echo $assignment['name']; ?></p>
-			<table class="sharif_table" border="1">
+			<table class="sharif_table">
 				<thead>
 					<tr>
 					<?php if ($view=='all'): ?>
