@@ -24,11 +24,13 @@
 		$("#add").click(function(){
 			$("#problems_table").children().last().after(row1+(numOfProblems+1)+row2+(numOfProblems+1)+row3);
 			numOfProblems++;
+			$('#nop').attr('value',numOfProblems);
 		});
 		$("#remove").click(function(){
 			if (numOfProblems==1) return;
 			$("#problems_table").children().last().remove();
 			numOfProblems--;
+			$('#nop').attr('value',numOfProblems);
 		});
 		$('#start_time').datetimepicker();
 		$('#finish_time').datetimepicker();
@@ -40,8 +42,15 @@
 <div id="main_container">
 	<div id="page_title"><img src="<?php echo base_url('assets/images/icons/profile.png') ?>"/> <span><?php echo $title ?></span></div>
 	<div id="main_content">
+		<p class="input_p">
+		<?php if ($form_status=="ok"): ?>
+			<div class="ok">Assignment added successfully.</div>
+		<?php elseif ($form_status=="error"): ?>
+			<div class="error">Error adding assignment.</div>
+		<?php endif ?>
+		</p>
 		<?php echo form_open_multipart('add_assignment/add') ?>
-		<input type="hidden" name="number_of_problems" value="1"/>
+		<input type="hidden" name="number_of_problems" id="nop" value="1"/>
 		<p class="input_p">
 			<label for="assignment_name">Assignment Name:</label><br/>
 			<input type="text" name="assignment_name" class="sharif_input medium" value="<?php echo set_value('assignment_name'); ?>"/>

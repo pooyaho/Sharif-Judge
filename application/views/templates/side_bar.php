@@ -35,8 +35,12 @@
 	<ul>
 		<div class="side_box"><a href="<?php echo site_url('dashboard') ?>"><li <?php echo ($selected=='dashboard'?'class="selected"':'') ?>><i class="splashy-home_green"></i> Dashboard</li></a></div>
 		<div class="side_box"><a href="<?php echo site_url('profile') ?>"><li <?php echo ($selected=='profile'?'class="selected"':'') ?>><i class="splashy-contact_grey"></i> Profile</li></a></div>
+		<?php if ($user_level!=0): ?>
 		<div class="side_box"><a href="<?php echo site_url('settings') ?>"><li <?php echo ($selected=='settings'?'class="selected"':'') ?>><i class="splashy-sprocket_light"></i> Settings</li></a></div>
+		<?php endif ?>
+		<?php if ($user_level!=0): ?>
 		<div class="side_box"><a href="<?php echo site_url('add_assignment') ?>"><li <?php echo ($selected=='add_assignment'?'class="selected"':'') ?>><i class="splashy-add"></i> Add Assignment</li></a></div>
+		<?php endif ?>
 		<div class="side_box"><a href="<?php echo site_url('assignments') ?>"><li <?php echo ($selected=='assignments'?'class="selected"':'') ?>><i class="splashy-folder_modernist_opened"></i> Assignments</li></a></div>
 		<div class="side_box"><a href="<?php echo site_url('submit') ?>"><li <?php echo ($selected=='submit'?'class="selected"':'') ?>><i class="splashy-arrow_large_up"></i> Submit</li></a></div>
 		<div class="side_box"><a href="<?php echo site_url('submissions/final') ?>"><li <?php echo ($selected=='final_submissions'?'class="selected"':'') ?>><i class="splashy-marker_rounded_violet"></i> Final Submissions</li></a></div>

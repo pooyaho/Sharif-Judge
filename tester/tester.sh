@@ -75,18 +75,12 @@ fi
 
 
 #################### Initialization #####################
-# Using 'timeout' command, Sharif Judge can detect
-# "Time limit exceeded" error. Without it, submitted program
-# still will be killed after TIMELIMIT (with ulimit), but
-# it will be reported as "Runtime Error".
-# So "timeout" is not necessary.
-TIMEOUT="timeout -s9 $TIMELIMIT"
-hash timeout 2>/dev/null || TIMEOUT=""
-
 TST="$(ls $PROBLEMPATH/in | wc -l)"  # Number of Test Cases
 JAIL=jail-$RANDOM
 mkdir $JAIL
 cd $JAIL
+cp ../timeout ./timeout
+chmod +x timeout
 
 LOG="$PROBLEMPATH/$UN/log"; echo "" >>$LOG
 function judge_log {
@@ -109,12 +103,12 @@ if [ "$EXT" = "java" ]; then
 	if [ $EXITCODE -ne 0 ]; then
 		judge_log "Compile Error"
 		judge_log "$(cat cerr|head -10)"
-		echo '<pre style="color:blue;">Compile Error</pre>' >$PROBLEMPATH/$UN/result.html
-		echo '<pre style="color:red;">' >> $PROBLEMPATH/$UN/result.html
+		echo '<span style="color:blue;">Compile Error</span>' >$PROBLEMPATH/$UN/result.html
+		echo '<span style="color:red;">' >> $PROBLEMPATH/$UN/result.html
 		#filepath="$(echo "${JAIL}/${FILENAME}.${EXT}" | sed 's/\//\\\//g')" #replacing / with \/
 		(cat cerr | head -10 | sed 's/&/\&amp;/g' | sed 's/</\&lt;/g' | sed 's/>/\&gt;/g' | sed 's/"/\&quot;/g') >> $PROBLEMPATH/$UN/result.html
 		#(cat $JAIL/cerr) >> $PROBLEMPATH/$UN/result.html
-		echo "</pre>" >> $PROBLEMPATH/$UN/result.html
+		echo "</span>" >> $PROBLEMPATH/$UN/result.html
 		cd ..
 		rm -r $JAIL >/dev/null 2>/dev/null
 		echo "Compilation Error"
@@ -134,10 +128,10 @@ if [ "$EXT" = "py" ]; then
 	if [ $EXITCODE -ne 0 ]; then
 		judge_log "Syntax Error"
 		judge_log "$(cat cerr | head -10)"
-		echo '<pre style="color:blue">Syntax Error</pre>' >$PROBLEMPATH/$UN/result.html
-		echo '<pre style="color: red;">' >> $PROBLEMPATH/$UN/result.html
+		echo '<span style="color:blue">Syntax Error</span>' >$PROBLEMPATH/$UN/result.html
+		echo '<span style="color: red;">' >> $PROBLEMPATH/$UN/result.html
 		(cat cerr | head -10 | sed 's/&/\&amp;/g' | sed 's/</\&lt;/g' | sed 's/>/\&gt;/g' | sed 's/"/\&quot;/g') >> $PROBLEMPATH/$UN/result.html
-		echo "</pre>" >> $PROBLEMPATH/$UN/result.html
+		echo "</span>" >> $PROBLEMPATH/$UN/result.html
 		cd ..
 		rm -r $JAIL >/dev/null 2>/dev/null
 		echo "Syntax Error"
@@ -158,6 +152,7 @@ if [ "$EXT" = "c" ] || [ "$EXT" = "cpp" ]; then
 	if $SANDBOX_ON; then
 		judge_log "Using EasySandbox\n"
 		cp ../easysandbox/EasySandbox.so EasySandbox.so
+		chmod +x EasySandbox.so
 	fi
 	if $SHIELD_ON; then
 		judge_log "Using Shield"
@@ -174,8 +169,8 @@ if [ "$EXT" = "c" ] || [ "$EXT" = "cpp" ]; then
 	if [ $EXITCODE -ne 0 ]; then
 		judge_log "Compile Error"
 		judge_log "$(cat cerr | head -10)"
-		echo '<pre style="color:blue">Compile Error<br><br>Error Messages: (line numbers are not correct)</pre>' >$PROBLEMPATH/$UN/result.html
-		echo '<pre style="color: red;">' >> $PROBLEMPATH/$UN/result.html
+		echo '<span style="color:blue">Compile Error<br>Error Messages: (line numbers are not correct)</span>' >$PROBLEMPATH/$UN/result.html
+		echo '<span style="color: red;">' >> $PROBLEMPATH/$UN/result.html
 		SHIELD_ACT=false
 		if $SHIELD_ON; then
 			while read line; do
@@ -199,7 +194,7 @@ if [ "$EXT" = "c" ] || [ "$EXT" = "cpp" ]; then
 			(cat cerr2 | head -10 | sed 's/themainmainfunction/main/g' ) > cerr;
 			(cat cerr | sed 's/&/\&amp;/g' | sed 's/</\&lt;/g' | sed 's/>/\&gt;/g' | sed 's/"/\&quot;/g') >> $PROBLEMPATH/$UN/result.html
 		fi
-		echo "</pre>" >> $PROBLEMPATH/$UN/result.html
+		echo "</span>" >> $PROBLEMPATH/$UN/result.html
 		cd ..
 		rm -r $JAIL >/dev/null 2>/dev/null
 		echo "Compilation Error"
@@ -216,37 +211,42 @@ echo "" >$PROBLEMPATH/$UN/result.html
 
 PASSEDTESTS=0
 
-for((i=1;i<=$TST;i++)); do
+for((i=1;i<=TST;i++)); do
 	judge_log "TEST$i"
 	sleep 0.05
-	echo "<pre style='color : blue;'>Test $i </pre>" >>$PROBLEMPATH/$UN/result.html
+	echo "<span style='color : blue;'>Test $i </span>" >>$PROBLEMPATH/$UN/result.html
 	if [ "$EXT" != "java" ]; then # TODO memory limit for java
-		ulimit -v $MEMLIMIT
-		ulimit -m $MEMLIMIT
+		ulimit -v $((MEMLIMIT+10000))
+		ulimit -m $((MEMLIMIT+10000))
+		ulimit -s $((MEMLIMIT+10000))
 	fi
-	ulimit -t $TIMELIMIT # kar az mohkamkari eyb nemikone!
+	ulimit -t $((TIMELIMIT+1)) # kar az mohkamkari eyb nemikone!
+	
+	touch err
+	
 	if [ "$EXT" = "java" ]; then
 		cp ../java.policy java.policy
-		$TIMEOUT java $JAVA_POLICY $MAINFILENAME  <$PROBLEMPATH/in/input$i.txt >out 2>/dev/null
+		./timeout -nosandbox -t $TIMELIMIT java $JAVA_POLICY $MAINFILENAME  <$PROBLEMPATH/in/input$i.txt >out 2>err
 		EXITCODE=$?
 	elif [ "$EXT" = "c" ] || [ "$EXT" = "cpp" ]; then
 		#$TIMEOUT ./$FILENAME <$PROBLEMPATH/in/input$i.txt >out 2>/dev/null
 		if $SANDBOX_ON; then
-			LD_PRELOAD=./EasySandbox.so ./$FILENAME <$PROBLEMPATH/in/input$i.txt >out 2>/dev/null
+			#LD_PRELOAD=./EasySandbox.so ./$FILENAME <$PROBLEMPATH/in/input$i.txt >out 2>/dev/null
+			./timeout --sandbox -t $TIMELIMIT -m $MEMLIMIT ./$FILENAME <$PROBLEMPATH/in/input$i.txt >out 2>err
 			EXITCODE=$?
 			# remove <<entering SECCOMP mode>> from beginning of output:
 			tail -n +2 out >thetemp && mv thetemp out
 		else
-			./$FILENAME <$PROBLEMPATH/in/input$i.txt >out 2>/dev/null
+			#./$FILENAME <$PROBLEMPATH/in/input$i.txt >out 2>/dev/null
+			./timeout -nosandbox -t $TIMELIMIT -m $MEMLIMIT ./$FILENAME <$PROBLEMPATH/in/input$i.txt >out 2>err
 			EXITCODE=$?
 		fi
 	elif [ "$EXT" = "py" ]; then
-		$TIMEOUT python3 -O $FILENAME.$EXT <$PROBLEMPATH/in/input$i.txt >out 2>tmp
+		./timeout -nosandbox -t $TIMELIMIT -m $MEMLIMIT python3 -O $FILENAME.$EXT <$PROBLEMPATH/in/input$i.txt >out 2>err
 		EXITCODE=$?
-		echo "<pre>" >>$PROBLEMPATH/$UN/result.html
-		(cat tmp | head -5 | sed "s/$FILENAME.$EXT//g" | sed 's/&/\&amp;/g' | sed 's/</\&lt;/g' | sed 's/>/\&gt;/g' | sed 's/"/\&quot;/g') >> $PROBLEMPATH/$UN/result.html
-		echo "</pre>" >>$PROBLEMPATH/$UN/result.html
-		rm tmp
+		echo "<span>" >>$PROBLEMPATH/$UN/result.html
+		(cat err | head -5 | sed "s/$FILENAME.$EXT//g" | sed 's/&/\&amp;/g' | sed 's/</\&lt;/g' | sed 's/>/\&gt;/g' | sed 's/"/\&quot;/g') >> $PROBLEMPATH/$UN/result.html
+		echo "</span>" >>$PROBLEMPATH/$UN/result.html
 	else
 		judge_log "File format not supported."
 		cd ..
@@ -257,26 +257,30 @@ for((i=1;i<=$TST;i++)); do
 
 	judge_log "Exit Code=$EXITCODE"
 
-	if [ $EXITCODE -eq 137 ]; then
-		#judge_log "Time Limit Exceeded (Exit code=$EXITCODE)"
-		#echo "<pre style='color: orange;'>Time Limit Exceeded</pre>" >>$PROBLEMPATH/$UN/result.html
-		judge_log "Killed (Exit code=$EXITCODE)"
-		echo "<pre style='color: orange;'>Killed</pre>" >>$PROBLEMPATH/$UN/result.html
-		continue
+	if ! grep -q "FINISHED" err; then
+		if grep -q "TIMEOUT CPU" err; then
+			judge_log "Time Limit Exceeded (Exit code=$EXITCODE)"
+			echo "<span style='color: orange;'>Time Limit Exceeded</span>" >>$PROBLEMPATH/$UN/result.html
+			continue
+		elif grep -q "MEM CPU" err; then
+			judge_log "Memory Limit Exceeded (Exit code=$EXITCODE)"
+			echo "<span style='color: orange;'>Memory Limit Exceeded</span>" >>$PROBLEMPATH/$UN/result.html
+			continue
+		fi
 	fi
 	
-	#if [ $EXITCODE -eq 159 ]; then
-	#	judge_log "Bad System Call (Exit code=$EXITCODE)"
-	#	echo "<pre style='color: red;'>Potentially Harmful Code. Process terminated.</pre>" >>$PROBLEMPATH/$UN/result.html
-	#	echo "Bad System Call"
-	#	cd ..
-	#	rm -r $JAIL >/dev/null 2>/dev/null
-	#	exit 3
-	#fi
+	if [ $EXITCODE -eq 137 ]; then
+		#judge_log "Time Limit Exceeded (Exit code=$EXITCODE)"
+		#echo "<span style='color: orange;'>Time Limit Exceeded</span>" >>$PROBLEMPATH/$UN/result.html
+		judge_log "Killed (Exit code=$EXITCODE)"
+		echo "<span style='color: orange;'>Killed</span>" >>$PROBLEMPATH/$UN/result.html
+		continue
+	fi
+
 
 	if [ $EXITCODE -ne 0 ]; then
 		judge_log "Runtime Error"
-		echo "<pre style='color: orange;'>Runtime Error</pre>" >>$PROBLEMPATH/$UN/result.html
+		echo "<span style='color: orange;'>Runtime Error</span>" >>$PROBLEMPATH/$UN/result.html
 		continue
 	fi
 	
@@ -311,11 +315,11 @@ for((i=1;i<=$TST;i++)); do
 
 	if $ACCEPTED; then
 		judge_log "ACCEPTED"
-		echo "<pre style='color: green;'>ACCEPT</pre>" >>$PROBLEMPATH/$UN/result.html
+		echo "<span style='color: green;'>ACCEPT</span>" >>$PROBLEMPATH/$UN/result.html
 		((PASSEDTESTS=$PASSEDTESTS+1))
 	else
 		judge_log "WRONG"
-		echo "<pre style='color: red;'>WRONG</pre>" >>$PROBLEMPATH/$UN/result.html
+		echo "<span style='color: red;'>WRONG</span>" >>$PROBLEMPATH/$UN/result.html
 	fi
 done
 

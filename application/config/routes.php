@@ -41,6 +41,7 @@ $route['default_controller'] = "dashboard";
 $route['register'] = "login/register";
 $route['logout'] = "login/logout";
 $route['submissions/final']="submissions/the_final";
+$route['submissions/final/excel']="submissions/the_final/excel";
 $route['404_override'] = '';
 
 

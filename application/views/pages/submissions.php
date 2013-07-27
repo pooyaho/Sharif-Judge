@@ -34,7 +34,7 @@
 	<div id="main_container">
 		<div id="page_title"><img src="<?php echo base_url("assets/images/icons/{$view}_submissions.png") ?>"/> <span><?php echo $title ?></span></div>
 		<div id="main_content">
-			<p><?php echo ucfirst($view); ?> Submissions of <?php echo $assignment['name']; ?></p>
+			<p><?php echo ucfirst($view); ?> Submissions of <?php echo $assignment['name']; ?> (<?php echo anchor("submissions/{$view}/excel",'Excel'); ?>)</p>
 			<table class="sharif_table">
 				<thead>
 					<tr>
@@ -107,13 +107,42 @@
 							echo $name[$item['username']];
 						?></td>
 					<?php endif ?>
-						<td><?php echo $item['problem'] ?></td>
+						<td><?php
+							$pi = $this->assignment_model->problem_info($assignment['id'],$item['problem']);
+							echo $item['problem']." (".$pi['name'].")";
+						?></td>
 						<td><?php echo $item['time'] ?></td>
 						<td><?php echo $item['pre_score'] ?></td>
 						<td>ToDo</td>
 						<td>ToDo</td>
-						<td><?php echo $item['status'] ?></td>
-						<td>ToDo</td>
+						<td>
+							<?php if (substr($item['status'],0,8)=="Uploaded"): ?>
+								<?php echo $item['status'] ?>
+							<?php else: ?>
+								<?php echo form_open('submissions/view_code') ?>
+								<input type="hidden" name="code" value="0"/>
+								<input type="hidden" name="username" value="<?php echo $item['username'] ?>"/>
+								<input type="hidden" name="assignment" value="<?php echo $item['assignment'] ?>"/>
+								<input type="hidden" name="problem" value="<?php echo $item['problem'] ?>"/>
+								<input type="hidden" name="submit_id" value="<?php echo $item['submit_id'] ?>"/>
+								<input type="submit" value="<?php echo $item['status'] ?>"/>
+								</form>
+							<?php endif ?>
+						</td>
+						<td>
+							<?php if ($item['file_type']=="zip"): ?>
+								---
+							<?php else: ?>
+								<?php echo form_open('submissions/view_code') ?>
+									<input type="hidden" name="code" value="1"/>
+									<input type="hidden" name="username" value="<?php echo $item['username'] ?>"/>
+									<input type="hidden" name="assignment" value="<?php echo $item['assignment'] ?>"/>
+									<input type="hidden" name="problem" value="<?php echo $item['problem'] ?>"/>
+									<input type="hidden" name="submit_id" value="<?php echo $item['submit_id'] ?>"/>
+									<input type="submit" value="View Code"/>
+								</form>
+							<?php endif ?>
+						</td>
 						<td><?php
 							if ($view=="final")
 								echo $item['submit_count'];

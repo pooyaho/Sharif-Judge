@@ -24,6 +24,10 @@ class Assignment_model extends CI_Model{
 		return $this->db->get_where('problems',array('assignment'=>$assignment_id))->result_array();
 	}
 
+	public function problem_info($assignment_id, $problem_id){
+		return $this->db->get_where('problems',array('assignment'=>$assignment_id,'id'=>$problem_id))->row_array();
+	}
+
 
 	/*
 	 * Returns info about given assignment

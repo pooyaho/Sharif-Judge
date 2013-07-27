@@ -1,3 +1,12 @@
+@font-face{
+	font-family: 'iraniansansz';
+	src: url('../font/iransansz.eot');
+	src: url('../font/iransansz.eot?#iefix') format('embedded-opentype'),
+	url('../font/iransansz.woff') format('woff'),
+	url('../font/iransansz.ttf') format('truetype'),
+	url('../font/iransansz.svg#webfont') format('svg');
+}
+
 * {
 	box-sizing: border-box;
 	-moz-box-sizing: border-box;
@@ -8,8 +17,8 @@ body {
 	padding: 0;
 	color: #2d2d2d;
 	margin: 0 0 20px 0;
-	font-size: 13px;
-	font-family: sans-serif;
+	font-size: 12px;
+	font-family:iraniansansz, sans-serif;
 }
 a {
 	color: #2d2d2d;
@@ -33,6 +42,10 @@ div#top_bar {
 	background-image: -o-linear-gradient(top, #333333, #222222);
 	background-image: linear-gradient(top, #333333, #222222);
 	background-repeat: repeat-x;
+}
+
+div#top_bar a {
+	text-decoration:none;
 }
 
 div#shj_logo {

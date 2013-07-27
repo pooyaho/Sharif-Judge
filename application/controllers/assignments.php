@@ -8,6 +8,7 @@
 class Assignments extends CI_Controller{
 	var $username;
 	var $assignment;
+	var $user_level;
 	public function __construct(){
 		parent::__construct();
 		//$this->output->enable_profiler(TRUE);
@@ -16,12 +17,14 @@ class Assignments extends CI_Controller{
 		}
 		$this->username = $this->session->userdata('username');
 		$this->assignment = $this->assignment_model->assignment_info($this->user_model->selected_assignment($this->username));
+		$this->user_level = $this->user_model->get_user_level($this->username);
 		$this->form_validation->set_rules('assignment_select','Assignment',"integer|greater_than[0]");
 	}
 
 	public function index(){
 		$data = array(
 			'username'=>$this->username,
+			'user_level' => $this->user_level,
 			'all_assignments'=>$this->assignment_model->all_assignments(),
 			'title'=>'Assignments',
 			'style'=>'main.css'

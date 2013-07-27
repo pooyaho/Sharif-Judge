@@ -9,6 +9,13 @@
 	<div id="main_container">
 		<div id="page_title"><img src="<?php echo base_url('assets/images/icons/profile.png') ?>"/> <span><?php echo $title ?></span></div>
 		<div id="main_content">
+			<p class="input_p">
+				<?php if ($form_status=="ok"): ?>
+			<div class="ok">Profile updated successfully.</div>
+			<?php elseif ($form_status=="error"): ?>
+				<div class="error">Error updating profile.</div>
+			<?php endif ?>
+			</p>
 			<?php echo form_open('profile/update') ?>
 			<p class="input_p">
 				<label for="username">Username:</label><br/>

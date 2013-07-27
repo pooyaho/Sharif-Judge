@@ -10,6 +10,13 @@
 <div id="main_container">
 	<div id="page_title"><img src="<?php echo base_url('assets/images/icons/settings.png') ?>"/> <span><?php echo $title ?></span></div>
 	<div id="main_content">
+		<p class="input_p">
+			<?php if ($form_status=="ok"): ?>
+		<div class="ok">Settings updated successfully.</div>
+		<?php elseif ($form_status=="error"): ?>
+			<div class="error">Error updating settings.</div>
+		<?php endif ?>
+		</p>
 		<?php echo form_open('settings/update') ?>
 		<p class="input_p">
 			<label for="timezones">Timezone:</label><br/>
@@ -27,6 +34,7 @@
 		<p class="input_p">
 			<label for="file_size_limit">Upload file size limit (kB):</label><br/>
 			<input type="text" name="file_size_limit" class="sharif_input long" value="<?php echo $file_size_limit ?>"/>
+			<?php echo form_error('file_size_limit','<div class="error">','</div>'); ?>
 		</p>
 		<p class="input_p">
 			<input type="submit" value="Save" class="sharif_input"/>

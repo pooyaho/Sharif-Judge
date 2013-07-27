@@ -8,6 +8,8 @@
 class Add_assignment extends CI_Controller{
 	var $username;
 	var $assignment;
+	var $user_level;
+	var $form_status;
 	public function __construct(){
 		parent::__construct();
 		if ( ! $this->session->userdata('logged_in')){ // if not logged in
@@ -15,6 +17,10 @@ class Add_assignment extends CI_Controller{
 		}
 		$this->username = $this->session->userdata('username');
 		$this->assignment = $this->assignment_model->assignment_info($this->user_model->selected_assignment($this->username));
+		$this->user_level = $this->user_model->get_user_level($this->username);
+		if ( $this->user_level == 0)
+			show_404();
+		$this->form_status = "";
 	}
 
 	public function index(){
@@ -23,10 +29,12 @@ class Add_assignment extends CI_Controller{
 		$user=$this->user_model->get_user($this->username);
 		$data = array(
 			'username'=>$this->username,
+			'user_level' => $this->user_level,
 			'all_assignments'=>$this->assignment_model->all_assignments(),
 			'assignment' => $this->assignment,
 			'title'=>'Add Assignment',
 			'style'=>'main.css',
+			'form_status' => $this->form_status
 		);
 
 		$this->load->view('templates/header',$data);
@@ -38,7 +46,10 @@ class Add_assignment extends CI_Controller{
 		/* TODO set form validation rules*/
 		if ($this->form_validation->run()){
 
+			$this->form_status='ok';
 		}
+		else
+			$this->form_status='error';
 		$this->index();
 	}
 }

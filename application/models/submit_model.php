@@ -11,6 +11,21 @@ class Submit_model extends CI_Model {
 		$this->load->database();
 	}
 
+	public function get_submission($username, $assignment, $problem, $submit_id){
+		$query = $this->db->get_where('all_submissions',
+			array(
+				'username'=>$username,
+				'assignment'=>$assignment,
+				'problem'=>$problem,
+				'submit_id'=>$submit_id
+			)
+		);
+		if($query->num_rows()!=1)
+			return FALSE;
+		return $query->row_array();
+	}
+
+
 	public function get_final_submissions($assignment_id, $user_level, $username){
 		$arr['assignment']=$assignment_id;
 		if ($user_level==0)

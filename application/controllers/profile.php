@@ -8,6 +8,8 @@
 class Profile extends CI_Controller{
 	var $username;
 	var $assignment;
+	var $user_level;
+	var $form_status;
 	public function __construct(){
 		parent::__construct();
 		if ( ! $this->session->userdata('logged_in')){ // if not logged in
@@ -15,6 +17,8 @@ class Profile extends CI_Controller{
 		}
 		$this->username = $this->session->userdata('username');
 		$this->assignment = $this->assignment_model->assignment_info($this->user_model->selected_assignment($this->username));
+		$this->user_level = $this->user_model->get_user_level($this->username);
+		$this->form_status = "";
 	}
 
 	public function index(){
@@ -23,12 +27,14 @@ class Profile extends CI_Controller{
 		$user=$this->user_model->get_user($this->username);
 		$data = array(
 			'username'=>$this->username,
+			'user_level' => $this->user_level,
 			'all_assignments'=>$this->assignment_model->all_assignments(),
 			'assignment' => $this->assignment,
 			'title'=>'Profile',
 			'style'=>'main.css',
 			'email' => $user->email,
 			'display_name' => $user->display_name,
+			'form_status' => $this->form_status
 		);
 
 		$this->load->view('templates/header',$data);
@@ -58,7 +64,10 @@ class Profile extends CI_Controller{
 		$this->form_validation->set_rules('password_again','Password Confirmation','matches[password]');
 		if ($this->form_validation->run()){
 			$this->user_model->update_profile();
+			$this->form_status = "ok";
 		}
+		else
+			$this->form_status = "error";
 		$this->index();
 	}
 }

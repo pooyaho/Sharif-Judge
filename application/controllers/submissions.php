@@ -9,6 +9,7 @@ class Submissions extends CI_Controller{
 	var $username;
 	var $assignment;
 	var $user_level;
+	var $final_items;
 	public function __construct(){
 		parent::__construct();
 		if ( ! $this->session->userdata('logged_in')){ // if not logged in
@@ -21,9 +22,59 @@ class Submissions extends CI_Controller{
 	}
 
 
+	private function download_excel($view){
+		$now=date('Y-m-d H:i:s',shj_now());
+		$this->load->library('excel');
+		$this->excel->set_file_name('judge_result.xls'); /* todo more relevant file name */
+		$this->excel->addHeader("Time: $now");
+		$this->excel->addHeader(NULL); //newline
+		$row=array(/*"#1","#2",*/"Final","Submit ID","Username","Display Name","Problem","Submit Time","Score","Coefficient","Final Score","Status","#");
+		$this->excel->addRow($row);
+		if ($view=='final')
+			$items = $this->submit_model->get_final_submissions($this->assignment['id'],$this->user_level,$this->username);
+		else
+			$items = $this->submit_model->get_all_submissions($this->assignment['id'],$this->user_level,$this->username);
+		foreach ($items as $item){
+			if(!isset($name[$item['username']]))
+				$name[$item['username']]=$this->user_model->get_user($item['username'])->display_name;
+			$pi = $this->assignment_model->problem_info($this->assignment['id'],$item['problem']);
+
+			$checked='';
+			if ($view=='all'){
+				if (isset($this->final_items[$item['username']][$item['problem']]['submit_id']))
+					if ($this->final_items[$item['username']][$item['problem']]['submit_id'] == $item['submit_id'])
+						$checked='*';
+			}
+			else
+				$checked="*";
+
+			$row=array(
+				/*"1",
+				"2",*/
+				$checked,
+				$item['submit_id'],
+				$item['username'],
+				$name[$item['username']],
+				$item['problem']." (".$pi['name'].")",
+				$item['time'],
+				$item['pre_score'],
+				"ToDo", /* todo */
+				"ToDo", /* todo */
+				$item['status'],
+				($view=="final"?$item['submit_count']:$item['submit_number'])
+			);
+			$this->excel->addRow($row);
+		}
+		$this->excel->sendFile();
+	}
 
 
-	public function the_final(){
+	public function the_final($type=FALSE){
+
+		if ($type=="excel"){
+			$this->download_excel('final');
+			exit;
+		}
 
 		$data = array(
 			'view'=>'final',
@@ -43,12 +94,19 @@ class Submissions extends CI_Controller{
 
 
 
-	public function all(){
+	public function all($type=FALSE){
+
 		$final = $this->submit_model->get_final_submissions($this->assignment['id'],$this->user_level,$this->username);
-		$final_items=array();
+		$this->final_items=array();
 		foreach ($final as $item){
-			$final_items[$item['username']][$item['problem']]=$item;
+			$this->final_items[$item['username']][$item['problem']]=$item;
 		}
+
+		if ($type=="excel"){
+			$this->download_excel('all');
+			exit;
+		}
+
 		$data = array(
 			'view'=>'all',
 			'username'=>$this->username,
@@ -58,7 +116,7 @@ class Submissions extends CI_Controller{
 			'title'=>'All Submissions',
 			'style'=>'main.css',
 			'items'=>$this->submit_model->get_all_submissions($this->assignment['id'],$this->user_level,$this->username),
-			'final_items' => $final_items
+			'final_items' => $this->final_items
 		);
 		$this->load->view('templates/header',$data);
 		$this->load->view('pages/submissions',$data);
@@ -74,6 +132,62 @@ class Submissions extends CI_Controller{
 		}
 		else
 			echo 'shj_failed';
+	}
+
+	public function view_code(){ /* for "view code" or "view result" */
+		$this->form_validation->set_rules('code','integer|greater_than[-1]|less_than[2]');
+		$this->form_validation->set_rules('username','required|min_length[3]|max_length[20]|alpha_numeric|xss_clean');
+		$this->form_validation->set_rules('assignment','integer|greater_than[0]');
+		$this->form_validation->set_rules('problem','integer|greater_than[0]');
+		$this->form_validation->set_rules('submit_id','integer|greater_than[0]');
+		if($this->form_validation->run()){
+			$submission = $this->submit_model->get_submission(
+				$this->input->post('username'),
+				$this->input->post('assignment'),
+				$this->input->post('problem'),
+				$this->input->post('submit_id')
+			);
+			if ($submission===FALSE)
+				show_404();
+
+			if ($this->user_level==0 && $this->username != $submission['username'])
+				die("Don't try to see other users' codes. :)");
+
+			$data=array(
+				'username'=>$this->username,
+				'user_level'=>$this->user_level,
+				'all_assignments'=>$this->assignment_model->all_assignments(),
+				'assignment' => $this->assignment,
+				'title'=>'View Code',
+				'style'=>'main.css',
+				'code' => $this->input->post('code')
+			);
+
+			if($data['code']==0)
+				$data['title']="View Result";
+
+			if ($data['code']==1)
+				$file_path = rtrim($this->settings_model->get_setting('assignments_root'),'/').
+				"/assignment_{$submission['assignment']}/p{$submission['problem']}/{$submission['username']}/{$submission['file_name']}.{$submission['file_type']}";
+			else
+				$file_path = rtrim($this->settings_model->get_setting('assignments_root'),'/').
+					"/assignment_{$submission['assignment']}/p{$submission['problem']}/{$submission['username']}/result-{$submission['submit_id']}.html";;
+
+			$data2 = array(
+				'file_path'=>$file_path,
+				'file_type'=>$submission['file_type'],
+				'username'=>$submission['username'],
+				'assignment'=>$this->assignment_model->assignment_info($submission['assignment']),
+				'problem'=>$this->assignment_model->problem_info($submission['assignment'], $submission['problem'])
+			);
+
+			$this->load->view('templates/header',$data);
+			$this->load->view('pages/view_code',$data2);
+			$this->load->view('templates/footer');
+		}
+		else{
+			die("Are you trying to see other users' codes? :)");
+		}
 	}
 
 }
