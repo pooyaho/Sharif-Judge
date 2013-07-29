@@ -32,10 +32,12 @@
 					timeout: 1000,
 					success: function(a) {
 						//if (a != "shj_failed"){
-						if (a == "shj_success"){
+						if (a != "shj_failed"){
 							$(".select_assignment").removeClass('checked');
 							$(".i"+id).addClass('checked');
 							$(".assignment_name").html($("#"+id+" .assignment_item").html());
+							finish_time = moment(a.split(',')[0]);
+							extra_time = moment.duration(parseInt(a.split(',')[1],10), 'seconds');
 						}
 					}
 				});
@@ -62,6 +64,17 @@
 					<div class="assignment_item"><?php echo $item['name'] ?></div>
 				</div>
 			<?php endforeach ?>
+		</div>
+	</div>
+	<div class="top_object countdown" id="countdown">
+		<div class="time_block"><span id="time_days"></span><br><span class="time_label">day</span><span class="time_label" id="days_label">s</span></div>
+		<div class="time_block"><span id="time_hours"></span><br><span class="time_label">hour</span><span class="time_label" id="hours_label">s</span></div>
+		<div class="time_block"><span id="time_minutes"></span><br><span class="time_label">minute</span><span class="time_label" id="minutes_label">s</span></div>
+		<div class="time_block"><span id="time_seconds"></span><br><span class="time_label">second</span><span class="time_label" id="seconds_label">s</span></div>
+	</div>
+	<div class="top_object countdown" id="extra_time">
+		<div class="time_block">
+			<span>Extra</span><br><span>Time</span>
 		</div>
 	</div>
 	<div id="shj_logo">

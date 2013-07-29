@@ -42,11 +42,12 @@ class Assignments extends CI_Controller{
 	}
 
 	public function select(){ /* used by ajax request (for select assignment from top bar) */
+		if ( ! $this->input->is_ajax_request() )
+			show_404();
 		if($this->form_validation->run()){
 			$this->user_model->select_assignment($this->username, $this->input->post('assignment_select'));
-			//$selected = $this->assignment_model->assignment_info( $this->input->post('assignment_select') );
-			//echo $selected['name'];
-			echo "shj_success";
+			$this->assignment = $this->assignment_model->assignment_info($this->input->post('assignment_select'));
+			echo $this->assignment['finish_time'].",".$this->assignment['extra_time'];
 		}
 		else
 			echo 'shj_failed';

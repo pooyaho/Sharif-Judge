@@ -13,12 +13,62 @@ class Assignment_model extends CI_Model{
 
 
 	/*
+	 * Adds new assignment to database
+	 */
+	public function add_assignment($id){
+		// Adding assignment to "assignments" table
+		$assignment = array(
+			'id' => $id,
+			'name' => $this->input->post('assignment_name'),
+			'problems' => $this->input->post('number_of_problems'),
+			'total_submits' => 0,
+			'open' => ($this->input->post('open')===FALSE?0:1),
+			'scoreboard' => ($this->input->post('scoreboard')===FALSE?0:1),
+			'description' => "", /* todo */
+			'start_time' => date('Y-m-d H:i:s',strtotime($this->input->post('start_time'))),
+			'finish_time' => date('Y-m-d H:i:s',strtotime($this->input->post('finish_time'))),
+			'extra_time' => $this->input->post('extra_time'),
+			'late_rule' => $this->input->post('late_rule'),
+			'participants' => $this->input->post('participants')
+		);
+		$this->db->insert('assignments',$assignment);
+
+		// Adding problems to "problems" table
+		for ($i=1;$i<=$this->input->post('number_of_problems');$i++){
+			$problem = array(
+				'assignment' => $id,
+				'id' => $i,
+				'name' => $this->input->post('name')[$i-1],
+				'score' => $this->input->post('score')[$i-1],
+				'judge' => in_array($i,$this->input->post('judge'))?1:0,
+				'time_limit' => $this->input->post('time_limit')[$i-1],
+				'memory_limit' => $this->input->post('memory_limit')[$i-1],
+				'allowed_file_types' => $this->input->post('filetypes')[$i-1],
+			);
+			$this->db->insert('problems',$problem);
+		}
+	}
+
+
+	/*
 	 * Returns a list of all assignments and their information
 	 */
 	public function all_assignments(){
 		return $this->db->get('assignments')->result_array();
 	}
 
+	/*
+	 * Returns id of last assignment (the largest assignment id). Used for adding new assignment.
+	 */
+	public function last_assignment_id(){
+		$assignments = $this->db->select('id')->get('assignments')->result_array();
+		$max=0;
+		foreach ($assignments as $assignment){
+			if ($assignment['id']>$max)
+				$max = $assignment['id'];
+		}
+		return $max;
+	}
 
 	public function all_problems($assignment_id){
 		return $this->db->get_where('problems',array('assignment'=>$assignment_id))->result_array();

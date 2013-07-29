@@ -35,7 +35,7 @@ class Unzip {
 	private $error = array();
 	private $_zip_file = '';
 	private $_target_dir = FALSE;
-	private $apply_chmod = 0777;
+	private $apply_chmod = 0700; // changed by mjnaderi from 0777 to 0700
 	private $fh;
 	private $zip_signature = "\x50\x4b\x03\x04";
 

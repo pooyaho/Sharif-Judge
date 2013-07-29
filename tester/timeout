@@ -51,7 +51,7 @@ my $output = undef;
 my $reference = undef;
 my $watchfor = 'tree';
 # Requests per seccond
-my $frequency = 100; # changed by mjnaderi from 10 to 14
+my $frequency = 14; # changed by mjnaderi from 10 to 14
 # if we debug
 my $debug = '';
 # Whether we do not do this term-kill stuff, and just kill processes at once
@@ -364,7 +364,7 @@ sub kill_process_group_safely
 	$SIG{'ALRM'} = 'DEFAULT';
 	print STDERR "timeout: Sending TERM\n" if $debug;
 	signal_to_process_group_safely($pgrp,SIGTERM) unless $just_kill;
-	sleep(1);
+	#sleep(1); # commented by mjnaderi
 	print STDERR "timeout: Sending KILL\n" if $debug;
 	signal_to_process_group_safely($pgrp,SIGKILL);
 }

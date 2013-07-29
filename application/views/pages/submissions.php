@@ -125,7 +125,7 @@
 								<input type="hidden" name="assignment" value="<?php echo $item['assignment'] ?>"/>
 								<input type="hidden" name="problem" value="<?php echo $item['problem'] ?>"/>
 								<input type="hidden" name="submit_id" value="<?php echo $item['submit_id'] ?>"/>
-								<input type="submit" value="<?php echo $item['status'] ?>"/>
+								<input type="submit" class="btn <?php echo strtolower($item['status']) ?>" value="<?php echo $item['status'] ?>"/>
 								</form>
 							<?php endif ?>
 						</td>
@@ -139,7 +139,7 @@
 									<input type="hidden" name="assignment" value="<?php echo $item['assignment'] ?>"/>
 									<input type="hidden" name="problem" value="<?php echo $item['problem'] ?>"/>
 									<input type="hidden" name="submit_id" value="<?php echo $item['submit_id'] ?>"/>
-									<input type="submit" value="View Code"/>
+									<input type="submit" class="btn view_code" value="View Code"/>
 								</form>
 							<?php endif ?>
 						</td>

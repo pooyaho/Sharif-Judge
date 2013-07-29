@@ -77,7 +77,9 @@ fi
 #################### Initialization #####################
 TST="$(ls $PROBLEMPATH/in | wc -l)"  # Number of Test Cases
 JAIL=jail-$RANDOM
-mkdir $JAIL
+if ! mkdir $JAIL; then
+	exit
+fi
 cd $JAIL
 cp ../timeout ./timeout
 chmod +x timeout

@@ -7,6 +7,8 @@
 <script type= "text/javascript">
 	var offset;
 	var time;
+	var finish_time;
+	var extra_time;
 	function sync_server_time() {
 		$.ajax({
 			type: 'POST',
@@ -22,12 +24,52 @@
 			sync_server_time();
 		}
 		time = moment();
-		$('#timer').html('Server Time: '+moment().add('milliseconds',offset).format('HH:mm:ss'));
+		var now = moment().add('milliseconds',offset);
+		$('#timer').html('Server Time: '+now.format('HH:mm:ss'));
+		var countdown = finish_time.diff(now);
+		if (countdown<=0 && countdown + extra_time.asMilliseconds()>=0){
+			countdown = countdown + extra_time.asMilliseconds();
+			$("#extra_time").css("display","block");
+		}
+		else
+			$("#extra_time").css("display","none");
+		if (countdown<=0){
+			countdown=0;
+		}
+
+		countdown = Math.floor(moment.duration(countdown).asSeconds());
+		var seconds = countdown%60; countdown=(countdown-seconds)/60;
+		var minutes = countdown%60; countdown=(countdown-minutes)/60;
+		var hours = countdown%24; countdown=(countdown-hours)/24;
+		var days = countdown;
+		$("#time_days").html(days);
+		$("#time_hours").html(hours);
+		$("#time_minutes").html(minutes);
+		$("#time_seconds").html(seconds);
+		if(days==1)
+			$("#days_label").css("visibility","hidden");
+		else
+			$("#days_label").css("visibility","visible");
+		if(hours==1)
+			$("#hours_label").css("visibility","hidden");
+		else
+			$("#hours_label").css("visibility","visible");
+		if(minutes==1)
+			$("#minutes_label").css("visibility","hidden");
+		else
+			$("#minutes_label").css("visibility","visible");
+		if(seconds==1)
+			$("#seconds_label").css("visibility","hidden");
+		else
+			$("#seconds_label").css("visibility","visible");
+
 	}
 	$(document).ready(function() {
 		time = moment();
+		finish_time = moment("<?php echo $assignment['finish_time'] ?>");
+		extra_time = moment.duration(<?php echo $assignment['extra_time'] ?>, 'seconds');
 		sync_server_time();
-		//window.setInterval(sync_server_time,30000);
+		update_clock();
 		window.setInterval(update_clock,1000);
 	});
 </script>

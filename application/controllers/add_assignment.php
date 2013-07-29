@@ -20,6 +20,7 @@ class Add_assignment extends CI_Controller{
 		$this->user_level = $this->user_model->get_user_level($this->username);
 		if ( $this->user_level == 0)
 			show_404();
+		$this->load->library('upload');
 		$this->form_status = "";
 	}
 
@@ -43,13 +44,37 @@ class Add_assignment extends CI_Controller{
 	}
 
 	public function add(){
-		/* TODO set form validation rules*/
+		$this->form_validation->set_rules('assignment_name','assignment name','required|max_length[50]');
+		$this->form_validation->set_rules('start_time','start time','required');
+		$this->form_validation->set_rules('finish_time','finish time','required');
+		$this->form_validation->set_rules('extra_time','extra time','required');
+		$this->form_validation->set_rules('name[]','problem name','required|max_length[50]');
+		$this->form_validation->set_rules('score[]','problem score','required|integer');
+		$this->form_validation->set_rules('time_limit[]','time limit','required|integer');
+		$this->form_validation->set_rules('memory_limit[]','memory limit','required|integer');
+		$this->form_validation->set_rules('filetypes[]','file types','required');
+		$this->form_status='error';
 		if ($this->form_validation->run()){
-
-			$this->form_status='ok';
+			$new_id = $this->assignment_model->last_assignment_id()+1;
+			$config['upload_path'] = rtrim($this->settings_model->get_setting('assignments_root'),'/');
+			$config['allowed_types'] = 'zip';
+			$this->upload->initialize($config);
+			if($this->upload->do_upload('tests')){
+				$this->load->library('unzip');
+				$this->unzip->allow(array('txt'));
+				$assignment_dir = $config['upload_path']."/assignment_{$new_id}";
+				mkdir($assignment_dir,0700);
+				if ( $this->unzip->extract($this->upload->data()['full_path'], $assignment_dir) ){
+					$this->assignment_model->add_assignment($new_id);
+					$this->form_status='ok';
+				}
+				else{
+					$this->form_status='corrupted';
+					rmdir($assignment_dir);
+				}
+				unlink($this->upload->data()['full_path']);
+			}
 		}
-		else
-			$this->form_status='error';
 		$this->index();
 	}
 }

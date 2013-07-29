@@ -72,6 +72,21 @@ div.top_object {
 	border-left: 1px solid #5d5b69;
 }
 
+div.countdown {
+	padding: 0;
+}
+
+div.time_block {
+	line-height: 1;
+	float: left;
+	text-align: center;
+	padding: 4px;
+}
+
+span.time_label {
+	font-size: 70%;
+}
+
 #select_assignment_top {
 	cursor: default;
 }
@@ -283,6 +298,7 @@ select.sharif_time {
 
 #problems_table {
 	padding: 5px;
+	text-align: centerx;
 	border-radius: 5px;
 	border: 1px solid #a9a9a9;
 }
@@ -330,8 +346,8 @@ select.sharif_time {
 	background:#E0E0E0 ;
 }
 
-.sharif_table tr.nhl {
-	background:#F5F5F5 ;
+.sharif_table tr {
+	background: #fcfcfc;
 }
 
 .sharif_table tr:hover {
@@ -403,4 +419,219 @@ select.sharif_time {
 	border-radius: 0;
 	border-top: 1px solid #AFAFAF;
 	border-left: 1px solid #AFAFAF;
+}
+
+
+
+/************* Buttons *************************/
+
+input.btn {
+	outline: 0;
+	border: none;
+	background: none;
+	display:inline-block;
+}
+input.btn {
+	color: #4D4D4D;
+	cursor:pointer;
+	font-size: 13px;
+	padding: 0.5em 1em;
+	border-radius: 6px;
+	-moz-border-radius: 6px;
+	-webkit-border-radius: 6px;
+	/*border: 1px solid #C7C7C7;*/
+	background: #E0E0E0;
+	background: -moz-linear-gradient(top, #E0E0E0 1%, #C7C7C7 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(1%,#E0E0E0), color-stop(100%,#C7C7C7));
+	background: -webkit-linear-gradient(top, #E0E0E0 1%,#5269c7 100%);
+	background: -o-linear-gradient(top, #E0E0E0 1%,#C7C7C7 100%);
+	background: -ms-linear-gradient(top, #E0E0E0 1%,#C7C7C7 100%);
+	background: linear-gradient(to bottom, #E0E0E0 1%,#C7C7C7 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#E0E0E0', endColorstr='#C7C7C7',GradientType=0 );
+	/*box-shadow: 0px 1px 0px rgba(255, 255, 255, 0.3) inset;
+	-moz-box-shadow: 0px 1px 0px rgba(255, 255, 255, 0.3) inset;
+	-webkit-box-shadow: 0px 1px 0px rgba(255, 255, 255, 0.3) inset;*/
+	-moz-box-shadow: 0px 1px 3px rgba(000,000,000,0.5),
+	inset 0px 0px 2px rgba(255,255,255,0.7);
+	-webkit-box-shadow: 0px 1px 3px rgba(000,000,000,0.5),
+	inset 0px 0px 2px rgba(255,255,255,0.7);
+	box-shadow: 0px 1px 3px rgba(000,000,000,0.5),
+	inset 0px 0px 2px rgba(255,255,255,0.7);
+	text-shadow: 0px 1px 0px rgba(255, 255, 255, 0.5);
+}
+input.btn:hover {
+	color: #4D4D4D;
+	text-decoration:none;
+	-moz-box-shadow: inset 0px 1px 0px rgba(255,255,255,0.3);
+	-webkit-box-shadow: inset 0px 1px 0px rgba(255,255,255,0.3);
+	box-shadow: inset 0px 1px 0px rgba(255,255,255,0.3);
+	text-shadow: 0px 1px 0px rgba(255, 255, 255, 0.5);
+	background: #7ba0e0;
+	background: -moz-linear-gradient(top, #E0E0E0 1%, #D4D4D4 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(1%,#E0E0E0), color-stop(100%,#D4D4D4));
+	background: -webkit-linear-gradient(top, #E0E0E0 1%,#D4D4D4 100%);
+	background: -o-linear-gradient(top, #E0E0E0 1%,#D4D4D4 100%);
+	background: -ms-linear-gradient(top, #E0E0E0 1%,#D4D4D4 100%);
+	background: linear-gradient(to bottom, #E0E0E0 1%,#D4D4D4 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#E0E0E0', endColorstr='#D4D4D4',GradientType=0 );
+}
+input.btn:active {
+	text-shadow: 0px 1px 0px rgba(255, 255, 255, 0.5);
+	-moz-box-shadow: inset 0px 2px 5px rgba(000,000,000,0.15), inset 0px 1px 0px rgba(255,255,255,0.3);
+	-webkit-box-shadow: inset 0px 2px 5px rgba(000,000,000,0.15), inset 0px 1px 0px rgba(255,255,255,0.3);
+	box-shadow: inset 0px 2px 5px rgba(000,000,000,0.15), inset 0px 1px 0px rgba(255,255,255,0.3);
+}
+
+input.ok:hover, input.wrong:hover, input.compilation:hover, input.syntax:hover, input.view_code:hover {
+	color:#FFF;
+	text-decoration:none;
+}
+
+/*#####################
+##       compilation      ##
+#####################*/
+input.compilation, input.syntax {
+	color:#FFF;
+	/*border: 1px solid #5269C7;*/
+	background: -moz-linear-gradient(center top , #303CFF 0%, #0019AB) repeat scroll 0% 0% transparent;
+	background: -webkit-linear-gradient(center top , #303CFF 0%, #0019AB) repeat scroll 0% 0% transparent;
+	background: -o-linear-gradient(center top , #303CFF 0%, #0019AB) repeat scroll 0% 0% transparent;
+	background: -ms-linear-gradient(center top , #303CFF 0%, #0019AB) repeat scroll 0% 0% transparent;
+	background: -webkit-gradient(linear, left top, left bottom, from(#303CFF), to(#0019AB));
+	box-shadow: 0px 1px 0px rgba(255, 255, 255, 0.3) inset;
+	-moz-box-shadow: 0px 1px 0px rgba(255, 255, 255, 0.3) inset;
+	-webkit-box-shadow: 0px 1px 0px rgba(255, 255, 255, 0.3) inset;
+	text-shadow: 0px -1px 0px rgba(0, 0, 0, 0.3);
+}
+input.compilation:hover, input.syntax:hover {
+	-moz-box-shadow: inset 0px 1px 0px rgba(255,255,255,0.3);
+	-webkit-box-shadow: inset 0px 1px 0px rgba(255,255,255,0.3);
+	box-shadow: inset 0px 1px 0px rgba(255,255,255,0.3);
+	text-shadow: 0px -1px 0px rgba(0, 0, 0, 0.3);
+	background: -moz-linear-gradient(top, #303CFF 0%, #001cd0);
+	background: -webkit-gradient(linear, left top, left bottom, from(#303CFF), to(#001bd0));
+}
+input.compilation:active, input.syntax:active {
+	text-shadow: 0px -1px 0px rgba(0, 0, 0, 0.3);
+	-moz-box-shadow: inset 0px 2px 5px rgba(000,000,000,0.15);
+	-webkit-box-shadow: inset 0px 2px 5px rgba(000,000,000,0.15);
+	box-shadow: inset 0px 2px 5px rgba(000,000,000,0.15);
+}
+
+
+/*#####################
+##        OK         ##
+#####################*/
+input.ok {
+	color:#FFF;
+	/*border: 1px solid #5eb700;*/
+	background: #50FF19;
+	background: -moz-linear-gradient(top, #50FF19 0%, #15AB00 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#50FF19), color-stop(100%,#15AB00));
+	background: -webkit-linear-gradient(top, #50FF19 0%,#15AB00 100%);
+	background: -o-linear-gradient(top, #50FF19 0%,#15AB00 100%);
+	background: -ms-linear-gradient(top, #50FF19 0%,#15AB00 100%);
+	background: linear-gradient(to bottom, #50FF19 0%,#15AB00 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#9ec673', endColorstr='#5eb700',GradientType=0 );
+	box-shadow: 0px 1px 0px rgba(255, 255, 255, 0.3) inset;
+	-moz-box-shadow: 0px 1px 0px rgba(255, 255, 255, 0.3) inset;
+	-webkit-box-shadow: 0px 1px 0px rgba(255, 255, 255, 0.3) inset;
+	text-shadow: 0px -1px 0px rgba(0, 0, 0, 0.3);
+}
+input.ok:hover {
+	-moz-box-shadow: inset 0px 1px 0px rgba(255,255,255,0.3);
+	-webkit-box-shadow: inset 0px 1px 0px rgba(255,255,255,0.3);
+	box-shadow: inset 0px 1px 0px rgba(255,255,255,0.3);
+	text-shadow: 0px -1px 0px rgba(0, 0, 0, 0.3);
+	background: -moz-linear-gradient(top, #50FF19 0%, #16d000);
+	background: -webkit-gradient(linear, left top, left bottom, from(#50FF19), to(#15d000));
+}
+input.ok:active {
+	text-shadow: 0px -1px 0px rgba(0, 0, 0, 0.3);
+	-moz-box-shadow: inset 0px 2px 5px rgba(000,000,000,0.15);
+	-webkit-box-shadow: inset 0px 2px 5px rgba(000,000,000,0.15);
+	box-shadow: inset 0px 2px 5px rgba(000,000,000,0.15);
+}
+
+
+
+/*#####################
+##       wrong       ##
+#####################*/
+input.wrong {
+	color:#FFF;
+	/*border: 1px solid #B70000;*/
+	background: #ff2819;
+	background: -moz-linear-gradient(top, #ff2819 0%, #ab0000 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ff2819), color-stop(100%, #ab0000));
+	background: -webkit-linear-gradient(top, #ff2819 0%, #ab0000 100%);
+	background: -o-linear-gradient(top, #ff2819 0%,#ab0000 100%);
+	background: -ms-linear-gradient(top, #ff2819 0%,#ab0000 100%);
+	background: linear-gradient(to bottom, #ff2819 0%,#ab0000 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#C75A5A', endColorstr='#B70000',GradientType=0 );
+	box-shadow: 0px 1px 0px rgba(255, 255, 255, 0.3) inset;
+	-moz-box-shadow: 0px 1px 0px rgba(255, 255, 255, 0.3) inset;
+	-webkit-box-shadow: 0px 1px 0px rgba(255, 255, 255, 0.3) inset;
+	text-shadow: 0px -1px 0px rgba(0, 0, 0, 0.3);
+}
+input.wrong:hover {
+	-moz-box-shadow: inset 0px 1px 0px rgba(255,255,255,0.3);
+	-webkit-box-shadow: inset 0px 1px 0px rgba(255,255,255,0.3);
+	box-shadow: inset 0px 1px 0px rgba(255,255,255,0.3);
+	text-shadow: 0px -1px 0px rgba(0, 0, 0, 0.3);
+	background: -moz-linear-gradient(top, #ff2819 0%, #d00000);
+	background: -webkit-gradient(linear, left top, left bottom, from(#ff2819), to(#d00000));
+}
+input.wrong:active {
+	text-shadow: 0px -1px 0px rgba(0, 0, 0, 0.3);
+	-moz-box-shadow: inset 0px 2px 5px rgba(000,000,000,0.25);
+	-webkit-box-shadow: inset 0px 2px 5px rgba(000,000,000,0.25);
+	box-shadow: inset 0px 2px 5px rgba(000,000,000,0.25);
+}
+
+
+/*#####################
+##      view_code      ##
+#####################*/
+input.view_code {
+	color:#FFF;
+	/*border: 1px solid #FF9D00;*/
+	background: #FFA300;
+	background: -moz-linear-gradient(top, #FFA300 0%, #E76600 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#FFA300), color-stop(100%,#E76600));
+	background: -webkit-linear-gradient(top, #FFA300 0%,#E76600 100%);
+	background: -o-linear-gradient(top, #FFA300 0%,#E76600 100%);
+	background: -ms-linear-gradient(top, #FFA300 0%,#E76600 100%);
+	background: linear-gradient(to bottom, #FFA300 0%,#E76600 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffb845', endColorstr='#ff9d00',GradientType=0 );
+	box-shadow: 0px 1px 0px rgba(255, 255, 255, 0.3) inset;
+	-moz-box-shadow: 0px 1px 0px rgba(255, 255, 255, 0.3) inset;
+	-webkit-box-shadow: 0px 1px 0px rgba(255, 255, 255, 0.3) inset;
+	text-shadow: 0px -1px 0px rgba(0, 0, 0, 0.3);
+}
+input.view_code:hover {
+	-moz-box-shadow: inset 0px 1px 0px rgba(255,255,255,0.3);
+	-webkit-box-shadow: inset 0px 1px 0px rgba(255,255,255,0.3);
+	box-shadow: inset 0px 1px 0px rgba(255,255,255,0.3);
+	text-shadow: 0px -1px 0px rgba(0, 0, 0, 0.3);
+	background: -moz-linear-gradient(top, #FFA300 0%, #ff6d00);
+	background: -webkit-gradient(linear, left top, left bottom, from(#FFA300), to(#ff7100));
+}
+input.view_code:active {
+	text-shadow: 0px -1px 0px rgba(0, 0, 0, 0.3);
+	-moz-box-shadow: inset 0px 2px 5px rgba(000,000,000,0.15);
+	-webkit-box-shadow: inset 0px 2px 5px rgba(000,000,000,0.15);
+	box-shadow: inset 0px 2px 5px rgba(000,000,000,0.15);
+}
+
+/*****************************************************************/
+
+.add_left {
+	width: 240px;
+	margin-left: 10px;
+	float: left;
+}
+
+.add_right {
+	float: left;
 }
