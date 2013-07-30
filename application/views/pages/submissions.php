@@ -21,7 +21,7 @@
 						//if (a != "shj_failed"){
 						if (a == "shj_success"){
 							$(".set_final.p"+problem).removeClass('checked');
-							$("#sf"+submit_id+"_"+problem).addClass('checked');
+							$(".set_final#sf"+submit_id+"_"+problem).addClass('checked');
 						}
 					}
 				});
@@ -31,6 +31,9 @@
 </script>
 <?php $this->view('templates/top_bar'); ?>
 <?php $this->view('templates/side_bar',array('selected'=>"{$view}_submissions")); ?>
+<?php
+$finish = strtotime($assignment['finish_time']);
+?>
 	<div id="main_container">
 		<div id="page_title"><img src="<?php echo base_url("assets/images/icons/{$view}_submissions.png") ?>"/> <span><?php echo $title ?></span></div>
 		<div id="main_content">
@@ -39,7 +42,7 @@
 				<thead>
 					<tr>
 					<?php if ($view=='all'): ?>
-						<th width="5%" rowspan="2">Final</th>
+						<th width="1%" rowspan="2">Final</th>
 					<?php endif ?>
 					<?php if ($user_level>0): ?>
 							<?php if ($view=='all'): ?>
@@ -50,17 +53,20 @@
 							<?php endif ?>
 							<th width="6%" rowspan="2">Username</th>
 							<th width="14%" rowspan="2">Display Name</th>
-							<th width="6%" rowspan="2">Problem</th>
+							<th width="10%" rowspan="2">Problem</th>
 							<th width="14%" rowspan="2">Submit Time</th>
-							<th width="6%" colspan="3">Score</th>
-							<th width="12%" rowspan="2">Status</th>
-							<th width="12%" rowspan="2">Code</th>
-							<th width="5%" rowspan="2">#</th>
+							<th colspan="3">Score</th>
+							<th width="6%" rowspan="2">Status</th>
+							<th width="6%" rowspan="2">Code</th>
+							<?php if ($view=="final"): ?>
+							<th width="6%" rowspan="2">Log</th>
+							<?php endif ?>
+							<th width="1%" rowspan="2">#</th>
 						</tr>
 						<tr>
-							<th width="6%" class="score">Score</th>
-							<th width="6%" class="score">Coefficient</th>
-							<th width="6%" class="score">Final Score</th>
+							<th width="5%" class="score">Score</th>
+							<th width="5%" class="score">%</th>
+							<th width="5%" class="score">Final Score</th>
 						</tr>
 					<?php else: ?>
 							<th width="10%" rowspan="2">Problem</th>
@@ -72,7 +78,7 @@
 						</tr>
 						<tr>
 							<th width="7%" class="score">Score</th>
-							<th width="7%" class="score">Coefficient</th>
+							<th width="7%" class="score">%</th>
 							<th width="7%" class="score">Final Score</th>
 						</tr>
 					<?php endif ?>
@@ -81,15 +87,15 @@
 					<tr>
 					<?php if ($view=='all'): ?>
 						<td>
-						<?php if($item['username']==$username): ?>
+						<?php //if($item['username']==$username): ?>
 						<?php
 							$checked='';
 							if (isset($final_items[$item['username']][$item['problem']]['submit_id']))
 								if ($final_items[$item['username']][$item['problem']]['submit_id'] == $item['submit_id'])
 									$checked='checked';
 						?>
-						<div submit_id="<?php echo $item['submit_id'] ?>" problem="<?php echo $item['problem'] ?>" class="set_final check p<?php echo $item['problem'] ?> <?php echo $checked ?>" id="<?php echo "sf".$item['submit_id']."_".$item['problem'] ?>"></div>
-						<?php endif ?>
+						<div submit_id="<?php echo $item['submit_id'] ?>" problem="<?php echo $item['problem'] ?>" class="<?php if ($item['username']==$username) echo 'set_final' ?> check p<?php echo $item['problem'] ?> <?php echo $checked ?>" id="<?php echo "sf".$item['submit_id']."_".$item['problem'] ?>"></div>
+						<?php //endif ?>
 						</td>
 					<?php endif ?>
 					<?php if ($user_level>0): ?>
@@ -109,12 +115,28 @@
 					<?php endif ?>
 						<td><?php
 							$pi = $this->assignment_model->problem_info($assignment['id'],$item['problem']);
-							echo $item['problem']." (".$pi['name'].")";
+							echo '<span dir>'.$pi['name'].'</span> <span>('.$item['problem'].')</span>';
 						?></td>
 						<td><?php echo $item['time'] ?></td>
-						<td><?php echo $item['pre_score'] ?></td>
-						<td>ToDo</td>
-						<td>ToDo</td>
+						<td><?php
+							$pre_score = ceil($item['pre_score']*$pi['score']/10000);
+							echo $pre_score;
+						?></td>
+						<td><?php
+							$extra_time = $assignment['extra_time'];
+							$delay = strtotime($item['time'])-$finish;
+							ob_start();
+							if ( eval($assignment['late_rule']) ===FALSE ){
+								$coefficient = "error";
+								$final_score = 0;
+							}
+							else {
+								$final_score = ceil($pre_score*$coefficient/100);
+							}
+							ob_end_clean();
+							echo $coefficient;
+						?></td>
+						<td style="font-weight: bold;"><?php echo $final_score ?> </td>
 						<td>
 							<?php if (substr($item['status'],0,8)=="Uploaded"): ?>
 								<?php echo $item['status'] ?>
@@ -143,6 +165,22 @@
 								</form>
 							<?php endif ?>
 						</td>
+						<?php if($view=="final" && $user_level>0): ?>
+							<td>
+								<?php if ($item['file_type']=="zip"): ?>
+									---
+								<?php else: ?>
+									<?php echo form_open('submissions/view_code') ?>
+									<input type="hidden" name="code" value="2"/>
+									<input type="hidden" name="username" value="<?php echo $item['username'] ?>"/>
+									<input type="hidden" name="assignment" value="<?php echo $item['assignment'] ?>"/>
+									<input type="hidden" name="problem" value="<?php echo $item['problem'] ?>"/>
+									<input type="hidden" name="submit_id" value="<?php echo $item['submit_id'] ?>"/>
+									<input type="submit" class="btn" value="View Log"/>
+									</form>
+								<?php endif ?>
+							</td>
+						<?php endif ?>
 						<td><?php
 							if ($view=="final")
 								echo $item['submit_count'];

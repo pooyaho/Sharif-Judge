@@ -41,7 +41,9 @@ class Assignment_model extends CI_Model{
 				'name' => $this->input->post('name')[$i-1],
 				'score' => $this->input->post('score')[$i-1],
 				'judge' => in_array($i,$this->input->post('judge'))?1:0,
-				'time_limit' => $this->input->post('time_limit')[$i-1],
+				'c_time_limit' => $this->input->post('c_time_limit')[$i-1],
+				'python_time_limit' => $this->input->post('python_time_limit')[$i-1],
+				'java_time_limit' => $this->input->post('java_time_limit')[$i-1],
 				'memory_limit' => $this->input->post('memory_limit')[$i-1],
 				'allowed_file_types' => $this->input->post('filetypes')[$i-1],
 			);
@@ -87,7 +89,9 @@ class Assignment_model extends CI_Model{
 		if ($query->num_rows()!=1)
 			return array(
 				'id'=>0,
-				'name'=>'Not Selected'
+				'name'=>'Not Selected',
+				'finish_time' => 0,
+				'extra_time' => 0
 			);
 		return $query->row_array();
 	}

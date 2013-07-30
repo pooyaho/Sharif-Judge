@@ -19,7 +19,7 @@
 
 
 ##################### Example Usage #####################
-# tester.sh /home/mohammad/judge/homeworks/hw6/p1 mjn problem problem c 1 50000 diff -iw
+# tester.sh /home/mohammad/judge/homeworks/hw6/p1 mjn problem problem c 1 50000 diff -iw 1 1 1 1
 # In this example judge assumes that the file is located at:
 # /home/mohammad/judge/homeworks/hw6/p1/mjn/problem.c
 # And test cases are located at:
@@ -38,7 +38,7 @@
 
 
 ######################## Settings #######################
-SANDBOX_ON=true # turn EasySandbox for C/C++ on/off
+#SANDBOX_ON=true # turn EasySandbox for C/C++ on/off
 # Run:
 #    $ cd easysandbox
 #    $ make runtests
@@ -48,22 +48,42 @@ SANDBOX_ON=true # turn EasySandbox for C/C++ on/off
 #    $ make
 # and set "SANDBOX_ON" option (above) to "true"
 
-SHIELD_ON=true # turn Shield for C/C++ on/off
+#SHIELD_ON=true # turn Shield for C/C++ on/off
 # If you want to turn off java policy, leave this blank:
-JAVA_POLICY="-Djava.security.manager -Djava.security.policy=java.policy"
-LOG_ON=true
+#JAVA_POLICY="-Djava.security.manager -Djava.security.policy=java.policy"
+#LOG_ON=true
 
 
 ################### Getting Arguments ###################
-PROBLEMPATH=$1 # problem directory
-UN=$2 # username
-MAINFILENAME=$3 # used only for java
-FILENAME=$4 # file name without extension
-EXT=$5 # file extension
-TIMELIMIT=$6
-MEMLIMIT=$7
-DIFFTOOL=$8
-DIFFOPTION=$9
+PROBLEMPATH=${1} # problem directory
+UN=${2} # username
+MAINFILENAME=${3} # used only for java
+FILENAME=${4} # file name without extension
+EXT=${5} # file extension
+TIMELIMIT=${6}
+MEMLIMIT=${7}
+DIFFTOOL=${8}
+DIFFOPTION=${9}
+if [ ${10} = "1" ]; then
+	LOG_ON=true
+else
+	LOG_ON=false
+fi
+if [ ${11} = "1" ]; then
+	SANDBOX_ON=true
+else
+	SANDBOX_ON=false
+fi
+if [ ${12} = "1" ]; then
+	SHIELD_ON=true
+else
+	SHIELD_ON=false
+fi
+if [ ${13} = "1" ]; then
+	JAVA_POLICY="-Djava.security.manager -Djava.security.policy=java.policy"
+else
+	JAVA_POLICY=""
+fi
 # DIFFOPTION can be "ignore_all_whitespace". In this case, before diff command,
 # all newlines and whitespaces will be removed from both files.
 if [ "$DIFFOPTION" = "" ]; then
@@ -92,6 +112,11 @@ function judge_log {
 }
 
 judge_log "$(date)"
+judge_log "Time Limit: $TIMELIMIT s"
+judge_log "Memory Limit: $MEMLIMIT kB"
+judge_log "SANDBOX_ON: $SANDBOX_ON"
+judge_log "SHIELD_ON: $SHIELD_ON"
+judge_log "JAVA_POLICY: \"$JAVA_POLICY\""
 #echo -e "\nJAILPATH="$PROBLEMPATH/$UN/jail"\nEXT="$EXT"\nTIME LIMIT="$TIMELIMIT"\nMEM LIMIT="$MEMLIMIT"\nSECURITY HEADER="$HEADER"\nTEST CASES="$TST"\nDIFF PARAM="$DIFFOPTION"\n" >>$LOG
 
 ########################################################################################################
@@ -105,8 +130,8 @@ if [ "$EXT" = "java" ]; then
 	if [ $EXITCODE -ne 0 ]; then
 		judge_log "Compile Error"
 		judge_log "$(cat cerr|head -10)"
-		echo '<span style="color:blue;">Compile Error</span>' >$PROBLEMPATH/$UN/result.html
-		echo '<span style="color:red;">' >> $PROBLEMPATH/$UN/result.html
+		echo '<span class="shj_b">Compile Error</span>' >$PROBLEMPATH/$UN/result.html
+		echo '<span class="shj_r">' >> $PROBLEMPATH/$UN/result.html
 		#filepath="$(echo "${JAIL}/${FILENAME}.${EXT}" | sed 's/\//\\\//g')" #replacing / with \/
 		(cat cerr | head -10 | sed 's/&/\&amp;/g' | sed 's/</\&lt;/g' | sed 's/>/\&gt;/g' | sed 's/"/\&quot;/g') >> $PROBLEMPATH/$UN/result.html
 		#(cat $JAIL/cerr) >> $PROBLEMPATH/$UN/result.html
@@ -130,8 +155,8 @@ if [ "$EXT" = "py" ]; then
 	if [ $EXITCODE -ne 0 ]; then
 		judge_log "Syntax Error"
 		judge_log "$(cat cerr | head -10)"
-		echo '<span style="color:blue">Syntax Error</span>' >$PROBLEMPATH/$UN/result.html
-		echo '<span style="color: red;">' >> $PROBLEMPATH/$UN/result.html
+		echo '<span class="shj_b">Syntax Error</span>' >$PROBLEMPATH/$UN/result.html
+		echo '<span class="shj_r">' >> $PROBLEMPATH/$UN/result.html
 		(cat cerr | head -10 | sed 's/&/\&amp;/g' | sed 's/</\&lt;/g' | sed 's/>/\&gt;/g' | sed 's/"/\&quot;/g') >> $PROBLEMPATH/$UN/result.html
 		echo "</span>" >> $PROBLEMPATH/$UN/result.html
 		cd ..
@@ -152,12 +177,12 @@ if [ "$EXT" = "c" ] || [ "$EXT" = "cpp" ]; then
 	cp $PROBLEMPATH/$UN/$FILENAME.$EXT code.c
 	judge_log "Compiling as $EXT"
 	if $SANDBOX_ON; then
-		judge_log "Using EasySandbox\n"
+		judge_log "Enabling EasySandbox"
 		cp ../easysandbox/EasySandbox.so EasySandbox.so
 		chmod +x EasySandbox.so
 	fi
 	if $SHIELD_ON; then
-		judge_log "Using Shield"
+		judge_log "Enabling Shield"
 		cp ../shield/shield.$EXT shield.$EXT
 		cp ../shield/def$EXT.h def.h
 		# adding define to beginning of code
@@ -171,8 +196,8 @@ if [ "$EXT" = "c" ] || [ "$EXT" = "cpp" ]; then
 	if [ $EXITCODE -ne 0 ]; then
 		judge_log "Compile Error"
 		judge_log "$(cat cerr | head -10)"
-		echo '<span style="color:blue">Compile Error<br>Error Messages: (line numbers are not correct)</span>' >$PROBLEMPATH/$UN/result.html
-		echo '<span style="color: red;">' >> $PROBLEMPATH/$UN/result.html
+		echo '<span class="shj_b">Compile Error<br>Error Messages: (line numbers are not correct)</span>' >$PROBLEMPATH/$UN/result.html
+		echo '<span class="shj_r">' >> $PROBLEMPATH/$UN/result.html
 		SHIELD_ACT=false
 		if $SHIELD_ON; then
 			while read line; do
@@ -207,7 +232,8 @@ fi
 ########################################################################################################
 ################################################ TESTING ###############################################
 ########################################################################################################
-judge_log "Testing..."
+judge_log "\nTesting..."
+judge_log "ulimit -t `echo "$TIMELIMIT/1+1"|bc`"
 
 echo "" >$PROBLEMPATH/$UN/result.html
 
@@ -216,13 +242,13 @@ PASSEDTESTS=0
 for((i=1;i<=TST;i++)); do
 	judge_log "TEST$i"
 	sleep 0.05
-	echo "<span style='color : blue;'>Test $i </span>" >>$PROBLEMPATH/$UN/result.html
+	echo "<span class=\"shj_b\">Test $i </span>" >>$PROBLEMPATH/$UN/result.html
 	if [ "$EXT" != "java" ]; then # TODO memory limit for java
 		ulimit -v $((MEMLIMIT+10000))
 		ulimit -m $((MEMLIMIT+10000))
 		ulimit -s $((MEMLIMIT+10000))
 	fi
-	ulimit -t $((TIMELIMIT+1)) # kar az mohkamkari eyb nemikone!
+	ulimit -t `echo "$TIMELIMIT/1+1"|bc` # kar az mohkamkari eyb nemikone!
 	
 	touch err
 	
@@ -260,13 +286,18 @@ for((i=1;i<=TST;i++)); do
 	judge_log "Exit Code=$EXITCODE"
 
 	if ! grep -q "FINISHED" err; then
-		if grep -q "TIMEOUT CPU" err; then
-			judge_log "Time Limit Exceeded (Exit code=$EXITCODE)"
-			echo "<span style='color: orange;'>Time Limit Exceeded</span>" >>$PROBLEMPATH/$UN/result.html
+		if grep -q "SHJ_TIME" err; then
+			t=`grep "SHJ_TIME" err|cut -d" " -f3`
+			judge_log "Time Limit Exceeded ($t s)"
+			echo "<span class=\"shj_o\">Time Limit Exceeded ($t s)</span>" >>$PROBLEMPATH/$UN/result.html
 			continue
-		elif grep -q "MEM CPU" err; then
-			judge_log "Memory Limit Exceeded (Exit code=$EXITCODE)"
-			echo "<span style='color: orange;'>Memory Limit Exceeded</span>" >>$PROBLEMPATH/$UN/result.html
+		elif grep -q "SHJ_MEM" err; then
+			judge_log "Memory Limit Exceeded"
+			echo "<span class=\"shj_o\">Memory Limit Exceeded</span>" >>$PROBLEMPATH/$UN/result.html
+			continue
+		elif grep -q "SHJ_HANGUP" err; then
+			judge_log "Hang Up"
+			echo "<span class=\"shj_o\">Process hanged up</span>" >>$PROBLEMPATH/$UN/result.html
 			continue
 		fi
 	fi
@@ -274,15 +305,15 @@ for((i=1;i<=TST;i++)); do
 	if [ $EXITCODE -eq 137 ]; then
 		#judge_log "Time Limit Exceeded (Exit code=$EXITCODE)"
 		#echo "<span style='color: orange;'>Time Limit Exceeded</span>" >>$PROBLEMPATH/$UN/result.html
-		judge_log "Killed (Exit code=$EXITCODE)"
-		echo "<span style='color: orange;'>Killed</span>" >>$PROBLEMPATH/$UN/result.html
+		judge_log "Killed"
+		echo "<span class=\"shj_o\">Killed</span>" >>$PROBLEMPATH/$UN/result.html
 		continue
 	fi
 
 
 	if [ $EXITCODE -ne 0 ]; then
 		judge_log "Runtime Error"
-		echo "<span style='color: orange;'>Runtime Error</span>" >>$PROBLEMPATH/$UN/result.html
+		echo "<span class=\"shj_o\">Runtime Error</span>" >>$PROBLEMPATH/$UN/result.html
 		continue
 	fi
 	
@@ -317,11 +348,11 @@ for((i=1;i<=TST;i++)); do
 
 	if $ACCEPTED; then
 		judge_log "ACCEPTED"
-		echo "<span style='color: green;'>ACCEPT</span>" >>$PROBLEMPATH/$UN/result.html
+		echo "<span class=\"shj_g\">ACCEPT</span>" >>$PROBLEMPATH/$UN/result.html
 		((PASSEDTESTS=$PASSEDTESTS+1))
 	else
 		judge_log "WRONG"
-		echo "<span style='color: red;'>WRONG</span>" >>$PROBLEMPATH/$UN/result.html
+		echo "<span class=\"shj_r\">WRONG</span>" >>$PROBLEMPATH/$UN/result.html
 	fi
 done
 

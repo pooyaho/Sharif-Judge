@@ -50,7 +50,9 @@ class Add_assignment extends CI_Controller{
 		$this->form_validation->set_rules('extra_time','extra time','required');
 		$this->form_validation->set_rules('name[]','problem name','required|max_length[50]');
 		$this->form_validation->set_rules('score[]','problem score','required|integer');
-		$this->form_validation->set_rules('time_limit[]','time limit','required|integer');
+		$this->form_validation->set_rules('c_time_limit[]','time limit','required|integer');
+		$this->form_validation->set_rules('python_time_limit[]','time limit','required|integer');
+		$this->form_validation->set_rules('java_time_limit[]','time limit','required|integer');
 		$this->form_validation->set_rules('memory_limit[]','memory limit','required|integer');
 		$this->form_validation->set_rules('filetypes[]','file types','required');
 		$this->form_status='error';

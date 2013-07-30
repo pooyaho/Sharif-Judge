@@ -53,7 +53,10 @@ class Submit_model extends CI_Model {
 				'assignment'=>$assignment,
 				'problem'=>$problem,
 				'submit_id'=>$submit_id
-			))->row_array();
+			));
+		if ($submission->num_rows()==0)
+			return FALSE;
+		$submission = $submission->row_array();
 		unset($submission['submit_number']);
 		$this->db->where(
 			array('username'=>$username,

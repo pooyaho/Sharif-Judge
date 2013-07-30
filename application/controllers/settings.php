@@ -48,8 +48,15 @@ class Settings extends CI_Controller{
 			'tester_path'=>$this->settings_model->get_setting('tester_path'),
 			'assignments_root'=>$this->settings_model->get_setting('assignments_root'),
 			'file_size_limit'=>$this->settings_model->get_setting('file_size_limit'),
+			'default_late_rule'=>$this->settings_model->get_setting('default_late_rule'),
+			'enable_easysandbox'=>$this->settings_model->get_setting('enable_easysandbox'),
+			'enable_shield'=>$this->settings_model->get_setting('enable_shield'),
+			'enable_java_policy'=>$this->settings_model->get_setting('enable_java_policy'),
+			'enable_log'=>$this->settings_model->get_setting('enable_log'),
 			'form_status' => $this->form_status
 		);
+		$data ['defc'] = file_get_contents(rtrim($this->settings_model->get_setting('tester_path'),'/')."/shield/defc.h");
+		$data ['defcpp'] = file_get_contents(rtrim($this->settings_model->get_setting('tester_path'),'/')."/shield/defcpp.h");
 		$this->load->view('templates/header',$data);
 		$this->load->view('pages/admin/settings',$data);
 		$this->load->view('templates/footer');
@@ -64,7 +71,20 @@ class Settings extends CI_Controller{
 			$this->settings_model->set_setting('tester_path',$this->input->post('tester_path'));
 			$this->settings_model->set_setting('assignments_root',$this->input->post('assignments_root'));
 			$this->settings_model->set_setting('file_size_limit',$this->input->post('file_size_limit'));
-			$this->form_status = "ok";
+			$this->settings_model->set_setting('default_late_rule',$this->input->post('default_late_rule'));
+			$this->settings_model->set_setting('enable_easysandbox',$this->input->post('enable_easysandbox')===FALSE?0:1);
+			$this->settings_model->set_setting('enable_shield',$this->input->post('enable_shield')===FALSE?0:1);
+			$this->settings_model->set_setting('enable_java_policy',$this->input->post('enable_java_policy')===FALSE?0:1);
+			$this->settings_model->set_setting('enable_log',$this->input->post('enable_log')===FALSE?0:1);
+			ob_start();
+			$this->form_status = "";
+			if (file_put_contents(rtrim($this->settings_model->get_setting('tester_path'),'/')."/shield/defc.h",$this->input->post('def_c'))===FALSE)
+				$this->form_status .= "defc";
+			if (file_put_contents(rtrim($this->settings_model->get_setting('tester_path'),'/')."/shield/defcpp.h",$this->input->post('def_cpp'))===FALSE)
+				$this->form_status .= "defcpp";
+			ob_end_clean();
+			if ($this->form_status=="")
+				$this->form_status = "ok";
 		}
 		else
 			$this->form_status = "error";

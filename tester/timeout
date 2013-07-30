@@ -488,12 +488,12 @@ sub get_patterns
 sub limits_exceeded
 {
 	if (defined $timelimit && $timeinfo->{total} > $timelimit){
-		return 'TIMEOUT';
+		return 'SHJ_TIME'; # changed by mjnaderi (SHJ is for SHarif Judge)
 	}elsif (defined $ticklimit && $kill_stale && $timeinfo->{ticks_stale} > $ticklimit) {
 	# Sometimes the controlling process may inherently hang up.  Then we don't interrupt it.
-		return 'HANGUP';
+		return 'SHJ_HANGUP'; # changed by mjnaderi (SHJ is for SHarif Judge)
 	}elsif (defined $memlimit && $meminfo > $memlimit){
-		return 'MEM';
+		return 'SHJ_MEM'; # changed by mjnaderi (SHJ is for SHarif Judge)
 	}
 	return undef;
 }

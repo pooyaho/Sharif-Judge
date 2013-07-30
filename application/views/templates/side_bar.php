@@ -47,21 +47,21 @@
 		$("#time_minutes").html(minutes);
 		$("#time_seconds").html(seconds);
 		if(days==1)
-			$("#days_label").css("visibility","hidden");
+			$("#days_label").css("display","none");
 		else
-			$("#days_label").css("visibility","visible");
+			$("#days_label").css("display","inline");
 		if(hours==1)
-			$("#hours_label").css("visibility","hidden");
+			$("#hours_label").css("display","none");
 		else
-			$("#hours_label").css("visibility","visible");
+			$("#hours_label").css("display","inline");
 		if(minutes==1)
-			$("#minutes_label").css("visibility","hidden");
+			$("#minutes_label").css("display","none");
 		else
-			$("#minutes_label").css("visibility","visible");
+			$("#minutes_label").css("display","inline");
 		if(seconds==1)
-			$("#seconds_label").css("visibility","hidden");
+			$("#seconds_label").css("display","none");
 		else
-			$("#seconds_label").css("visibility","visible");
+			$("#seconds_label").css("display","inline");
 
 	}
 	$(document).ready(function() {

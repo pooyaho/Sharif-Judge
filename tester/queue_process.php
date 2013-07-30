@@ -97,9 +97,11 @@ do{
 	$assignment = $qr['assignment'];
 	$problem = $qr['problem'];
 
-	$srrr = mysql_fetch_assoc(mysql_query("SELECT score,time_limit,memory_limit FROM {$prefix}problems WHERE assignment='$assignment' AND id='$problem'"));
-	$problem_score = $srrr['score'];
-	$time_limit = $srrr['time_limit']/1000;
+	$srrr = mysql_fetch_assoc(mysql_query("SELECT c_time_limit,java_time_limit,python_time_limit,memory_limit FROM {$prefix}problems WHERE assignment='$assignment' AND id='$problem'"));
+
+	$c_time_limit = $srrr['c_time_limit']/1000;
+	$java_time_limit = $srrr['java_time_limit']/1000;
+	$python_time_limit = $srrr['python_time_limit']/1000;
 	$memory_limit = $srrr['memory_limit'];
 
 
@@ -116,12 +118,29 @@ do{
 	$userdir = "$problemdir/$username";
 	$the_file = "$userdir/$raw_filename.$file_type";
 
+	$srrr = mysql_fetch_assoc(mysql_query("SELECT shj_value FROM {$prefix}settings WHERE shj_key='enable_log'"));
+	$op1 = $srrr['shj_value'];
+	$srrr = mysql_fetch_assoc(mysql_query("SELECT shj_value FROM {$prefix}settings WHERE shj_key='enable_easysandbox'"));
+	$op2 = $srrr['shj_value'];
+	$srrr = mysql_fetch_assoc(mysql_query("SELECT shj_value FROM {$prefix}settings WHERE shj_key='enable_shield'"));
+	$op3 = $srrr['shj_value'];
+	$srrr = mysql_fetch_assoc(mysql_query("SELECT shj_value FROM {$prefix}settings WHERE shj_key='enable_java_policy'"));
+	$op4 = $srrr['shj_value'];
 
 	// compiling and judging the code (with tester.sh) :
 	$output="";
 	$ret="";
-
-	$cmd = " cd $tester_path; ./tester.sh $problemdir $username $main_filename $raw_filename $file_type $time_limit $memory_limit diff -iw"; /* todo */
+	
+	if ($file_type=="c" OR $file_type == "cpp")
+		$time_limit = $c_time_limit;
+	else if ($file_type=="java")
+		$time_limit = $java_time_limit;
+	else if ($file_type=="py2" OR $file_type=="py3")
+		$time_limit = $python_time_limit;
+	
+	$time_limit = round($time_limit, 3);
+	
+	$cmd = "cd $tester_path; ./tester.sh $problemdir $username $main_filename $raw_filename $file_type $time_limit $memory_limit diff -iw $op1 $op2 $op3 $op4"; /* todo */
 
 	file_put_contents($userdir."/log",$cmd);
 
@@ -145,7 +164,7 @@ do{
 	else if($ret==5) $stat = 'File Format not Supported';
 	else if($score==0)  $stat = 'WRONG';
 
-	$score = ceil($score * $problem_score / 10000) ;
+	//$score = ceil($score * $problem_score / 10000) ;
 
 	$sr['status']=$stat;
 	$sr['pre_score']=$score;

@@ -25,9 +25,9 @@
 				$file_type="python";
 		?>
 		<pre><?php
-			echo "Username: $username\n";
-			echo "Assignment {$assignment['id']} ({$assignment['name']})\n";
-			echo "Problem {$problem['id']} ({$problem['name']})\n";
+			echo "Username: $view_username\n";
+			echo "Assignment {$view_assignment['id']} ({$assignment['name']})\n";
+			echo "Problem {$view_problem['id']} ({$view_problem['name']})\n";
 			echo "File Type: $file_type";
 		?></pre>
 		<?php if ($code==1): ?>
@@ -38,12 +38,17 @@
 					echo "File not found";
 			?></pre>
 		<?php else: ?>
-			<pre><?php
+			<?php if ($log): ?>
+				Please note:<br>
+				This is the log file for the last submission of user "<?php echo $view_username ?>" for problem <?php echo "{$view_problem['id']} ({$view_problem['name']})" ?>.<br>
+				This may be different from the final submission selected by "<?php echo $view_username ?>".
+			<?php endif ?>
+			<pre class="shj_code"><?php
 				if (file_exists($file_path))
 					echo file_get_contents($file_path);
 				else
 					echo "File not found";
-			?><pre>
+			?></pre>
 		<?php endif ?>
 	</div>
 </div>

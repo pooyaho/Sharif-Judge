@@ -34,6 +34,7 @@ class Submissions extends CI_Controller{
 			$items = $this->submit_model->get_final_submissions($this->assignment['id'],$this->user_level,$this->username);
 		else
 			$items = $this->submit_model->get_all_submissions($this->assignment['id'],$this->user_level,$this->username);
+		$finish = strtotime($this->assignment['finish_time']);
 		foreach ($items as $item){
 			if(!isset($name[$item['username']]))
 				$name[$item['username']]=$this->user_model->get_user($item['username'])->display_name;
@@ -48,6 +49,19 @@ class Submissions extends CI_Controller{
 			else
 				$checked="*";
 
+
+			$extra_time = $this->assignment['extra_time'];
+			$delay = strtotime($item['time'])-$finish;
+			ob_start();
+			if ( eval($this->assignment['late_rule']) === FALSE ){
+				$coefficient = "error";
+				$final_score = 0;
+			}
+			else {
+				$final_score = ceil($item['pre_score']*$coefficient/100);
+			}
+			ob_end_clean();
+
 			$row=array(
 				/*"1",
 				"2",*/
@@ -58,8 +72,8 @@ class Submissions extends CI_Controller{
 				$item['problem']." (".$pi['name'].")",
 				$item['time'],
 				$item['pre_score'],
-				"ToDo", /* todo */
-				"ToDo", /* todo */
+				$coefficient,
+				$final_score,
 				$item['status'],
 				($view=="final"?$item['submit_count']:$item['submit_number'])
 			);
@@ -124,6 +138,8 @@ class Submissions extends CI_Controller{
 	}
 
 	public function select(){ /* used by ajax request (for selecting final submission) */
+		if ( ! $this->input->is_ajax_request() )
+			show_404();
 		$this->form_validation->set_rules('submit_id','Submit ID',"integer|greater_than[0]");
 		$this->form_validation->set_rules('problem','problem',"integer|greater_than[0]");
 		//echo $this->input->post('problem'); echo '<br>'; echo $this->input->post('submit_id');
@@ -134,7 +150,7 @@ class Submissions extends CI_Controller{
 			echo 'shj_failed';
 	}
 
-	public function view_code(){ /* for "view code" or "view result" */
+	public function view_code(){ /* for "view code" or "view result" or "view log" */
 		$this->form_validation->set_rules('code','integer|greater_than[-1]|less_than[2]');
 		$this->form_validation->set_rules('username','required|min_length[3]|max_length[20]|alpha_numeric|xss_clean');
 		$this->form_validation->set_rules('assignment','integer|greater_than[0]');
@@ -150,6 +166,9 @@ class Submissions extends CI_Controller{
 			if ($submission===FALSE)
 				show_404();
 
+			if ($this->user_level==0 && $this->input->post('code')==2)
+				show_404();
+
 			if ($this->user_level==0 && $this->username != $submission['username'])
 				die("Don't try to see other users' codes. :)");
 
@@ -163,23 +182,34 @@ class Submissions extends CI_Controller{
 				'code' => $this->input->post('code')
 			);
 
+
 			if($data['code']==0)
 				$data['title']="View Result";
+			else if($data['code']==2)
+				$data['title']="View Log";
 
-			if ($data['code']==1)
+
+			if ($data['code']==0)
 				$file_path = rtrim($this->settings_model->get_setting('assignments_root'),'/').
-				"/assignment_{$submission['assignment']}/p{$submission['problem']}/{$submission['username']}/{$submission['file_name']}.{$submission['file_type']}";
-			else
+					"/assignment_{$submission['assignment']}/p{$submission['problem']}/{$submission['username']}/result-{$submission['submit_id']}.html";
+			else if ($data['code']==1)
 				$file_path = rtrim($this->settings_model->get_setting('assignments_root'),'/').
-					"/assignment_{$submission['assignment']}/p{$submission['problem']}/{$submission['username']}/result-{$submission['submit_id']}.html";;
+					"/assignment_{$submission['assignment']}/p{$submission['problem']}/{$submission['username']}/{$submission['file_name']}.{$submission['file_type']}";
+			else if ($data['code']==2)
+				$file_path = rtrim($this->settings_model->get_setting('assignments_root'),'/').
+					"/assignment_{$submission['assignment']}/p{$submission['problem']}/{$submission['username']}/log";
 
 			$data2 = array(
 				'file_path'=>$file_path,
 				'file_type'=>$submission['file_type'],
-				'username'=>$submission['username'],
-				'assignment'=>$this->assignment_model->assignment_info($submission['assignment']),
-				'problem'=>$this->assignment_model->problem_info($submission['assignment'], $submission['problem'])
+				'view_username'=>$submission['username'],
+				'view_assignment'=>$this->assignment_model->assignment_info($submission['assignment']),
+				'view_problem'=>$this->assignment_model->problem_info($submission['assignment'], $submission['problem'])
 			);
+
+			$data2['log']=FALSE;
+			if($data['code']==2)
+				$data2['log'] = TRUE;
 
 			$this->load->view('templates/header',$data);
 			$this->load->view('pages/view_code',$data2);
