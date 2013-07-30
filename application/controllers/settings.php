@@ -69,15 +69,6 @@ class Settings extends CI_Controller{
 		$this->form_validation->set_rules('timezones','timezone','callback__check_timezone');
 		$this->form_validation->set_rules('file_size_limit','File size limit','integer|greater_than[-1]');
 		if($this->form_validation->run()){
-			$this->settings_model->set_setting('timezone',$this->input->post('timezones'));
-			$this->settings_model->set_setting('tester_path',$this->input->post('tester_path'));
-			$this->settings_model->set_setting('assignments_root',$this->input->post('assignments_root'));
-			$this->settings_model->set_setting('file_size_limit',$this->input->post('file_size_limit'));
-			$this->settings_model->set_setting('default_late_rule',$this->input->post('default_late_rule'));
-			$this->settings_model->set_setting('enable_easysandbox',$this->input->post('enable_easysandbox')===FALSE?0:1);
-			$this->settings_model->set_setting('enable_shield',$this->input->post('enable_shield')===FALSE?0:1);
-			$this->settings_model->set_setting('enable_java_policy',$this->input->post('enable_java_policy')===FALSE?0:1);
-			$this->settings_model->set_setting('enable_log',$this->input->post('enable_log')===FALSE?0:1);
 			ob_start();
 			$this->form_status = "";
 			$defc_path = rtrim($this->settings_model->get_setting('tester_path'),'/')."/shield/defc.h";
@@ -89,6 +80,15 @@ class Settings extends CI_Controller{
 			ob_end_clean();
 			if ($this->form_status=="")
 				$this->form_status = "ok";
+			$this->settings_model->set_setting('timezone',$this->input->post('timezones'));
+			$this->settings_model->set_setting('tester_path',$this->input->post('tester_path'));
+			$this->settings_model->set_setting('assignments_root',$this->input->post('assignments_root'));
+			$this->settings_model->set_setting('file_size_limit',$this->input->post('file_size_limit'));
+			$this->settings_model->set_setting('default_late_rule',$this->input->post('default_late_rule'));
+			$this->settings_model->set_setting('enable_easysandbox',$this->input->post('enable_easysandbox')===FALSE?0:1);
+			$this->settings_model->set_setting('enable_shield',$this->input->post('enable_shield')===FALSE?0:1);
+			$this->settings_model->set_setting('enable_java_policy',$this->input->post('enable_java_policy')===FALSE?0:1);
+			$this->settings_model->set_setting('enable_log',$this->input->post('enable_log')===FALSE?0:1);
 		}
 		else
 			$this->form_status = "error";
