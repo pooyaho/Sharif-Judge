@@ -18,6 +18,11 @@ class Login extends CI_Controller{
 			return FALSE;
 		return TRUE;
 	}
+	public function _lowercase ($string) {
+		if (strtolower($string)===$string)
+			return TRUE;
+		return FALSE;
+	}
 	public function _email_check($email){ // checks whether a user with this email exists (used for validating registration)
 		if ($this->user_model->have_email($email))
 			return FALSE;
@@ -57,8 +62,9 @@ class Login extends CI_Controller{
 	public function register(){
 		$this->form_validation->set_message('_username_check','User with same %s exists.');
 		$this->form_validation->set_message('_email_check','User with same %s exists.');
-		$this->form_validation->set_rules('username','username','required|min_length[3]|max_length[20]|alpha_numeric|callback__username_check');
-		$this->form_validation->set_rules('email','email','required|max_length[40]|valid_email|callback__email_check');
+		$this->form_validation->set_message('_lowercase','%s must be lowercase.');
+		$this->form_validation->set_rules('username','username','required|min_length[3]|max_length[20]|alpha_numeric|callback__lowercase|callback__username_check');
+		$this->form_validation->set_rules('email','email','required|max_length[40]|valid_email|callback__lowercase|callback__email_check');
 		$this->form_validation->set_rules('password','password','required|min_length[6]|max_length[30]|alpha_numeric');
 		$this->form_validation->set_rules('password_again','password confirmation','required|matches[password]');
 		$data = array(
@@ -84,7 +90,7 @@ class Login extends CI_Controller{
 
 
 	public function lost(){
-		$this->form_validation->set_rules('email','email','required|max_length[40]|valid_email');
+		$this->form_validation->set_rules('email','email','required|max_length[40]|callback__lowercase|valid_email');
 		$data = array(
 			'title' => "Lost Password",
 			'style' => "login.css",

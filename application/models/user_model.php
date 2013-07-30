@@ -19,7 +19,11 @@ class User_model extends CI_Model{
 	 */
 	public function have_user($username){
 		$query = $this->db->get_where('users',array('username'=>$username));
-		return ($query->num_rows()>=1);
+		if ($query->num_rows()==0)
+			return FALSE;
+		if ($username === $query->row()->username) // needed (utf8_general_ci)
+			return TRUE;
+		return FALSE;
 	}
 
 
@@ -64,6 +68,8 @@ class User_model extends CI_Model{
 		$t_hasher = new PasswordHash(8, FALSE);
 		$query = $this->db->get_where('users',array('username'=>$username));
 		if ($query->num_rows() != 1)
+			return FALSE;
+		if ($query->row()->username !== $username) // needed (utf8_general_ci)
 			return FALSE;
 		if ($t_hasher->CheckPassword($password,$query->row()->password))
 			return TRUE;
