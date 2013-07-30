@@ -66,7 +66,8 @@ class Add_assignment extends CI_Controller{
 				$this->unzip->allow(array('txt'));
 				$assignment_dir = $config['upload_path']."/assignment_{$new_id}";
 				mkdir($assignment_dir,0700);
-				if ( $this->unzip->extract($this->upload->data()['full_path'], $assignment_dir) ){
+				$u_data = $this->upload->data();
+				if ( $this->unzip->extract($u_data['full_path'], $assignment_dir) ){
 					$this->assignment_model->add_assignment($new_id);
 					$this->form_status='ok';
 				}
@@ -74,7 +75,7 @@ class Add_assignment extends CI_Controller{
 					$this->form_status='corrupted';
 					rmdir($assignment_dir);
 				}
-				unlink($this->upload->data()['full_path']);
+				unlink($u_data['full_path']);
 			}
 		}
 		$this->index();
