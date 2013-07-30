@@ -55,8 +55,10 @@ class Settings extends CI_Controller{
 			'enable_log'=>$this->settings_model->get_setting('enable_log'),
 			'form_status' => $this->form_status
 		);
+		ob_start();
 		$data ['defc'] = file_get_contents(rtrim($this->settings_model->get_setting('tester_path'),'/')."/shield/defc.h");
 		$data ['defcpp'] = file_get_contents(rtrim($this->settings_model->get_setting('tester_path'),'/')."/shield/defcpp.h");
+		ob_end_clean();
 		$this->load->view('templates/header',$data);
 		$this->load->view('pages/admin/settings',$data);
 		$this->load->view('templates/footer');
@@ -78,9 +80,11 @@ class Settings extends CI_Controller{
 			$this->settings_model->set_setting('enable_log',$this->input->post('enable_log')===FALSE?0:1);
 			ob_start();
 			$this->form_status = "";
-			if (file_put_contents(rtrim($this->settings_model->get_setting('tester_path'),'/')."/shield/defc.h",$this->input->post('def_c'))===FALSE)
+			$defc_path = rtrim($this->settings_model->get_setting('tester_path'),'/')."/shield/defc.h";
+			$defcpp_path = rtrim($this->settings_model->get_setting('tester_path'),'/')."/shield/defcpp.h";
+			if (file_exists($defc_path) && file_put_contents($defc_path,$this->input->post('def_c'))===FALSE)
 				$this->form_status .= "defc";
-			if (file_put_contents(rtrim($this->settings_model->get_setting('tester_path'),'/')."/shield/defcpp.h",$this->input->post('def_cpp'))===FALSE)
+			if (file_exists($defcpp_path) && file_put_contents($defcpp_path,$this->input->post('def_cpp'))===FALSE)
 				$this->form_status .= "defcpp";
 			ob_end_clean();
 			if ($this->form_status=="")

@@ -24,6 +24,8 @@
 		<?php elseif ($form_status=="defcdefcpp"): ?>
 			<div class="ok">Settings updated.</div>
 			<div class="error">But files defc.h and defcpp.h are not writable.</div>
+		<?php elseif ($defc===FALSE): ?>
+			<div class="error">Seems "Tester path" is not correct.</div>
 		<?php endif ?>
 		</p>
 		<?php echo form_open('settings/update') ?>
@@ -74,11 +76,11 @@
 			</p>
 			<p class="input_p">
 				<label for="def_c">Shield rules (for C):</label><br>
-				<textarea name="def_c" rows="10" class="sharif_input add_text"><?php echo $defc ?></textarea>
+				<textarea name="def_c" rows="10" class="sharif_input add_text"><?php if($defc!=="FALSE") echo $defc ?></textarea>
 			</p>
 			<p class="input_p">
 				<label for="def_cpp">Shield rules (for C++):</label><br>
-				<textarea name="def_cpp" rows="10" class="sharif_input add_text"><?php echo $defcpp ?></textarea>
+				<textarea name="def_cpp" rows="10" class="sharif_input add_text"><?php if($defcpp!=="FALSE") echo $defcpp ?></textarea>
 			</p>
 		</div>
 		</form>
