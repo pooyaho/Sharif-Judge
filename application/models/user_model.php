@@ -155,7 +155,7 @@ class User_model extends CI_Model{
 		<p><a href="'.site_url('login/reset/'.$passchange_key).'">Reset Password</a></p>
 		<p>If you don\'t want to change your password, just ignore this email.</p>');
 
-		//$this->email->send();
+		$this->email->send();
 	}
 
 	/*
