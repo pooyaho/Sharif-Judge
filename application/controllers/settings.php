@@ -17,8 +17,8 @@ class Settings extends CI_Controller{
 		$this->username = $this->session->userdata('username');
 		$this->assignment = $this->assignment_model->assignment_info($this->user_model->selected_assignment($this->username));
 		$this->user_level = $this->user_model->get_user_level($this->username);
-		if ( $this->user_model->get_user_level($this->username) == 0)
-			show_404();
+		if ( $this->user_level <= 2)
+			show_error("You have not enough permission to access this page.");
 		$this->form_status = "";
 	}
 
@@ -53,6 +53,7 @@ class Settings extends CI_Controller{
 			'enable_shield'=>$this->settings_model->get_setting('enable_shield'),
 			'enable_java_policy'=>$this->settings_model->get_setting('enable_java_policy'),
 			'enable_log'=>$this->settings_model->get_setting('enable_log'),
+			'enable_registration'=>$this->settings_model->get_setting('enable_registration'),
 			'form_status' => $this->form_status
 		);
 		ob_start();
@@ -89,6 +90,7 @@ class Settings extends CI_Controller{
 			$this->settings_model->set_setting('enable_shield',$this->input->post('enable_shield')===FALSE?0:1);
 			$this->settings_model->set_setting('enable_java_policy',$this->input->post('enable_java_policy')===FALSE?0:1);
 			$this->settings_model->set_setting('enable_log',$this->input->post('enable_log')===FALSE?0:1);
+			$this->settings_model->set_setting('enable_registration',$this->input->post('enable_registration')===FALSE?0:1);
 		}
 		else
 			$this->form_status = "error";

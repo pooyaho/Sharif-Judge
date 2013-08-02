@@ -15,8 +15,8 @@ class Assignment_model extends CI_Model{
 	/*
 	 * Adds new assignment to database
 	 */
-	public function add_assignment($id){
-		// Adding assignment to "assignments" table
+	public function add_assignment($id,$edit=FALSE){
+		// Adding assignment to "assignments" table (or editing existing assignment)
 		$assignment = array(
 			'id' => $id,
 			'name' => $this->input->post('assignment_name'),
@@ -31,9 +31,17 @@ class Assignment_model extends CI_Model{
 			'late_rule' => $this->input->post('late_rule'),
 			'participants' => $this->input->post('participants')
 		);
-		$this->db->insert('assignments',$assignment);
+		if($edit)
+			$this->db->where('id',$id)->update('assignments',$assignment);
+		else
+			$this->db->insert('assignments',$assignment);
 
 		// Adding problems to "problems" table
+
+		//first remove all previous problems
+		$this->db->delete('problems',array('assignment'=>$id));
+
+		//now add new problems:
 		$names = $this->input->post('name');
 		$scores = $this->input->post('score');
 		$c_tl = $this->input->post('c_time_limit');
@@ -41,6 +49,8 @@ class Assignment_model extends CI_Model{
 		$java_tl = $this->input->post('java_time_limit');
 		$ml = $this->input->post('memory_limit');
 		$ft = $this->input->post('filetypes');
+		$dc = $this->input->post('diff_cmd');
+		$da = $this->input->post('diff_arg');
 		for ($i=1;$i<=$this->input->post('number_of_problems');$i++){
 
 			$problem = array(
@@ -54,6 +64,8 @@ class Assignment_model extends CI_Model{
 				'java_time_limit' => $java_tl[$i-1],
 				'memory_limit' => $ml[$i-1],
 				'allowed_file_types' => $ft[$i-1],
+				'diff_cmd' => $dc[$i-1],
+				'diff_arg' => $da[$i-1],
 			);
 			$this->db->insert('problems',$problem);
 		}

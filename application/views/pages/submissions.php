@@ -38,6 +38,9 @@ $finish = strtotime($assignment['finish_time']);
 		<div id="page_title"><img src="<?php echo base_url("assets/images/icons/{$view}_submissions.png") ?>"/> <span><?php echo $title ?></span></div>
 		<div id="main_content">
 			<p><?php echo ucfirst($view); ?> Submissions of <?php echo $assignment['name']; ?> (<?php echo anchor("submissions/{$view}/excel",'Excel'); ?>)</p>
+			<?php if($view=="all"): ?>
+			<p>You cannot select final submission when assignment finishes.</p>
+			<?php endif ?>
 			<table class="sharif_table">
 				<thead>
 					<tr>
@@ -133,6 +136,8 @@ $finish = strtotime($assignment['finish_time']);
 							else {
 								$final_score = ceil($pre_score*$coefficient/100);
 							}
+							if (!isset($coefficient))
+								$coefficient = "error";
 							ob_end_clean();
 							echo $coefficient;
 						?></td>

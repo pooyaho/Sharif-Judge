@@ -28,7 +28,10 @@
 			</div>
 			<div class="login2">
 				<p style="margin:0;">
-					<?php echo anchor("register","Register") ?> | <?php echo anchor('login/lost','Lost?') ?>
+					<?php if ($this->settings_model->get_setting('enable_registration')): ?>
+					<?php echo anchor("register","Register") ?> |
+					<?php endif ?>
+					<?php echo anchor('login/lost','Lost?') ?>
 					<input type="submit" value="Login" id="sharif_submit"/>
 				</p>
 			</div>

@@ -190,4 +190,11 @@ class User_model extends CI_Model{
 		$this->db->where('username',$query->row()->username)->update('users',array('passchange_key'=>'','password' => $t_hasher->HashPassword($newpassword)));
 		return TRUE;
 	}
+
+	/*
+	 * Get All Users Table (for users page)
+	 */
+	public function get_all_users(){
+		return $this->db->get('users')->result_array();
+	}
 }

@@ -33,38 +33,42 @@
 		<div class="panel_left">
 			<p class="input_p">
 				<label for="timezones">Timezone:</label><br/>
-				<?php echo timezone_menu($tz,'sharif_input long') ?>
+				<?php echo timezone_menu($tz,'sharif_input medium') ?>
 				<?php echo form_error('timezone','<div class="error">','</div>'); ?>
 			</p>
 			<p class="input_p">
 				<label for="tester_path">Tester path:</label><br/>
-				<input type="text" name="tester_path" class="sharif_input long" value="<?php echo $tester_path ?>"/>
+				<input type="text" name="tester_path" class="sharif_input medium" value="<?php echo $tester_path ?>"/>
 			</p>
 			<p class="input_p">
 				<label for="assignments_root">Assignments root directory:</label><br/>
-				<input type="text" name="assignments_root" class="sharif_input long" value="<?php echo $assignments_root ?>"/>
+				<input type="text" name="assignments_root" class="sharif_input medium" value="<?php echo $assignments_root ?>"/>
 			</p>
 			<p class="input_p">
 				<label for="file_size_limit">Upload file size limit (kB):</label><br/>
-				<input type="text" name="file_size_limit" class="sharif_input long" value="<?php echo $file_size_limit ?>"/>
+				<input type="text" name="file_size_limit" class="sharif_input medium" value="<?php echo $file_size_limit ?>"/>
 				<?php echo form_error('file_size_limit','<div class="error">','</div>'); ?>
 			</p>
 			<p class="input_p">
-				<input type="checkbox" name="enable_easysandbox" value="1" <?php if ($enable_easysandbox) echo 'checked' ?>/> C/C++ Sandbox<br>
-				<p class="form_comment long">Enable or disable EasySandbox (using seccomp filters, for C/C++).
+				<input type="checkbox" name="enable_registration" value="1" <?php if ($enable_registration) echo 'checked' ?>/> Registration<br>
+				<p class="form_comment medium">Open public registration.</p>
+			</p>
+			<p class="input_p">
+				<input type="checkbox" name="enable_easysandbox" value="1" <?php if ($enable_easysandbox) echo 'checked' ?>/> EasySandbox<br>
+				<p class="form_comment medium">Enable EasySandbox (uses seccomp) for C/C++.
 				You must <a href="#">build EasySandbox</a> before enabling it.</p>
 			</p>
 			<p class="input_p">
 				<input type="checkbox" name="enable_shield" value="1" <?php if ($enable_shield) echo 'checked' ?>/> C/C++ Shield<br>
-				<span class="form_comment">Enable or disable <a href="#">Shield</a> for C/C++</span>
+				<span class="form_comment">Enable <a href="#">Shield</a> for C/C++</span>
 			</p>
 			<p class="input_p">
 				<input type="checkbox" name="enable_java_policy" value="1" <?php if ($enable_java_policy) echo 'checked' ?>/> Java Policy<br>
-				<span class="form_comment">Enable or disable <a href="#">Java Policy</a> for Java</span>
+				<span class="form_comment">Enable <a href="#">Java Policy</a> for Java</span>
 			</p>
 			<p class="input_p">
 				<input type="checkbox" name="enable_log" value="1" <?php if ($enable_log) echo 'checked' ?>/> Log<br>
-				<span class="form_comment">Enable or disable Log</span>
+				<span class="form_comment">Enable Log</span>
 			</p>
 			<p class="input_p">
 				<input type="submit" value="Save" class="sharif_input"/>

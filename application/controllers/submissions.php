@@ -38,7 +38,10 @@ class Submissions extends CI_Controller{
 		foreach ($items as $item){
 			if(!isset($name[$item['username']]))
 				$name[$item['username']]=$this->user_model->get_user($item['username'])->display_name;
+
 			$pi = $this->assignment_model->problem_info($this->assignment['id'],$item['problem']);
+
+			$pre_score = ceil($item['pre_score']*$pi['score']/10000);
 
 			$checked='';
 			if ($view=='all'){
@@ -58,7 +61,7 @@ class Submissions extends CI_Controller{
 				$final_score = 0;
 			}
 			else {
-				$final_score = ceil($item['pre_score']*$coefficient/100);
+				$final_score = ceil($pre_score*$coefficient/100);
 			}
 			ob_end_clean();
 
@@ -71,7 +74,7 @@ class Submissions extends CI_Controller{
 				$name[$item['username']],
 				$item['problem']." (".$pi['name'].")",
 				$item['time'],
-				$item['pre_score'],
+				$pre_score,
 				$coefficient,
 				$final_score,
 				$item['status'],
@@ -140,6 +143,8 @@ class Submissions extends CI_Controller{
 	public function select(){ /* used by ajax request (for selecting final submission) */
 		if ( ! $this->input->is_ajax_request() )
 			show_404();
+		if (shj_now() > strtotime($this->assignment['finish_time'])+$this->assignment['extra_time'])
+			die('shj_failed');
 		$this->form_validation->set_rules('submit_id','Submit ID',"integer|greater_than[0]");
 		$this->form_validation->set_rules('problem','problem',"integer|greater_than[0]");
 		//echo $this->input->post('problem'); echo '<br>'; echo $this->input->post('submit_id');

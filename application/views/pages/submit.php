@@ -45,6 +45,18 @@
 			<?php elseif ( !$this->assignment_model->is_participant($assignment['participants'],$username) ): ?>
 				<p>You are not registered for submitting.</p>
 			<?php else: ?>
+				<p>Selected assignment: <?php echo $assignment['name'] ?></p>
+				<p>Coefficient: <?php
+					$extra_time = $assignment['extra_time'];
+					$delay = shj_now()-strtotime($assignment['finish_time']);;
+					ob_start();
+					if ( eval($assignment['late_rule']) === FALSE )
+						$coefficient = "error";
+					if (!isset($coefficient))
+						$coefficient = "error";
+					ob_end_clean();
+					echo $coefficient;
+				?></p>
 				<?php echo form_open_multipart('submit') ?>
 				<p class="input_p">
 					<label for="problem">Problem:</label><br>

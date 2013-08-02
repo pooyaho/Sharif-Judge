@@ -51,7 +51,7 @@ my $output = undef;
 my $reference = undef;
 my $watchfor = 'tree';
 # Requests per seccond
-my $frequency = 14; # changed by mjnaderi from 10 to 14
+my $frequency = 20; # changed by mjnaderi from 10 to 20
 # if we debug
 my $debug = '';
 # Whether we do not do this term-kill stuff, and just kill processes at once
@@ -89,7 +89,8 @@ my $uwait = int (1_000_000 / $frequency);
 my $uflush_time = 100_000;
 
 # String to identify thes script's prints in the output
-my $id_str = $ENV{'TIMEOUT_IDSTR'} || '';
+#my $id_str = $ENV{'TIMEOUT_IDSTR'} || '';
+my $id_str = 'SHJ_'; #changed by mjnaderi
 
 use strict;
 
@@ -488,12 +489,12 @@ sub get_patterns
 sub limits_exceeded
 {
 	if (defined $timelimit && $timeinfo->{total} > $timelimit){
-		return 'SHJ_TIME'; # changed by mjnaderi (SHJ is for SHarif Judge)
+		return 'TIME'; # changed by mjnaderi (SHJ is for SHarif Judge)
 	}elsif (defined $ticklimit && $kill_stale && $timeinfo->{ticks_stale} > $ticklimit) {
 	# Sometimes the controlling process may inherently hang up.  Then we don't interrupt it.
-		return 'SHJ_HANGUP'; # changed by mjnaderi (SHJ is for SHarif Judge)
+		return 'HANGUP'; # changed by mjnaderi (SHJ is for SHarif Judge)
 	}elsif (defined $memlimit && $meminfo > $memlimit){
-		return 'SHJ_MEM'; # changed by mjnaderi (SHJ is for SHarif Judge)
+		return 'MEM'; # changed by mjnaderi (SHJ is for SHarif Judge)
 	}
 	return undef;
 }

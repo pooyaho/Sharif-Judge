@@ -186,7 +186,7 @@ div#about {
 }
 
 div#about p {
-	font-size: 11px;
+	font-size: 10px;
 	margin: 0 0 7px 0;
 }
 
@@ -274,6 +274,26 @@ select.sharif_time {
 
 .assignment_item {
 	padding-top: 3px;
+}
+
+#main_content .c1 {
+	margin-top: -11px;
+}
+
+#main_content .assignment_block {
+	padding: 30px 0;
+	border-bottom: 1px solid #c6c6c6;
+}
+
+#main_content .assignment_item {
+	margin-top: -11px;
+}
+
+#main_content .assignment_subitem {
+	display: inline-block;
+	padding:0px 5px;
+	min-width: 70px;
+	text-align: center;
 }
 
 .check {
@@ -641,9 +661,14 @@ input.view_code:active {
 	float: left;
 }
 
+#add_problems {
+	clear: left;
+	padding-top: 10px;
+}
+
 textarea.add_text {
 	font-size : 10px;
-	width: 500px;
+	width: 410px;
 }
 
 
@@ -670,4 +695,9 @@ span.shj_r {
 
 span.shj_g {
 	color: green;
+}
+
+.scoreboard_hours {
+	font-size: 9px;
+	color: #AAA;
 }

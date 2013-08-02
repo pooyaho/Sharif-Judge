@@ -36,24 +36,6 @@
 #      4              Special Judge Script is Invalid
 #      5              File format not supported
 
-
-######################## Settings #######################
-#SANDBOX_ON=true # turn EasySandbox for C/C++ on/off
-# Run:
-#    $ cd easysandbox
-#    $ make runtests
-# If you see "All tests passed!", EasySandbox can be enabled on your system
-# For enabling EasySandbox, run:
-#    $ cd easysandbox
-#    $ make
-# and set "SANDBOX_ON" option (above) to "true"
-
-#SHIELD_ON=true # turn Shield for C/C++ on/off
-# If you want to turn off java policy, leave this blank:
-#JAVA_POLICY="-Djava.security.manager -Djava.security.policy=java.policy"
-#LOG_ON=true
-
-
 ################### Getting Arguments ###################
 PROBLEMPATH=${1} # problem directory
 UN=${2} # username
@@ -94,7 +76,21 @@ if [ "$DIFFOPTION" != "ignore_all_whitespace" ]; then
 fi
 
 
+LOG="$PROBLEMPATH/$UN/log"; echo "" >>$LOG
+function judge_log {
+	echo -e "$1"
+	if $LOG_ON; then
+		echo -e "$1" >>$LOG 
+	fi
+}
+
+judge_log "Starting tester..."
+
+
 #################### Initialization #####################
+PERL_EXISTS=true
+hash perl 2>/dev/null || PERL_EXISTS=false
+
 TST="$(ls $PROBLEMPATH/in | wc -l)"  # Number of Test Cases
 JAIL=jail-$RANDOM
 if ! mkdir $JAIL; then
@@ -103,13 +99,6 @@ fi
 cd $JAIL
 cp ../timeout ./timeout
 chmod +x timeout
-
-LOG="$PROBLEMPATH/$UN/log"; echo "" >>$LOG
-function judge_log {
-	if $LOG_ON; then
-		echo -e "$1" >>$LOG 
-	fi
-}
 
 judge_log "$(date)"
 judge_log "Time Limit: $TIMELIMIT s"
@@ -254,19 +243,31 @@ for((i=1;i<=TST;i++)); do
 	
 	if [ "$EXT" = "java" ]; then
 		cp ../java.policy java.policy
-		./timeout -nosandbox -t $TIMELIMIT java $JAVA_POLICY $MAINFILENAME  <$PROBLEMPATH/in/input$i.txt >out 2>err
+		if $PERL_EXISTS; then
+			./timeout -nosandbox -t $TIMELIMIT java $JAVA_POLICY $MAINFILENAME  <$PROBLEMPATH/in/input$i.txt >out 2>err
+		else
+			java $JAVA_POLICY $MAINFILENAME  <$PROBLEMPATH/in/input$i.txt >out 2>err
+		fi
 		EXITCODE=$?
 	elif [ "$EXT" = "c" ] || [ "$EXT" = "cpp" ]; then
 		#$TIMEOUT ./$FILENAME <$PROBLEMPATH/in/input$i.txt >out 2>/dev/null
 		if $SANDBOX_ON; then
 			#LD_PRELOAD=./EasySandbox.so ./$FILENAME <$PROBLEMPATH/in/input$i.txt >out 2>/dev/null
-			./timeout --sandbox -t $TIMELIMIT -m $MEMLIMIT ./$FILENAME <$PROBLEMPATH/in/input$i.txt >out 2>err
+			if $PERL_EXISTS; then
+				./timeout --sandbox -t $TIMELIMIT -m $MEMLIMIT ./$FILENAME <$PROBLEMPATH/in/input$i.txt >out 2>err
+			else
+				LD_PRELOAD=./EasySandbox.so ./$FILENAME <$PROBLEMPATH/in/input$i.txt >out 2>err
+			fi
 			EXITCODE=$?
 			# remove <<entering SECCOMP mode>> from beginning of output:
 			tail -n +2 out >thetemp && mv thetemp out
 		else
 			#./$FILENAME <$PROBLEMPATH/in/input$i.txt >out 2>/dev/null
-			./timeout -nosandbox -t $TIMELIMIT -m $MEMLIMIT ./$FILENAME <$PROBLEMPATH/in/input$i.txt >out 2>err
+			if $PERL_EXISTS; then
+				./timeout -nosandbox -t $TIMELIMIT -m $MEMLIMIT ./$FILENAME <$PROBLEMPATH/in/input$i.txt >out 2>err
+			else
+				./$FILENAME <$PROBLEMPATH/in/input$i.txt >out 2>err
+			fi
 			EXITCODE=$?
 		fi
 	elif [ "$EXT" = "py" ]; then
@@ -298,6 +299,10 @@ for((i=1;i<=TST;i++)); do
 		elif grep -q "SHJ_HANGUP" err; then
 			judge_log "Hang Up"
 			echo "<span class=\"shj_o\">Process hanged up</span>" >>$PROBLEMPATH/$UN/result.html
+			continue
+		elif grep -q "SHJ_SIGNAL" err; then
+			judge_log "Killed by a signal"
+			echo "<span class=\"shj_o\">Killed by a signal</span>" >>$PROBLEMPATH/$UN/result.html
 			continue
 		fi
 	fi
@@ -356,8 +361,9 @@ for((i=1;i<=TST;i++)); do
 	fi
 done
 
-((SCORE=PASSEDTESTS*10000/TST)) # give score from 10,000
-echo $SCORE
 cd ..
 rm -r $JAIL >/dev/null 2>/dev/null # removing files
+((SCORE=PASSEDTESTS*10000/TST)) # give score from 10,000
+judge_log "\nScore from 10000: $SCORE"
+echo $SCORE
 exit 0

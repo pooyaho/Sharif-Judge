@@ -8,11 +8,11 @@
 
 
 /* Database config */
-$prefix			= 'shj_'; // table prefix
-$db_host		= 'localhost';
-$db_user		= 'shj';
-$db_pass		= '123';
-$db_database	= 'shj';
+$prefix         = 'shj_'; // table prefix
+$db_host        = 'localhost';
+$db_user        = 'shj';
+$db_pass        = '123';
+$db_database    = 'shj';
 
 
 // Connecting to database
@@ -97,12 +97,14 @@ do{
 	$assignment = $qr['assignment'];
 	$problem = $qr['problem'];
 
-	$srrr = mysql_fetch_assoc(mysql_query("SELECT c_time_limit,java_time_limit,python_time_limit,memory_limit FROM {$prefix}problems WHERE assignment='$assignment' AND id='$problem'"));
+	$srrr = mysql_fetch_assoc(mysql_query("SELECT c_time_limit,java_time_limit,python_time_limit,memory_limit,diff_cmd,diff_arg FROM {$prefix}problems WHERE assignment='$assignment' AND id='$problem'"));
 
 	$c_time_limit = $srrr['c_time_limit']/1000;
 	$java_time_limit = $srrr['java_time_limit']/1000;
 	$python_time_limit = $srrr['python_time_limit']/1000;
 	$memory_limit = $srrr['memory_limit'];
+	$diff_cmd = $srrr['diff_cmd'];
+	$diff_arg = $srrr['diff_arg'];
 
 
 	$sr = mysql_fetch_assoc(mysql_query("SELECT * FROM {$prefix}all_submissions WHERE username='$username' AND assignment='$assignment' AND problem='$problem' AND submit_id='$submit_id'")); // submitrow
@@ -128,8 +130,6 @@ do{
 	$op4 = $srrr['shj_value'];
 
 	// compiling and judging the code (with tester.sh) :
-	$output="";
-	$ret="";
 	
 	if ($file_type=="c" OR $file_type == "cpp")
 		$time_limit = $c_time_limit;
@@ -140,13 +140,18 @@ do{
 	
 	$time_limit = round($time_limit, 3);
 	
-	$cmd = "cd $tester_path; ./tester.sh $problemdir $username $main_filename $raw_filename $file_type $time_limit $memory_limit diff -iw $op1 $op2 $op3 $op4"; /* todo */
+	$cmd = "cd $tester_path; ./tester.sh $problemdir $username $main_filename $raw_filename $file_type $time_limit $memory_limit $diff_cmd $diff_arg $op1 $op2 $op3 $op4"; /* todo */
 
 	file_put_contents($userdir."/log",$cmd);
 
+	$output=array();
+	$ret="";
+
 	exec($cmd,$output, $ret);
 
-	$output=$output[0];
+	exec("cd $tester_path; rm -r jail*");
+
+	$output=end($output);
 
 	$score = trim($output);
 
