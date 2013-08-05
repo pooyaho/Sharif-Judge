@@ -45,7 +45,6 @@ class Login extends CI_Controller{
 				// setting the session and redirecting to dashboard:
 				$login_data = array(
 					'username'  => $username,
-					//'email'     => 'johndoe@some-site.com',
 					'logged_in' => TRUE
 				);
 				$this->session->set_userdata($login_data);
@@ -75,7 +74,7 @@ class Login extends CI_Controller{
 		);
 		$this->load->view('templates/header', $data);
 		if ($this->form_validation->run()){
-			$this->user_model->add_user();
+			$this->user_model->add_user($this->input->post('username'),$this->input->post('email'),$this->input->post('password'),'student');
 			$this->load->view('pages/authentication/register_success');
 		}
 		else{

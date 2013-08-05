@@ -5,7 +5,7 @@
  * @author Mohammad Javad Naderi <mjnaderi@gmail.com>
  */?>
 <?php if ($result !== TRUE): ?>
-	<div class="error"><?php echo $result ?></div>
+	<div class="shj_error"><?php echo $result ?></div>
 <?php else: ?>
 	<?php echo form_open('login/reset/'.$key) ?>
 	<form method="post" action="">
@@ -18,15 +18,15 @@
 					<p>
 						<label for="password">New Password:</label><br/>
 						<input type="password" name="password" class="sharif_input"/>
-						<?php echo form_error('password','<div class="error">','</div>'); ?>
+						<?php echo form_error('password','<div class="shj_error">','</div>'); ?>
 					</p>
 					<p>
 						<label for="password_again">New Password, Again:</label><br/>
 						<input type="password" name="password_again" class="sharif_input"/>
-						<?php echo form_error('password_again','<div class="error">','</div>'); ?>
+						<?php echo form_error('password_again','<div class="shj_error">','</div>'); ?>
 					</p>
 					<?php if ($reset === TRUE): ?>
-						<div class="ok">Login with your new password!</div>
+						<div class="shj_ok">Login with your new password!</div>
 					<?php endif ?>
 				</div>
 				<div class="login2">

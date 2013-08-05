@@ -48,14 +48,14 @@
 	<div id="main_content">
 
 		<?php if ($form_status=="ok"||$form_status=="tests_updated"): ?>
-			<div class="ok">Assignment <?php echo $edit?"updated":'added' ?> successfully.</div>
+			<div class="shj_ok">Assignment <?php echo $edit?"updated":'added' ?> successfully.</div>
 		<?php elseif ($form_status=="error"): ?>
-			<div class="error">Error <?php echo $edit?"updating":'adding' ?> assignment.</div>
+			<div class="shj_error">Error <?php echo $edit?"updating":'adding' ?> assignment.</div>
 		<?php elseif ($form_status=="corrupted"): ?>
-			<div class="error">Error <?php echo $edit?"updating":'adding' ?> assignment. Unable to unzip uploaded file.</div>
+			<div class="shj_error">Error <?php echo $edit?"updating":'adding' ?> assignment. Unable to unzip uploaded file.</div>
 		<?php endif ?>
 		<?php if ($form_status=="tests_updated"): ?>
-			<div class="ok">Tests <?php echo $edit?"updated":'added' ?> successfully.</div>
+			<div class="shj_ok">Tests <?php echo $edit?"updated":'added' ?> successfully.</div>
 		<?php endif ?>
 
 		<?php echo form_open_multipart($edit?"assignments/edit/".$edit_assignment['id']:"add_assignment/add") ?>
@@ -69,7 +69,7 @@
 					else
 						echo set_value('assignment_name');
 				?>"/>
-				<?php echo form_error('assignment_name','<div class="error">','</div>'); ?>
+				<?php echo form_error('assignment_name','<div class="shj_error">','</div>'); ?>
 			</p>
 			<p class="input_p">
 				<label for="start_time">Start Time:</label><br>
@@ -79,7 +79,7 @@
 					else
 						echo set_value('start_time');
 				?>" />
-				<?php echo form_error('start_time','<div class="error">','</div>'); ?>
+				<?php echo form_error('start_time','<div class="shj_error">','</div>'); ?>
 			</p>
 			<p class="input_p">
 				<label for="finish_time">Finish Time:</label><br>
@@ -89,7 +89,7 @@
 					else
 						echo set_value('finish_time');
 				?>" />
-				<?php echo form_error('finish_time','<div class="error">','</div>'); ?>
+				<?php echo form_error('finish_time','<div class="shj_error">','</div>'); ?>
 			</p>
 			<p class="input_p">
 				<label for="extra_time">Extra Time (seconds):</label><br>
@@ -99,7 +99,7 @@
 					else
 						echo set_value('extra_time');
 				?>" />
-				<?php echo form_error('extra_time','<div class="error">','</div>'); ?>
+				<?php echo form_error('extra_time','<div class="shj_error">','</div>'); ?>
 			</p>
 			<p class="input_p">
 				<label for="participants">Participants:</label><br>
@@ -115,7 +115,7 @@
 				<input type="file" name="tests" class="sharif_input medium"/>
 				<?php
 					if (!$edit)
-						echo $this->upload->display_errors('<div class="error">','</div>');
+						echo $this->upload->display_errors('<div class="shj_error">','</div>');
 				?>
 			</p>
 		</div>
@@ -123,12 +123,12 @@
 			<p class="input_p">
 				<input type="checkbox" name="open" value="1" <?php if(!($edit && !$edit_assignment['open'])) echo "checked"?> /> Open<br>
 				<span class="form_comment">Open or close this assignment.</span>
-				<?php echo form_error('open','<div class="error">','</div>'); ?>
+				<?php echo form_error('open','<div class="shj_error">','</div>'); ?>
 			</p>
 			<p class="input_p">
 				<input type="checkbox" name="scoreboard" value="1" <?php if(!($edit && !$edit_assignment['scoreboard'])) echo "checked"?> /> Scoreboard<br>
 				<span class="form_comment">Check this to enable scoreboard.</span>
-				<?php echo form_error('scoreboard','<div class="error">','</div>'); ?>
+				<?php echo form_error('scoreboard','<div class="shj_error">','</div>'); ?>
 			</p>
 			<p class="input_p">
 				<label for="late_rule">Coefficient rule (PHP script without <?php echo htmlspecialchars('<?php ?>') ?> tags):</label><br>
@@ -156,7 +156,7 @@
 						<td><input type="text" name="filetypes[]" class="sharif_input short" value="<?php echo $problem['allowed_file_types'] ?>"/></td>
 						<td><input type="text" name="diff_cmd[]" class="sharif_input short" value="<?php echo $problem['diff_cmd'] ?>"/></td>
 						<td><input type="text" name="diff_arg[]" class="sharif_input short" value="<?php echo $problem['diff_arg'] ?>"/></td>
-						<td><input type="checkbox" name="judge[]" class="check" value="1" <?php if ($problem['judge']) echo "checked" ?>/></td>
+						<td><input type="checkbox" name="judge[]" class="check" value="<?php echo $problem['id'] ?>" <?php if ($problem['judge']) echo "checked" ?>/></td>
 					</tr>
 				<?php endforeach ?>
 			<?php else: ?>

@@ -4,6 +4,11 @@
  * @file login.php
  * @author Mohammad Javad Naderi <mjnaderi@gmail.com>
  */?>
+<script>
+	$(document).ready(function(){
+		$("#username").focus();
+	});
+</script>
 <?php echo form_open('login') ?>
 <form method="post" action="">
 	<div class="box login">
@@ -14,16 +19,16 @@
 			<div class="login1">
 				<p>
 					<label for="username">Username</label><br/>
-					<input type="text" name="username" class="sharif_input" value="<?php echo set_value('username'); ?>"/>
-					<?php echo form_error('username','<div class="error">','</div>'); ?>
+					<input type="text" id="username" name="username" class="sharif_input" value="<?php echo set_value('username'); ?>"/>
+					<?php echo form_error('username','<div class="shj_error">','</div>'); ?>
 				</p>
 				<p>
 					<label for="password">Password</label><br/>
 					<input type="password" name="password" class="sharif_input"/>
-					<?php echo form_error('password','<div class="error">','</div>'); ?>
+					<?php echo form_error('password','<div class="shj_error">','</div>'); ?>
 				</p>
 				<?php if ($error): ?>
-					<div class="error">Incorrect username or password.</div>
+					<div class="shj_error">Incorrect username or password.</div>
 				<?php endif ?>
 			</div>
 			<div class="login2">

@@ -43,19 +43,91 @@ class User_model extends CI_Model{
 	}
 
 
-
 	/*
-	 * Add new user to database
+	 * Add a new user to database
 	 */
-	public function add_user(){
-		$this->load->helper('password_hash');
-		$t_hasher = new PasswordHash(8, FALSE);
+	public function add_user($username, $email, $password, $role){
+		if (strlen($username)<3 || strlen($username)>20 || strlen($password)<6 || strlen($password)>30)
+			return 'Username or password length error.';
+		if ($this->have_user($username))
+			return 'User with this username exists.';
+		if ($this->have_email($email))
+			return 'User with this email exists.';
+		if (strtolower($username)!==$username)
+			return 'Username must be lowercase.';
+		$roles = array('admin','head_instructor','instructor','student');
+		if (!in_array($role,$roles))
+			return 'Users role is not valid.';
+		$this->load->library('password_hash',array(8,FALSE));
 		$user=array(
-			'username' => $this->input->post('username'),
-			'email' => $this->input->post('email'),
-			'password' => $t_hasher->HashPassword($this->input->post('password'))
+			'username' => $username,
+			'email' => $email,
+			'password' => $this->password_hash->HashPassword($password),
+			'role' => $role
 		);
 		$this->db->insert('users',$user);
+		return TRUE;
+	}
+
+	/*
+	 * Add multiple users
+	 */
+	public function add_users($text,$send_mail,$delay){
+		$lines = preg_split('/((\r?\n)|(\n?\r))/',$text);
+		$users_ok = array();
+		$users_error = array();
+		foreach ($lines as $line){
+			if (strlen($line)==0 || $line[0]=="#")
+				continue;
+			$parts = preg_split('/\s+/', $line);
+			if (count($parts)!=4)
+				continue;
+
+			if (strtolower(substr($parts[2],0,6))=="random"){ // generate random password
+				$n = trim(substr($parts[2],6),'[]');
+				if (is_numeric($n)){
+					$this->load->helper('string');
+					$parts[2] = random_string('alnum',$n);
+				}
+			}
+
+			$result = $this->add_user($parts[0],$parts[1],$parts[2],$parts[3]);
+			if ($result ===TRUE)
+				array_push($users_ok,array($parts[0],$parts[1],$parts[2],$parts[3]));
+			else
+				array_push($users_error,array($parts[0],$parts[1],$parts[2],$parts[3],$result));
+		}
+		if ($send_mail){
+			$this->load->library('email');
+			foreach ($users_ok as $user){
+				$config['mailtype']='html';
+				$this->email->initialize($config);
+				$this->email->from($this->settings_model->get_setting('mail_from'), 'Sharif Judge');
+				$this->email->to($user[1]);
+				$this->email->subject('Sharif Judge Username and Password');
+				$this->email->message('<p>Hello! You are registered in Sharif Judge at '.site_url().' as '.$user[3].'.</p>
+					<p>You username and password is:</p>
+					<p>Username: '.$user[0].'</p>
+					<p>Password: '.$user[2].'</p>
+					<p>You can log in at <a href="'.site_url('login').'"></a></p>
+				');
+				$this->email->send();
+				sleep($delay);
+			}
+		}
+		return array($users_ok, $users_error);
+	}
+
+
+
+	public function delete_user($user_id,$delete_submissions){
+		$username = $this->db->select('username')->get_where('users',array('id'=>$user_id))->row()->username;
+		$this->db->delete('users',array('id'=>$user_id));
+		if ($delete_submissions){// delete all submissions and submitted codes
+			$this->db->delete('final_submissions',array('username'=>$username));
+			$this->db->delete('all_submissions',array('username'=>$username));
+			exec("cd {$this->settings_model->get_setting('assignments_root')}; rm -r */*/$username;");
+		}
 	}
 
 
@@ -64,14 +136,13 @@ class User_model extends CI_Model{
 	 * Function used for validating user login
 	 */
 	public function validate_user($username, $password){
-		$this->load->helper('password_hash');
-		$t_hasher = new PasswordHash(8, FALSE);
+		$this->load->library('password_hash',array(8,FALSE));
 		$query = $this->db->get_where('users',array('username'=>$username));
 		if ($query->num_rows() != 1)
 			return FALSE;
 		if ($query->row()->username !== $username) // needed (utf8_general_ci)
 			return FALSE;
-		if ($t_hasher->CheckPassword($password,$query->row()->password))
+		if ($this->password_hash->CheckPassword($password,$query->row()->password))
 			return TRUE;
 		return FALSE;
 	}
@@ -81,7 +152,13 @@ class User_model extends CI_Model{
 	 * Returns selected assignment by user $username
 	 */
 	public function selected_assignment($username){
-		return $this->db->select('selected_assignment')->get_where('users',array('username'=>$username))->row()->selected_assignment;
+		$query = $this->db->select('selected_assignment')->get_where('users',array('username'=>$username));
+		if ($query->num_rows()!=1){
+			$this->session->sess_destroy();
+			redirect('login');
+		}
+		return $query->row()->selected_assignment;
+
 	}
 
 
@@ -97,7 +174,10 @@ class User_model extends CI_Model{
 	 * Gets information about user $username
 	 */
 	public function get_user($username){
-		return $this->db->select('display_name, email')->get_where('users',array('username'=>$username))->row();
+		$query = $this->db->select('display_name, email')->get_where('users',array('username'=>$username));
+		if ($query->num_rows()!=1)
+			return FALSE;
+		return $query->row();
 	}
 
 
@@ -122,17 +202,23 @@ class User_model extends CI_Model{
 	/*
 	 * Update user profile
 	 */
-	public function update_profile(){
+	public function update_profile($user_id){
+		$query = $this->db->get_where('users',array('id'=>$user_id));
+		if ($query->num_rows()!=1)
+			return FALSE;
+		$the_user = $query->row();
+		$username = $the_user->username;
 		$user=array(
 			'display_name' => $this->input->post('display_name'),
 			'email' => $this->input->post('email')
 		);
+		if ($this->input->post('role')!==FALSE)
+			$user['role']=$this->input->post('role');
 		if ($this->input->post('password')!=""){
-			$this->load->helper('password_hash');
-			$t_hasher = new PasswordHash(8, FALSE);
-			$user['password'] = $t_hasher->HashPassword($this->input->post('password'));
+			$this->load->library('password_hash',array(8,FALSE));
+			$user['password'] = $this->password_hash->HashPassword($this->input->post('password'));
 		}
-		$this->db->where('username',$this->session->userdata('username'))->update('users',$user);
+		$this->db->where('username',$username)->update('users',$user);
 	}
 
 
@@ -153,14 +239,13 @@ class User_model extends CI_Model{
 		$this->load->library('email');
 		$config['mailtype']='html';
 		$this->email->initialize($config);
-		$this->email->from('info@mjnaderi.ir', 'Sharif Judge');
+		$this->email->from($this->settings_model->get_setting('mail_from'), 'Sharif Judge');
 		$this->email->to($email);
 		$this->email->subject('Password Reset');
 		$this->email->message('<p>Someone requested to reset the password for account with this email address at '.site_url().'.</p>
 		<p>To change your password, visit this link:</p>
 		<p><a href="'.site_url('login/reset/'.$passchange_key).'">Reset Password</a></p>
 		<p>If you don\'t want to change your password, just ignore this email.</p>');
-
 		$this->email->send();
 	}
 
@@ -185,9 +270,8 @@ class User_model extends CI_Model{
 		$query = $this->db->get_where('users',array('passchange_key'=>$passchange_key));
 		if ($query->num_rows() != 1)
 			return FALSE;
-		$this->load->helper('password_hash');
-		$t_hasher = new PasswordHash(8, FALSE);
-		$this->db->where('username',$query->row()->username)->update('users',array('passchange_key'=>'','password' => $t_hasher->HashPassword($newpassword)));
+		$this->load->library('password_hash',array(8,FALSE));
+		$this->db->where('username',$query->row()->username)->update('users',array('passchange_key'=>'','password' => $this->password_hash->HashPassword($newpassword)));
 		return TRUE;
 	}
 

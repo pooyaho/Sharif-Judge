@@ -14,22 +14,22 @@
 				<p>
 					<label for="username">Username</label><br/>
 					<input type="text" name="username" class="sharif_input" value="<?php echo set_value('username'); ?>"/>
-					<?php echo form_error('username','<div class="error">','</div>'); ?>
+					<?php echo form_error('username','<div class="shj_error">','</div>'); ?>
 				</p>
 				<p>
 					<label for="email">Email</label><br/>
 					<input type="text" name="email" class="sharif_input" value="<?php echo set_value('email'); ?>"/>
-					<?php echo form_error('email','<div class="error">','</div>'); ?>
+					<?php echo form_error('email','<div class="shj_error">','</div>'); ?>
 				</p>
 				<p>
 					<label for="password">Password</label><br/>
 					<input type="password" name="password" class="sharif_input"/>
-					<?php echo form_error('password','<div class="error">','</div>'); ?>
+					<?php echo form_error('password','<div class="shj_error">','</div>'); ?>
 				</p>
 				<p>
 					<label for="password_again">Password, Again</label><br/>
 					<input type="password" name="password_again" class="sharif_input"/>
-					<?php echo form_error('password_again','<div class="error">','</div>'); ?>
+					<?php echo form_error('password_again','<div class="shj_error">','</div>'); ?>
 				</p>
 			</div>
 			<div class="login2">

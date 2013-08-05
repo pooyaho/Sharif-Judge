@@ -244,12 +244,12 @@ p.input_p {
 	padding: 0;
 	margin: 10px 6px 0 0;
 }
-div.error {
+.shj_error {
 	color: red;
 	font-size: 12px;
 }
 
-div.ok {
+.shj_ok {
 	color: green;
 	font-size: 12px;
 }

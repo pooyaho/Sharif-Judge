@@ -244,7 +244,7 @@ for((i=1;i<=TST;i++)); do
 	if [ "$EXT" = "java" ]; then
 		cp ../java.policy java.policy
 		if $PERL_EXISTS; then
-			./timeout -nosandbox -t $TIMELIMIT java $JAVA_POLICY $MAINFILENAME  <$PROBLEMPATH/in/input$i.txt >out 2>err
+			./timeout --just-kill -nosandbox -t $TIMELIMIT java $JAVA_POLICY $MAINFILENAME  <$PROBLEMPATH/in/input$i.txt >out 2>err
 		else
 			java $JAVA_POLICY $MAINFILENAME  <$PROBLEMPATH/in/input$i.txt >out 2>err
 		fi
@@ -254,7 +254,7 @@ for((i=1;i<=TST;i++)); do
 		if $SANDBOX_ON; then
 			#LD_PRELOAD=./EasySandbox.so ./$FILENAME <$PROBLEMPATH/in/input$i.txt >out 2>/dev/null
 			if $PERL_EXISTS; then
-				./timeout --sandbox -t $TIMELIMIT -m $MEMLIMIT ./$FILENAME <$PROBLEMPATH/in/input$i.txt >out 2>err
+				./timeout --just-kill --sandbox -t $TIMELIMIT -m $MEMLIMIT ./$FILENAME <$PROBLEMPATH/in/input$i.txt >out 2>err
 			else
 				LD_PRELOAD=./EasySandbox.so ./$FILENAME <$PROBLEMPATH/in/input$i.txt >out 2>err
 			fi
@@ -264,14 +264,14 @@ for((i=1;i<=TST;i++)); do
 		else
 			#./$FILENAME <$PROBLEMPATH/in/input$i.txt >out 2>/dev/null
 			if $PERL_EXISTS; then
-				./timeout -nosandbox -t $TIMELIMIT -m $MEMLIMIT ./$FILENAME <$PROBLEMPATH/in/input$i.txt >out 2>err
+				./timeout --just-kill -nosandbox -t $TIMELIMIT -m $MEMLIMIT ./$FILENAME <$PROBLEMPATH/in/input$i.txt >out 2>err
 			else
 				./$FILENAME <$PROBLEMPATH/in/input$i.txt >out 2>err
 			fi
 			EXITCODE=$?
 		fi
 	elif [ "$EXT" = "py" ]; then
-		./timeout -nosandbox -t $TIMELIMIT -m $MEMLIMIT python3 -O $FILENAME.$EXT <$PROBLEMPATH/in/input$i.txt >out 2>err
+		./timeout --just-kill -nosandbox -t $TIMELIMIT -m $MEMLIMIT python3 -O $FILENAME.$EXT <$PROBLEMPATH/in/input$i.txt >out 2>err
 		EXITCODE=$?
 		echo "<span>" >>$PROBLEMPATH/$UN/result.html
 		(cat err | head -5 | sed "s/$FILENAME.$EXT//g" | sed 's/&/\&amp;/g' | sed 's/</\&lt;/g' | sed 's/>/\&gt;/g' | sed 's/"/\&quot;/g') >> $PROBLEMPATH/$UN/result.html

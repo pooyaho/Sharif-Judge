@@ -31,8 +31,10 @@ class Assignment_model extends CI_Model{
 			'late_rule' => $this->input->post('late_rule'),
 			'participants' => $this->input->post('participants')
 		);
-		if($edit)
+		if($edit){
+			unset($assignment['total_submits']);
 			$this->db->where('id',$id)->update('assignments',$assignment);
+		}
 		else
 			$this->db->insert('assignments',$assignment);
 

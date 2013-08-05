@@ -9,7 +9,10 @@
 <div id="main_container">
 	<div id="page_title"><img src="<?php echo base_url('assets/images/icons/users.png') ?>"/> <span><?php echo $title ?></span></div>
 	<div id="main_content">
-		<p><?php echo anchor('users/add','Add User') ?></p>
+		<?php if (isset($deleted) && $deleted===TRUE): ?>
+			<p class="shj_ok">User deleted successfully.</p>
+		<?php endif ?>
+		<p><?php echo anchor('users/add','Add Users') ?></p>
 		<table class="sharif_table">
 			<thead>
 			<tr><th>ID</th><th>Username</th><th>Display Name</th><th>Email</th><th>Role</th><th>Actions</th></tr>
@@ -22,7 +25,7 @@
 					<td><?php echo $user['email'] ?></td>
 					<td><?php echo $user['role'] ?></td>
 					<td>
-						<?php echo anchor('users/edit/'.$user['id'],'Edit') ?>
+						<?php echo anchor('profile/'.$user['id'],'Edit') ?>
 						<?php echo anchor('users/delete/'.$user['id'],'Delete') ?>
 					</td>
 				</tr>

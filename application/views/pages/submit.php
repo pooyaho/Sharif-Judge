@@ -66,24 +66,24 @@
 							<option value="<?php echo $problem['id'] ?>"><?php echo $problem['name'] ?></option>
 						<?php endforeach ?>
 					</select>
-					<?php echo form_error('problem','<div class="error">','</div>'); ?>
+					<?php echo form_error('problem','<div class="shj_error">','</div>'); ?>
 				</p>
 				<p class="input_p">
 					<label for="problem">File Type:</label><br>
 					<select id="filetypes" name="filetype" class="sharif_input">
 						<option value="0" selected="selected">-- Select One --</option>
 					</select>
-					<?php echo form_error('filetype','<div class="error">','</div>'); ?>
+					<?php echo form_error('filetype','<div class="shj_error">','</div>'); ?>
 				</p>
 				<p class="input_p">
 					<label for="userfile">File:</label><br>
 					<input type="file" id="file" class="sharif_input" name="userfile" />
 					<?php if ($upload_state==='error'): ?>
-					<div class="error">Error uploading file.</div>
+					<div class="shj_error">Error uploading file.</div>
 					<?php elseif ($upload_state==='ok'): ?>
-					<div class="ok">File uploaded successfully. See the result in 'All Submissions'.</div>
+					<div class="shj_ok">File uploaded successfully. See the result in 'All Submissions'.</div>
 					<?php endif ?>
-					<?php echo $this->upload->display_errors('<div class="error">','</div>'); ?>
+					<?php echo $this->upload->display_errors('<div class="shj_error">','</div>'); ?>
 				</p>
 				<p class="input_p">
 					<input type="submit" value="Submit" class="sharif_input"/>

@@ -12,21 +12,21 @@
 	<div id="main_content">
 		<p class="input_p">
 		<?php if ($form_status=="ok"): ?>
-			<div class="ok">Settings updated successfully.</div>
+			<div class="shj_ok">Settings updated successfully.</div>
 		<?php elseif ($form_status=="error"): ?>
-			<div class="error">Error updating settings.</div>
+			<div class="shj_error">Error updating settings.</div>
 		<?php elseif ($form_status=="defc"): ?>
-			<div class="ok">Settings updated.</div>
-			<div class="error">But file defc.h is not writable.</div>
+			<div class="shj_ok">Settings updated.</div>
+			<div class="shj_error">But file defc.h is not writable.</div>
 		<?php elseif ($form_status=="defcpp"): ?>
-			<div class="ok">Settings updated.</div>
-			<div class="error">But file defcpp.h is not writable.</div>
+			<div class="shj_ok">Settings updated.</div>
+			<div class="shj_error">But file defcpp.h is not writable.</div>
 		<?php elseif ($form_status=="defcdefcpp"): ?>
-			<div class="ok">Settings updated.</div>
-			<div class="error">But files defc.h and defcpp.h are not writable.</div>
+			<div class="shj_ok">Settings updated.</div>
+			<div class="shj_error">But files defc.h and defcpp.h are not writable.</div>
 		<?php endif ?>
 		<?php if ($defc===FALSE): ?>
-			<div class="error">"Tester path" is not correct.</div>
+			<div class="shj_error">"Tester path" is not correct.</div>
 		<?php endif ?>
 		</p>
 		<?php echo form_open('settings/update') ?>
@@ -34,7 +34,7 @@
 			<p class="input_p">
 				<label for="timezones">Timezone:</label><br/>
 				<?php echo timezone_menu($tz,'sharif_input medium') ?>
-				<?php echo form_error('timezone','<div class="error">','</div>'); ?>
+				<?php echo form_error('timezone','<div class="shj_error">','</div>'); ?>
 			</p>
 			<p class="input_p">
 				<label for="tester_path">Tester path:</label><br/>
@@ -47,7 +47,7 @@
 			<p class="input_p">
 				<label for="file_size_limit">Upload file size limit (kB):</label><br/>
 				<input type="text" name="file_size_limit" class="sharif_input medium" value="<?php echo $file_size_limit ?>"/>
-				<?php echo form_error('file_size_limit','<div class="error">','</div>'); ?>
+				<?php echo form_error('file_size_limit','<div class="shj_error">','</div>'); ?>
 			</p>
 			<p class="input_p">
 				<input type="checkbox" name="enable_registration" value="1" <?php if ($enable_registration) echo 'checked' ?>/> Registration<br>

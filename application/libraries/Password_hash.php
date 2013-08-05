@@ -2,7 +2,7 @@
 #
 # Portable PHP password hashing framework.
 #
-# Version 0.3 / Sharif-judge.
+# Version 0.3 / Sharif-Judge.
 #
 # Written by Solar Designer <solar at openwall.com> in 2004-2006 and placed in
 # the public domain.  Revised in subsequent years, still public domain.
@@ -24,14 +24,16 @@
 # Obviously, since this code is in the public domain, the above are not
 # requirements (there can be none), but merely suggestions.
 #
-class PasswordHash {
+class Password_hash {
 	var $itoa64;
 	var $iteration_count_log2;
 	var $portable_hashes;
 	var $random_state;
 
-	function PasswordHash($iteration_count_log2, $portable_hashes)
+	function Password_hash($input)
 	{
+		list($iteration_count_log2, $portable_hashes) = $input;
+
 		$this->itoa64 = './0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
 
 		if ($iteration_count_log2 < 4 || $iteration_count_log2 > 31)

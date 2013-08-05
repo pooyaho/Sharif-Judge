@@ -24,6 +24,7 @@ class Scoreboard_model extends CI_Model {
 		$users = array();
 		$finish = strtotime($assignment['finish_time']);
 		$submit_penalty = $this->settings_model->get_setting('submit_penalty');
+		$scores=array();
 		foreach ($submissions as $submission){
 
 			$pi = $this->assignment_model->problem_info($this->assignment['id'],$submission['problem']);
