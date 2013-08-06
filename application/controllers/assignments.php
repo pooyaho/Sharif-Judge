@@ -11,6 +11,7 @@ class Assignments extends CI_Controller{
 	var $user_level;
 	public function __construct(){
 		parent::__construct();
+		$this->load->library('session');
 		//$this->output->enable_profiler(TRUE);
 		if ( ! $this->session->userdata('logged_in')){ // if not logged in
 			redirect('login');

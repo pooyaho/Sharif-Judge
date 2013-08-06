@@ -92,12 +92,12 @@ input.sharif_input:focus {
 	box-shadow: rgba(82,168,236,0.6) 0 0 4px 2px;
 }
 
-div.error {
+.shj_error {
 	color: red;
 	font-size: 12px;
 }
 
-div.ok {
+.shj_ok {
 	color: green;
 	font-size: 12px;
 }

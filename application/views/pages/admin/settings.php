@@ -50,6 +50,11 @@
 				<?php echo form_error('file_size_limit','<div class="shj_error">','</div>'); ?>
 			</p>
 			<p class="input_p">
+				<label for="mail_from">Send emails from:</label><br/>
+				<input type="text" name="mail_from" class="sharif_input medium" value="<?php echo $mail_from ?>"/>
+				<?php echo form_error('mail_from','<div class="shj_error">','</div>'); ?>
+			</p>
+			<p class="input_p">
 				<input type="checkbox" name="enable_registration" value="1" <?php if ($enable_registration) echo 'checked' ?>/> Registration<br>
 				<p class="form_comment medium">Open public registration.</p>
 			</p>

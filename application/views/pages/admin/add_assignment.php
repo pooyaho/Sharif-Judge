@@ -15,7 +15,6 @@
 		<td><input type="text" name="name[]" class="sharif_input short" value="Problem "/></td>\
 		<td><input type="text" name="score[]" class="sharif_input tiny" value="100"/></td>\
 		<td><input type="text" name="c_time_limit[]" class="sharif_input tiny" value="500"/></td>\
-		<td><input type="text" name="python_time_limit[]" class="sharif_input tiny" value="1000"/></td>\
 		<td><input type="text" name="java_time_limit[]" class="sharif_input tiny" value="2000"/></td>\
 		<td><input type="text" name="memory_limit[]" class="sharif_input tiny" value="50000"/></td>\
 		<td><input type="text" name="filetypes[]" class="sharif_input short" value="c,cpp,java"/></td>\
@@ -142,7 +141,7 @@
 		</div>
 		<p class="input_p" id="add_problems">Problems <i class="splashy-add" id="add"></i> <i class="splashy-remove_minus_sign" id="remove"></i>
 		<table id="problems_table">
-			<thead><tr><th></th><th>Problem<br>Name</th><th>Problem<br>Score</th><th>C, C++ Time<br>Limit (ms)</th><th>Python Time<br>Limit (ms)</th><th>Java Time<br>Limit (ms)</th><th>Memory<br>Limit (kB)</th><th>Allowed<br>Filetypes</th><th>Diff<br>Command (<a href="#">?</a>)</th><th>Diff<br>Argument (<a href="#">?</a>)</th><th>Judge?</th></tr></thead>
+			<thead><tr><th></th><th>Problem<br>Name</th><th>Problem<br>Score</th><th>C, C++ Time<br>Limit (ms)</th><th>Java Time<br>Limit (ms)</th><th>Memory<br>Limit (kB)</th><th>Allowed<br>Filetypes</th><th>Diff<br>Command (<a href="#">?</a>)</th><th>Diff<br>Argument (<a href="#">?</a>)</th><th>Judge?</th></tr></thead>
 			<?php if ($edit): ?>
 				<?php foreach ($problems as $problem): ?>
 					<tr>
@@ -150,7 +149,6 @@
 						<td><input type="text" name="name[]" class="sharif_input short" value="<?php echo $problem['name'] ?>"/></td>
 						<td><input type="text" name="score[]" class="sharif_input tiny" value="<?php echo $problem['score'] ?>"/></td>
 						<td><input type="text" name="c_time_limit[]" class="sharif_input tiny" value="<?php echo $problem['c_time_limit'] ?>"/></td>
-						<td><input type="text" name="python_time_limit[]" class="sharif_input tiny" value="<?php echo $problem['python_time_limit'] ?>"/></td>
 						<td><input type="text" name="java_time_limit[]" class="sharif_input tiny" value="<?php echo $problem['java_time_limit'] ?>"/></td>
 						<td><input type="text" name="memory_limit[]" class="sharif_input tiny" value="<?php echo $problem['memory_limit'] ?>"/></td>
 						<td><input type="text" name="filetypes[]" class="sharif_input short" value="<?php echo $problem['allowed_file_types'] ?>"/></td>
@@ -165,7 +163,6 @@
 				<td><input type="text" name="name[]" class="sharif_input short" value="Problem "/></td>
 				<td><input type="text" name="score[]" class="sharif_input tiny" value="100"/></td>
 				<td><input type="text" name="c_time_limit[]" class="sharif_input tiny" value="500"/></td>
-				<td><input type="text" name="python_time_limit[]" class="sharif_input tiny" value="1000"/></td>
 				<td><input type="text" name="java_time_limit[]" class="sharif_input tiny" value="2000"/></td>
 				<td><input type="text" name="memory_limit[]" class="sharif_input tiny" value="50000"/></td>
 				<td><input type="text" name="filetypes[]" class="sharif_input short" value="c,cpp,java"/></td>

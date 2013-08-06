@@ -12,6 +12,7 @@ class Scoreboard extends CI_Controller{
 	var $problems;
 	public function __construct(){
 		parent::__construct();
+		$this->load->library('session');
 		if ( ! $this->session->userdata('logged_in')){ // if not logged in
 			redirect('login');
 		}

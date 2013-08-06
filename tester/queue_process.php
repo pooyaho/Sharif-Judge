@@ -7,12 +7,12 @@
 
 
 
-/* Database config */
-$prefix         = 'shj_'; // table prefix
-$db_host        = 'localhost';
-$db_user        = 'shj';
-$db_pass        = '123';
-$db_database    = 'shj';
+/* Database Connection Settings */
+$db_host        = 'localhost'; // database host
+$db_user        = '';          // database username
+$db_pass        = '';          // database password
+$db_database    = '';          // darabase name
+$prefix         = 'shj_';      // table prefix
 
 
 // Connecting to database

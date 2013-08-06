@@ -12,6 +12,7 @@ class Submissions extends CI_Controller{
 	var $final_items;
 	public function __construct(){
 		parent::__construct();
+		$this->load->library('session');
 		if ( ! $this->session->userdata('logged_in')){ // if not logged in
 			redirect('login');
 		}

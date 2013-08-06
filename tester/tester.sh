@@ -230,12 +230,12 @@ PASSEDTESTS=0
 
 for((i=1;i<=TST;i++)); do
 	judge_log "TEST$i"
-	sleep 0.05
+	#sleep 0.05
 	echo "<span class=\"shj_b\">Test $i </span>" >>$PROBLEMPATH/$UN/result.html
 	if [ "$EXT" != "java" ]; then # TODO memory limit for java
 		ulimit -v $((MEMLIMIT+10000))
 		ulimit -m $((MEMLIMIT+10000))
-		ulimit -s $((MEMLIMIT+10000))
+		#ulimit -s $((MEMLIMIT+10000))
 	fi
 	ulimit -t `echo "$TIMELIMIT/1+1"|bc` # kar az mohkamkari eyb nemikone!
 	

@@ -9,8 +9,7 @@ class Login extends CI_Controller{
 
 	public function __construct(){
 		parent::__construct();
-		$this->load->model('user_model');
-		/*$this->output->enable_profiler(TRUE);*/
+		$this->load->library('session');
 	}
 
 	public function _username_check($username){ // checks whether a user with this username exists (used for validating registration)
