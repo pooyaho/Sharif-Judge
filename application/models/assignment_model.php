@@ -47,7 +47,7 @@ class Assignment_model extends CI_Model{
 		$names = $this->input->post('name');
 		$scores = $this->input->post('score');
 		$c_tl = $this->input->post('c_time_limit');
-		$py_tl = $this->input->post('python_time_limit');
+		//$py_tl = $this->input->post('python_time_limit');
 		$java_tl = $this->input->post('java_time_limit');
 		$ml = $this->input->post('memory_limit');
 		$ft = $this->input->post('filetypes');
@@ -62,7 +62,7 @@ class Assignment_model extends CI_Model{
 				'score' => $scores[$i-1],
 				'judge' => in_array($i,$this->input->post('judge'))?1:0,
 				'c_time_limit' => $c_tl[$i-1],
-				'python_time_limit' => $py_tl[$i-1],
+				//'python_time_limit' => $py_tl[$i-1],
 				'java_time_limit' => $java_tl[$i-1],
 				'memory_limit' => $ml[$i-1],
 				'allowed_file_types' => $ft[$i-1],
