@@ -60,7 +60,6 @@ class Add_assignment extends CI_Controller{
 		$this->form_validation->set_rules('name[]','problem name','required|max_length[50]');
 		$this->form_validation->set_rules('score[]','problem score','required|integer');
 		$this->form_validation->set_rules('c_time_limit[]','time limit','required|integer');
-		$this->form_validation->set_rules('python_time_limit[]','time limit','required|integer');
 		$this->form_validation->set_rules('java_time_limit[]','time limit','required|integer');
 		$this->form_validation->set_rules('memory_limit[]','memory limit','required|integer');
 		$this->form_validation->set_rules('filetypes[]','file types','required');
@@ -76,7 +75,7 @@ class Add_assignment extends CI_Controller{
 			$this->upload->initialize($config);
 			if($this->upload->do_upload('tests')){
 				$this->load->library('unzip');
-				$this->unzip->allow(array('txt'));
+				$this->unzip->allow(array('txt','cpp'));
 				$assignment_dir = $config['upload_path']."/assignment_{$the_id}";
 				if (!file_exists($assignment_dir))
 					mkdir($assignment_dir,0700);

@@ -37,11 +37,11 @@
 				<?php echo form_error('timezone','<div class="shj_error">','</div>'); ?>
 			</p>
 			<p class="input_p">
-				<label for="tester_path">Tester path:</label><br/>
+				<label for="tester_path">"tester" full path:</label><br/>
 				<input type="text" name="tester_path" class="sharif_input medium" value="<?php echo $tester_path ?>"/>
 			</p>
 			<p class="input_p">
-				<label for="assignments_root">Assignments root directory:</label><br/>
+				<label for="assignments_root">"assignments" full path:</label><br/>
 				<input type="text" name="assignments_root" class="sharif_input medium" value="<?php echo $assignments_root ?>"/>
 			</p>
 			<p class="input_p">

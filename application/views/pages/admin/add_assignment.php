@@ -92,6 +92,7 @@
 			</p>
 			<p class="input_p">
 				<label for="extra_time">Extra Time (seconds):</label><br>
+				<p class="form_comment">Extra time for late submissions.</p>
 				<input type="text" name="extra_time" id="extra_time" class="sharif_input medium" value="<?php
 					if($edit)
 						echo $edit_assignment['extra_time'];
@@ -102,15 +103,21 @@
 			</p>
 			<p class="input_p">
 				<label for="participants">Participants:</label><br>
+				<p class="form_comment medium">Enter username of participants here (comma separated).
+				Only these users are able to submit. You can use keyword "ALL".</p>
 				<textarea name="participants" rows="3" class="sharif_input medium"><?php
 					if($edit)
 						echo $edit_assignment['participants'];
 					else
-						echo set_value('participants');
+						if (set_value('participants')!="")
+							echo set_value('participants');
+						else
+							echo "ALL";
 					?></textarea>
 			</p>
 			<p class="input_p">
 				<label for="tests">Tests (zip file):</label><br>
+				<p class="form_comment medium"><a href="#">Use this structure</a></p>
 				<input type="file" name="tests" class="sharif_input medium"/>
 				<?php
 					if (!$edit)
@@ -121,17 +128,17 @@
 		<div class="panel_right">
 			<p class="input_p">
 				<input type="checkbox" name="open" value="1" <?php if(!($edit && !$edit_assignment['open'])) echo "checked"?> /> Open<br>
-				<span class="form_comment">Open or close this assignment.</span>
+				<p class="form_comment">Open or close this assignment.</p>
 				<?php echo form_error('open','<div class="shj_error">','</div>'); ?>
 			</p>
 			<p class="input_p">
 				<input type="checkbox" name="scoreboard" value="1" <?php if(!($edit && !$edit_assignment['scoreboard'])) echo "checked"?> /> Scoreboard<br>
-				<span class="form_comment">Check this to enable scoreboard.</span>
+				<p class="form_comment">Check this to enable scoreboard.</p>
 				<?php echo form_error('scoreboard','<div class="shj_error">','</div>'); ?>
 			</p>
 			<p class="input_p">
 				<label for="late_rule">Coefficient rule (PHP script without <?php echo htmlspecialchars('<?php ?>') ?> tags):</label><br>
-				<textarea name="late_rule" rows="20" class="sharif_input add_text"><?php
+				<textarea name="late_rule" rows="26" class="sharif_input add_text"><?php
 						if($edit)
 							echo $edit_assignment['late_rule'];
 						else
@@ -173,6 +180,12 @@
 			<?php endif ?>
 		</table>
 		</p>
+		<?php echo form_error('name[]','<div class="shj_error">','</div>'); ?>
+		<?php echo form_error('score[]','<div class="shj_error">','</div>'); ?>
+		<?php echo form_error('c_time_limit[]','<div class="shj_error">','</div>'); ?>
+		<?php echo form_error('java_time_limit[]','<div class="shj_error">','</div>'); ?>
+		<?php echo form_error('memory_limit[]','<div class="shj_error">','</div>'); ?>
+		<?php echo form_error('filetypes[]','<div class="shj_error">','</div>'); ?>
 		<p class="input_p">
 			<input type="submit" value="<?php echo $edit?"Edit":"Add" ?> Assignment" class="sharif_input"/>
 		</p>
