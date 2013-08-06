@@ -11,7 +11,7 @@
 $db_host        = 'localhost'; // database host
 $db_user        = '';          // database username
 $db_pass        = '';          // database password
-$db_database    = '';          // darabase name
+$db_database    = '';          // database name
 $prefix         = 'shj_';      // table prefix
 
 
