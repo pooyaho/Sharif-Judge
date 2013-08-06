@@ -27,8 +27,8 @@
 # /home/mohammad/judge/homeworks/hw6/p1/out/ {output1.txt, output2.txt, ...}
 
 
-####################### Return Values #######################
-# RETURN VALUE         PRINTED MESSAGE
+####################### Output #######################
+#    Output         Meaning
 #      0              score form 10000
 #      1              Compilation Error
 #      2              Syntax Error
@@ -78,7 +78,7 @@ fi
 
 LOG="$PROBLEMPATH/$UN/log"; echo "" >>$LOG
 function judge_log {
-	echo -e "$1"
+	#echo -e "$1"
 	if $LOG_ON; then
 		echo -e "$1" >>$LOG 
 	fi
@@ -127,8 +127,8 @@ if [ "$EXT" = "java" ]; then
 		echo "</span>" >> $PROBLEMPATH/$UN/result.html
 		cd ..
 		rm -r $JAIL >/dev/null 2>/dev/null
-		echo "Compilation Error"
-		exit 1
+		echo 1
+		exit 0
 	fi
 fi
 
@@ -150,8 +150,8 @@ if [ "$EXT" = "py" ]; then
 		echo "</span>" >> $PROBLEMPATH/$UN/result.html
 		cd ..
 		rm -r $JAIL >/dev/null 2>/dev/null
-		echo "Syntax Error"
-		exit 2
+		echo 2
+		exit 0
 	fi
 fi
 
@@ -213,8 +213,8 @@ if [ "$EXT" = "c" ] || [ "$EXT" = "cpp" ]; then
 		echo "</span>" >> $PROBLEMPATH/$UN/result.html
 		cd ..
 		rm -r $JAIL >/dev/null 2>/dev/null
-		echo "Compilation Error"
-		exit 1
+		echo 1
+		exit 0
 	fi
 fi
 
@@ -280,8 +280,8 @@ for((i=1;i<=TST;i++)); do
 		judge_log "File format not supported."
 		cd ..
 		rm -r $JAIL >/dev/null 2>/dev/null
-		echo "File format not supported"
-		exit 5
+		echo 5
+		exit 0
 	fi
 
 	judge_log "Exit Code=$EXITCODE"
@@ -329,10 +329,10 @@ for((i=1;i<=TST;i++)); do
 		g++ tester.cpp -otester
 		EC=$?
 		if [ $EC -ne 0 ]; then
-			echo "Special Judge Script is Invalid"
+			echo 4
 			cd ..
 			rm -r $JAIL >/dev/null 2>/dev/null
-			exit 4
+			exit 0
 		fi
 		./tester $PROBLEMPATH/in/input$i.txt out
 		EC=$?

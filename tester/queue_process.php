@@ -144,16 +144,11 @@ do{
 
 	file_put_contents($userdir."/log",$cmd);
 
-	$output=array();
-	$ret="";
+	$output = shell_exec($cmd);
 
-	exec($cmd,$output, $ret);
+	shell_exec("cd $tester_path; rm -r jail*");
 
-	exec("cd $tester_path; rm -r jail*");
-
-	$output=end($output);
-
-	$score = trim($output);
+	$output = trim($output);
 
 	// saving judge result
 	$from= $userdir."/result.html"; $to = $userdir."/result-".($submit_id).".html" ;
@@ -161,12 +156,12 @@ do{
 
 
 	$stat = "OK";
-	if($ret!=0) $score=0;
-	if($ret==1) $stat = 'Compilation Error';
-	else if($ret==2) $stat = 'Syntax Error';
-	else if($ret==3) $stat = 'Bad System Call';
-	else if($ret==4) $stat = 'Invalid Special Judge';
-	else if($ret==5) $stat = 'File Format not Supported';
+	$score = ($output<0?0:$output);
+	if($output==1) $stat = 'Compilation Error';
+	else if($output==2) $stat = 'Syntax Error';
+	else if($output==3) $stat = 'Bad System Call';
+	else if($output==4) $stat = 'Invalid Special Judge';
+	else if($output==5) $stat = 'File Format not Supported';
 	else if($score==0)  $stat = 'WRONG';
 
 	//$score = ceil($score * $problem_score / 10000) ;

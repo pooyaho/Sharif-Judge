@@ -126,7 +126,7 @@ class User_model extends CI_Model{
 		if ($delete_submissions){// delete all submissions and submitted codes
 			$this->db->delete('final_submissions',array('username'=>$username));
 			$this->db->delete('all_submissions',array('username'=>$username));
-			exec("cd {$this->settings_model->get_setting('assignments_root')}; rm -r */*/$username;");
+			shell_exec("cd {$this->settings_model->get_setting('assignments_root')}; rm -r */*/$username;");
 		}
 	}
 
