@@ -23,7 +23,7 @@
 			<div class="shj_error">But file defcpp.h is not writable.</div>
 		<?php elseif ($form_status=="defcdefcpp"): ?>
 			<div class="shj_ok">Settings updated.</div>
-			<div class="shj_error">But files defc.h and defcpp.h are not writable.</div>
+			<div class="shj_error">But files defc.h and defcpp.h are not writable. (Edit them manually)</div>
 		<?php endif ?>
 		<?php if ($defc===FALSE): ?>
 			<div class="shj_error">"Tester path" is not correct.</div>

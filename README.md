@@ -2,4 +2,4 @@
 ------------------------------------------
 An online judge for assignment submission.
 
-Not yet ready for use... :)
+Wiki: http://mjnaderi.ir/sharif_judge/
