@@ -42,8 +42,12 @@
 					<?php endif ?>
 					</div>
 					<?php if ($user_level>=2): ?>
-					<div class="assignment_subitem"><?php echo anchor('assignments/edit/'.$item['id'],'Edit') ?></div>
+					<div class="assignment_subitem_zero"><a href="<?php echo site_url('assignments/edit/'.$item['id']) ?>"><i title="Edit" class="splashy-pencil"></i></a></div>
 					<?php endif ?>
+					<?php if ($user_level>=1): ?>
+					<div class="assignment_subitem_zero"><a href="<?php echo site_url('assignments/download/'.$item['id']) ?>"><i title="Download Final Codes" class="splashy-download"></i></a></div>
+					<?php endif ?>
+				</div>
 				</div>
 			</div>
 		<?php endforeach ?>

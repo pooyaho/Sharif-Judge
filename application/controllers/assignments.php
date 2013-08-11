@@ -53,4 +53,25 @@ class Assignments extends CI_Controller{
 		else
 			echo 'shj_failed';
 	}
+
+	public function download($assignment_id){ /* compressing and downloading final codes of an assignment to browser */
+		if ( $this->user_level == 0)
+			show_error("You have not enough permission to download codes.");
+
+		$this->load->model('submit_model');
+		$items = $this->submit_model->get_final_submissions($assignment_id, $this->user_level, $this->username);
+
+		$this->load->library('zip');
+
+		foreach ($items as $item){
+			$file = file_get_contents(rtrim($this->settings_model->get_setting('assignments_root'),'/').
+				"/assignment_{$item['assignment']}/p{$item['problem']}/{$item['username']}/{$item['file_name']}.{$item['file_type']}");
+			$this->zip->add_data("by_user/{$item['username']}/p{$item['problem']}.{$item['file_type']}",$file);
+			$this->zip->add_data("by_problem/problem_{$item['problem']}/{$item['username']}.{$item['file_type']}",$file);
+		}
+
+		$this->zip->download("assignment{$assignment_id}_codes_".mdate("%Y-%m-%d_%H-%i",shj_now()).".zip");
+	}
+
+
 }

@@ -296,6 +296,12 @@ select.sharif_time {
 	text-align: center;
 }
 
+#main_content .assignment_subitem_zero {
+	display: inline-block;
+	padding:0px 5px;
+	text-align: center;
+}
+
 .check {
 	width: 22px;
 	height: 22px;
