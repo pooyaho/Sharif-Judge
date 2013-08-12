@@ -78,6 +78,6 @@
 		</div>
 	</div>
 	<div id="shj_logo">
-		<a href="<?php echo site_url('/'); ?>"><img src="<?php echo base_url('assets/images/logo_small.png'); ?>"/></a>
+		<a href="<?php echo site_url('/'); ?>"><img src="<?php echo base_url('assets/images/logo_small.png'); ?>"/><img src="<?php echo base_url('assets/images/banner_small.png'); ?>"/></a>
 	</div>
 </div>

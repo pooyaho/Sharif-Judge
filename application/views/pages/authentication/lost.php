@@ -8,7 +8,7 @@
 <form method="post" action="">
 	<div class="box login">
 		<div class="judge_logo">
-			<a href="#"><img src="<?php echo base_url("assets/images/logo.png") ?>"/></a>
+			<a href="#"><img src="<?php echo base_url("assets/images/banner.png") ?>"/></a>
 		</div>
 		<div class="login_form">
 			<div class="login1">

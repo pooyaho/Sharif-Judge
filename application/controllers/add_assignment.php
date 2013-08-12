@@ -128,6 +128,9 @@ class Add_assignment extends CI_Controller{
 					mkdir($assignment_dir,0700);
 				$u_data = $this->upload->data();
 				if ( $this->unzip->extract($u_data['full_path'], $assignment_dir) ){
+					for($i=1;$i<=$this->input->post('number_of_problems');$i++)
+						if (!file_exists($assignment_dir."/p$i"))
+							mkdir($assignment_dir."/p$i",0700);
 					$this->assignment_model->add_assignment($the_id,$this->edit);
 					$this->form_status='tests_updated';
 				}

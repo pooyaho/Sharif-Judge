@@ -56,8 +56,8 @@ div#top_bar a {
 div#shj_logo {
 	top: 0;
 	left: 5px;
-	width: 0;
 	position: relative;
+	display: inline-block;
 }
 
 div#shj_logo img {
@@ -108,7 +108,7 @@ span.time_label {
 	display: none;
 	padding: 10px;
 	font-size: 13px;
-	min-width: 140px;
+	min-width: 200px;
 	position: absolute;
 	background-color: white;
 	box-shadow: rgba(0, 0, 0, 0.27) 0 0 7px 3px;

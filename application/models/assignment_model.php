@@ -17,6 +17,11 @@ class Assignment_model extends CI_Model{
 	 */
 	public function add_assignment($id,$edit=FALSE){
 		// Adding assignment to "assignments" table (or editing existing assignment)
+		$extra_items = explode('*',$this->input->post('extra_time'));
+		$extra_time = 1;
+		foreach($extra_items as $extra_item){
+			$extra_time *= $extra_item;
+		}
 		$assignment = array(
 			'id' => $id,
 			'name' => $this->input->post('assignment_name'),
@@ -27,7 +32,7 @@ class Assignment_model extends CI_Model{
 			'description' => "", /* todo */
 			'start_time' => date('Y-m-d H:i:s',strtotime($this->input->post('start_time'))),
 			'finish_time' => date('Y-m-d H:i:s',strtotime($this->input->post('finish_time'))),
-			'extra_time' => $this->input->post('extra_time'),
+			'extra_time' => $extra_time*60,
 			'late_rule' => $this->input->post('late_rule'),
 			'participants' => $this->input->post('participants')
 		);

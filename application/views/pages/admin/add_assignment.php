@@ -91,11 +91,16 @@
 				<?php echo form_error('finish_time','<div class="shj_error">','</div>'); ?>
 			</p>
 			<p class="input_p">
-				<label for="extra_time">Extra Time (seconds):</label><br>
+				<label for="extra_time">Extra Time (minutes):</label><br>
 				<p class="form_comment">Extra time for late submissions.</p>
 				<input type="text" name="extra_time" id="extra_time" class="sharif_input medium" value="<?php
-					if ($edit)
-						echo $edit_assignment['extra_time'];
+					if ($edit){
+						$extra_time = floor($edit_assignment['extra_time']/60);
+						if ($extra_time%60==0)
+							echo ($extra_time/60)."*60";
+						else
+							echo $extra_time;
+					}
 					else
 						echo set_value('extra_time');
 				?>" />
