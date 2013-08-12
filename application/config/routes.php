@@ -44,6 +44,7 @@ $route['submissions/final']="submissions/the_final";
 $route['submissions/final/excel']="submissions/the_final/excel";
 $route['assignments/edit/(:any)']="add_assignment/edit/$1";
 $route['profile/(:num)'] = "profile/index/$1";
+$route['moss/(:num)'] = "moss/index/$1";
 $route['404_override'] = '';
 
 

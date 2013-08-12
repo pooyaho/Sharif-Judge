@@ -12,7 +12,7 @@
 		<?php if (isset($deleted) && $deleted===TRUE): ?>
 			<p class="shj_ok">User deleted successfully.</p>
 		<?php endif ?>
-		<p><?php echo anchor('users/add','Add Users') ?></p>
+		<p><i class="splashy-group_blue_add"></i> <?php echo anchor('users/add','Add Users') ?></p>
 		<table class="sharif_table">
 			<thead>
 			<tr><th>ID</th><th>Username</th><th>Display Name</th><th>Email</th><th>Role</th><th>Actions</th></tr>
@@ -25,8 +25,8 @@
 					<td><?php echo $user['email'] ?></td>
 					<td><?php echo $user['role'] ?></td>
 					<td>
-						<?php echo anchor('profile/'.$user['id'],'Edit') ?>
-						<?php echo anchor('users/delete/'.$user['id'],'Delete') ?>
+						<a title="Edit" href="<?php echo site_url('profile/'.$user['id']) ?>"><i class="splashy-contact_blue_edit"></i></a>
+						<a title="Delete" href="<?php echo site_url('users/delete/'.$user['id']) ?>"><i class="splashy-contact_blue_remove"></i></a>
 					</td>
 				</tr>
 			<?php endforeach ?>

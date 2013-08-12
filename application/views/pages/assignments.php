@@ -7,7 +7,11 @@
 <?php $this->view('templates/top_bar'); ?>
 <?php $this->view('templates/side_bar',array('selected'=>'assignments')); ?>
 <div id="main_container">
-	<div id="page_title"><img src="<?php echo base_url('assets/images/icons/assignments.png') ?>"/> <span><?php echo $title ?></span></div>
+	<div id="page_title"><img src="<?php echo base_url('assets/images/icons/assignments.png') ?>"/> <span><?php echo $title ?></span>
+		<?php if ($user_level>=2): ?>
+		<span style="font-size:14px;">(<?php echo anchor('add_assignment','Add') ?>)</span>
+		<?php endif ?>
+	</div>
 	<div id="main_content">
 		<!--<p>Selected Assignment: <span class="assignment_name"><?php echo $assignment['name'] ?></span></p>-->
 		<?php foreach($all_assignments as $item): ?>
@@ -46,6 +50,9 @@
 					<?php endif ?>
 					<?php if ($user_level>=1): ?>
 					<div class="assignment_subitem_zero"><a href="<?php echo site_url('assignments/download/'.$item['id']) ?>"><i title="Download Final Codes" class="splashy-download"></i></a></div>
+					<?php endif ?>
+					<?php if ($user_level>=2): ?>
+					<div class="assignment_subitem_zero"><a href="<?php echo site_url('moss/'.$item['id']) ?>"><i title="Detect Similar Codes" class="splashy-shield"></i></a></div>
 					<?php endif ?>
 				</div>
 				</div>

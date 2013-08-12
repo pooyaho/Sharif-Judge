@@ -1,4 +1,4 @@
-<?php
+<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 /**
  * Sharif Judge online judge
  * @file install.php
@@ -164,7 +164,8 @@ class Install extends CI_Controller {
 				('enable_log', '1'),
 				('submit_penalty', '300'),
 				('enable_registration', '0'),
-				('mail_from', 'sharif_judge@example.com');";
+				('mail_from', 'sharif_judge@example.com'),
+				('moss_userid', '');";
 			if (!$this->db->simple_query($query))
 				show_error("Error creating database table");
 

@@ -80,11 +80,8 @@
 		<?php if ($user_level==3): ?>
 		<div class="side_box"><a href="<?php echo site_url('settings') ?>"><li <?php echo ($selected=='settings'?'class="selected"':'') ?>><i class="splashy-sprocket_light"></i> Settings</li></a></div>
 		<?php endif ?>
-		<?php if ($user_level>=2): ?>
-		<div class="side_box"><a href="<?php echo site_url('add_assignment') ?>"><li <?php echo ($selected=='add_assignment'?'class="selected"':'') ?>><i class="splashy-add"></i> Add Assignment</li></a></div>
-		<?php endif ?>
 		<?php if ($user_level==3): ?>
-		<div class="side_box"><a href="<?php echo site_url('users') ?>"><li <?php echo ($selected=='users'?'class="selected"':'') ?>><i class="splashy-group_blue"></i> Users</li></a></div>
+			<div class="side_box"><a href="<?php echo site_url('users') ?>"><li <?php echo ($selected=='users'?'class="selected"':'') ?>><i class="splashy-group_blue"></i> Users</li></a></div>
 		<?php endif ?>
 		<div class="side_box"><a href="<?php echo site_url('assignments') ?>"><li <?php echo ($selected=='assignments'?'class="selected"':'') ?>><i class="splashy-folder_modernist_opened"></i> Assignments</li></a></div>
 		<div class="side_box"><a href="<?php echo site_url('submit') ?>"><li <?php echo ($selected=='submit'?'class="selected"':'') ?>><i class="splashy-arrow_large_up"></i> Submit</li></a></div>
