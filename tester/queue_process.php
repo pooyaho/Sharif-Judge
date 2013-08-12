@@ -157,11 +157,11 @@ do{
 
 	$stat = "OK";
 	$score = ($output<0?0:$output);
-	if($output==1) $stat = 'Compilation Error';
-	else if($output==2) $stat = 'Syntax Error';
-	else if($output==3) $stat = 'Bad System Call';
-	else if($output==4) $stat = 'Invalid Special Judge';
-	else if($output==5) $stat = 'File Format not Supported';
+	if($output==-1) $stat = 'Compilation Error';
+	else if($output==-2) $stat = 'Syntax Error';
+	else if($output==-3) $stat = 'Bad System Call';
+	else if($output==-4) $stat = 'Invalid Special Judge';
+	else if($output==-5) $stat = 'File Format not Supported';
 	else if($score==0)  $stat = 'WRONG';
 
 	//$score = ceil($score * $problem_score / 10000) ;

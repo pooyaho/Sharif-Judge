@@ -28,13 +28,13 @@
 
 
 ####################### Output #######################
-#    Output         Meaning
-#      0              score form 10000
-#      1              Compilation Error
-#      2              Syntax Error
-#      3              Bad System Call
-#      4              Special Judge Script is Invalid
-#      5              File format not supported
+#    Output              Meaning
+#     >=0              score form 10000
+#      -1              Compilation Error
+#      -2              Syntax Error
+#      -3              Bad System Call
+#      -4              Special Judge Script is Invalid
+#      -5              File format not supported
 
 ################### Getting Arguments ###################
 PROBLEMPATH=${1} # problem directory
@@ -127,7 +127,7 @@ if [ "$EXT" = "java" ]; then
 		echo "</span>" >> $PROBLEMPATH/$UN/result.html
 		cd ..
 		rm -r $JAIL >/dev/null 2>/dev/null
-		echo 1
+		echo -1
 		exit 0
 	fi
 fi
@@ -150,7 +150,7 @@ if [ "$EXT" = "py" ]; then
 		echo "</span>" >> $PROBLEMPATH/$UN/result.html
 		cd ..
 		rm -r $JAIL >/dev/null 2>/dev/null
-		echo 2
+		echo -2
 		exit 0
 	fi
 fi
@@ -213,7 +213,7 @@ if [ "$EXT" = "c" ] || [ "$EXT" = "cpp" ]; then
 		echo "</span>" >> $PROBLEMPATH/$UN/result.html
 		cd ..
 		rm -r $JAIL >/dev/null 2>/dev/null
-		echo 1
+		echo -1
 		exit 0
 	fi
 fi
@@ -280,7 +280,7 @@ for((i=1;i<=TST;i++)); do
 		judge_log "File format not supported."
 		cd ..
 		rm -r $JAIL >/dev/null 2>/dev/null
-		echo 5
+		echo -5
 		exit 0
 	fi
 
@@ -329,7 +329,7 @@ for((i=1;i<=TST;i++)); do
 		g++ tester.cpp -otester
 		EC=$?
 		if [ $EC -ne 0 ]; then
-			echo 4
+			echo -4
 			cd ..
 			rm -r $JAIL >/dev/null 2>/dev/null
 			exit 0
