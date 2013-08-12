@@ -26,18 +26,43 @@ class Submit_model extends CI_Model {
 	}
 
 
-	public function get_final_submissions($assignment_id, $user_level, $username){
+	public function get_final_submissions($assignment_id, $user_level, $username, $page_number = FALSE){
 		$arr['assignment']=$assignment_id;
 		if ($user_level==0)
 			$arr['username']=$username;
-		return $this->db->order_by('username asc, problem asc')->get_where('final_submissions',$arr)->result_array();
+		if ($page_number===FALSE)
+			return $this->db->order_by('username asc, problem asc')->get_where('final_submissions',$arr)->result_array();
+		else{
+			$per_page = $this->settings_model->get_setting('results_per_page');
+			return $this->db->order_by('username asc, problem asc')->limit($per_page,($page_number-1)*$per_page)->get_where('final_submissions',$arr)->result_array();
+		}
+
 	}
 
-	public function get_all_submissions($assignment_id, $user_level, $username){
+	public function get_all_submissions($assignment_id, $user_level, $username, $page_number = FALSE){
 		$arr['assignment']=$assignment_id;
 		if ($user_level==0)
 			$arr['username']=$username;
-		return $this->db->order_by('submit_id','desc')->get_where('all_submissions',$arr)->result_array();
+		if ($page_number===FALSE)
+			return $this->db->order_by('submit_id','desc')->get_where('all_submissions',$arr)->result_array();
+		else {
+			$per_page = $this->settings_model->get_setting('results_per_page');
+			return $this->db->order_by('submit_id','desc')->limit($per_page,($page_number-1)*$per_page)->get_where('all_submissions',$arr)->result_array();
+		}
+	}
+
+	public function count_final_submissions($assignment_id, $user_level, $username){
+		$arr['assignment']=$assignment_id;
+		if ($user_level==0)
+			$arr['username']=$username;
+		return $this->db->where($arr)->count_all_results('final_submissions');
+	}
+
+	public function count_all_submissions($assignment_id, $user_level, $username){
+		$arr['assignment']=$assignment_id;
+		if ($user_level==0)
+			$arr['username']=$username;
+		return $this->db->where($arr)->count_all_results('all_submissions');
 	}
 
 	public function set_final_submission($username, $assignment, $problem, $submit_id){

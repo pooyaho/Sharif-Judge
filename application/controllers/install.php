@@ -165,7 +165,8 @@ class Install extends CI_Controller {
 				('submit_penalty', '300'),
 				('enable_registration', '0'),
 				('mail_from', 'sharif_judge@example.com'),
-				('moss_userid', '');";
+				('moss_userid', ''),
+				('results_per_page', '40');";
 			if (!$this->db->simple_query($query))
 				show_error("Error creating database table");
 

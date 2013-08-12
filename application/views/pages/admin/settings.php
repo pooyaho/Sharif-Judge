@@ -45,14 +45,19 @@
 				<input type="text" name="assignments_root" class="sharif_input medium" value="<?php echo $assignments_root ?>"/>
 			</p>
 			<p class="input_p">
+				<label for="mail_from">Send emails from:</label><br/>
+				<input type="text" name="mail_from" class="sharif_input medium" value="<?php echo $mail_from ?>"/>
+				<?php echo form_error('mail_from','<div class="shj_error">','</div>'); ?>
+			</p>
+			<p class="input_p">
 				<label for="file_size_limit">Upload file size limit (kB):</label><br/>
 				<input type="text" name="file_size_limit" class="sharif_input medium" value="<?php echo $file_size_limit ?>"/>
 				<?php echo form_error('file_size_limit','<div class="shj_error">','</div>'); ?>
 			</p>
 			<p class="input_p">
-				<label for="mail_from">Send emails from:</label><br/>
-				<input type="text" name="mail_from" class="sharif_input medium" value="<?php echo $mail_from ?>"/>
-				<?php echo form_error('mail_from','<div class="shj_error">','</div>'); ?>
+				<label for="results_per_page">Results per page:</label><br/>
+				<input type="text" name="results_per_page" class="sharif_input medium" value="<?php echo $results_per_page ?>"/>
+				<?php echo form_error('results_per_page','<div class="shj_error">','</div>'); ?>
 			</p>
 			<p class="input_p">
 				<input type="checkbox" name="enable_registration" value="1" <?php if ($enable_registration) echo 'checked' ?>/> Registration<br>

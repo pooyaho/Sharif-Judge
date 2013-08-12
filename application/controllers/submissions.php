@@ -87,12 +87,27 @@ class Submissions extends CI_Controller{
 	}
 
 
-	public function the_final($type=FALSE){
+	public function the_final($page_number=FALSE){
 
-		if ($type=="excel"){
+		if ($page_number=="excel"){
 			$this->download_excel('final');
 			exit;
 		}
+
+		if ($page_number=="")
+			$page_number=1;
+
+		if (!is_numeric($page_number))
+			show_404();
+
+
+		$this->load->library('pagination');
+		$config['base_url'] = site_url('submissions/final/');
+		$config['total_rows'] = $this->submit_model->count_final_submissions($this->assignment['id'],$this->user_level,$this->username);
+		$config['per_page'] = $this->settings_model->get_setting('results_per_page');
+		$config['use_page_numbers'] = TRUE;
+		$this->pagination->initialize($config);
+
 
 		$data = array(
 			'view'=>'final',
@@ -102,7 +117,7 @@ class Submissions extends CI_Controller{
 			'assignment' => $this->assignment,
 			'title'=>'Final Submissions',
 			'style'=>'main.css',
-			'items'=>$this->submit_model->get_final_submissions($this->assignment['id'],$this->user_level,$this->username)
+			'items'=>$this->submit_model->get_final_submissions($this->assignment['id'],$this->user_level,$this->username,$page_number)
 		);
 
 		$this->load->view('templates/header',$data);
@@ -112,7 +127,7 @@ class Submissions extends CI_Controller{
 
 
 
-	public function all($type=FALSE){
+	public function all($page_number=FALSE){
 
 		$final = $this->submit_model->get_final_submissions($this->assignment['id'],$this->user_level,$this->username);
 		$this->final_items=array();
@@ -120,10 +135,25 @@ class Submissions extends CI_Controller{
 			$this->final_items[$item['username']][$item['problem']]=$item;
 		}
 
-		if ($type=="excel"){
+		if ($page_number=="excel"){
 			$this->download_excel('all');
 			exit;
 		}
+
+		if ($page_number=="")
+			$page_number=1;
+
+		if (!is_numeric($page_number))
+			show_404();
+
+
+		$this->load->library('pagination');
+		$config['base_url'] = site_url('submissions/all/');
+		$config['total_rows'] = $this->submit_model->count_all_submissions($this->assignment['id'],$this->user_level,$this->username);
+		$config['per_page'] = $this->settings_model->get_setting('results_per_page');
+		$config['use_page_numbers'] = TRUE;
+		$this->pagination->initialize($config);
+
 
 		$data = array(
 			'view'=>'all',
@@ -133,7 +163,7 @@ class Submissions extends CI_Controller{
 			'assignment' => $this->assignment,
 			'title'=>'All Submissions',
 			'style'=>'main.css',
-			'items'=>$this->submit_model->get_all_submissions($this->assignment['id'],$this->user_level,$this->username),
+			'items'=>$this->submit_model->get_all_submissions($this->assignment['id'],$this->user_level,$this->username,$page_number),
 			'final_items' => $this->final_items
 		);
 		$this->load->view('templates/header',$data);

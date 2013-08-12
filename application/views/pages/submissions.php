@@ -196,5 +196,8 @@ $finish = strtotime($assignment['finish_time']);
 					</tr>
 				<?php endforeach ?>
 			</table>
+			<p>
+			<?php echo $this->pagination->create_links(); ?>
+			</p>
 		</div>
 	</div>

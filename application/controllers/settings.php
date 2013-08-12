@@ -56,6 +56,7 @@ class Settings extends CI_Controller{
 			'enable_log'=>$this->settings_model->get_setting('enable_log'),
 			'enable_registration'=>$this->settings_model->get_setting('enable_registration'),
 			'mail_from'=>$this->settings_model->get_setting('mail_from'),
+			'results_per_page'=>$this->settings_model->get_setting('results_per_page'),
 			'form_status' => $this->form_status
 		);
 		ob_start();
@@ -71,6 +72,7 @@ class Settings extends CI_Controller{
 		$this->form_validation->set_message('_check_timezone','Wrong Timezone.');
 		$this->form_validation->set_rules('timezones','timezone','callback__check_timezone');
 		$this->form_validation->set_rules('file_size_limit','File size limit','integer|greater_than[-1]');
+		$this->form_validation->set_rules('results_per_page','results per page','integer|greater_than[-1]');
 		if($this->form_validation->run()){
 			ob_start();
 			$this->form_status = "";
@@ -94,6 +96,7 @@ class Settings extends CI_Controller{
 			$this->settings_model->set_setting('enable_log',$this->input->post('enable_log')===FALSE?0:1);
 			$this->settings_model->set_setting('enable_registration',$this->input->post('enable_registration')===FALSE?0:1);
 			$this->settings_model->set_setting('mail_from',$this->input->post('mail_from'));
+			$this->settings_model->set_setting('results_per_page',$this->input->post('results_per_page'));
 		}
 		else
 			$this->form_status = "error";
