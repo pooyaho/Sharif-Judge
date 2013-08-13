@@ -108,7 +108,7 @@ span.time_label {
 	display: none;
 	padding: 10px;
 	font-size: 13px;
-	min-width: 200px;
+	min-width: 180px;
 	position: absolute;
 	background-color: white;
 	box-shadow: rgba(0, 0, 0, 0.27) 0 0 7px 3px;
