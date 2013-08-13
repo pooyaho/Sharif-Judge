@@ -15,9 +15,9 @@ The web interface is written in PHP (CodeIgniter framework) and the main backend
   * Custom rule for grading late submissions
   * Download results in excel file
   * Download submitted codes in zip file
-  * "_input/output compare_" and "_special script_" methods for checking output correctness
+  * _"input/output compare"_ and _"special script"_ methods for checking output correctness
   * Add multiple users
-  * Rejudge _Will be added soon_
+  * Rejudge (_Will be added soon_)
   * Scoreboard
 
 ## Installation
@@ -29,19 +29,19 @@ Sharif Judge doesn't need root privileges to install. It has a simple installati
 For running Sharif Judge, a Linux server with following requirements is needed:
 
   * Webserver running PHP version 5 or later
-  * PHP CLI (PHP command line interface, i.e. ''php'' shell command)
+  * PHP CLI (PHP command line interface, i.e. `php`` shell command)
   * MySql database
-  * PHP must have permission to run shell commands using [[http://www.php.net/manual/en/function.shell-exec.php|shell_exec()]] php function (specially ''shell_exec("php");'')
-  * Tools for compiling and running submitted codes (''gcc'', ''g++'', ''javac'', ''java'')
+  * PHP must have permission to run shell commands using [`shell_exec`](http://www.php.net/manual/en/function.shell-exec.php) php function (specially `shell_exec("php");`)
+  * Tools for compiling and running submitted codes (`gcc`, `g++`, `javac`, `java`)
 
 ### Installation
 
   - Download the latest release from download page and unpack downloaded file in your public html directory.
   - Create a MySql database for Sharif Judge.
-  - Set database connection settings in files ''application/config/database.php'' and ''tester/queue_process.php''. Make sure that you have provided correct information in both files.
+  - Set database connection settings in files `application/config/database.php` and `tester/queue_process.php`. Make sure that you have provided correct information in both files.
   - Open Sharif Judge main page in a web browser and follow the installation process.
   - Log in with your admin account.
-  - **[IMPORTANT]** Move folders ''tester'' and ''assignments'' somewhere outside your public directory. Then save their path in ''Settings'' page. **These two folders must be writable by PHP.**
+  - **[IMPORTANT]** Move folders `tester` and `assignments` somewhere outside your public directory. Then save their path in `Settings` page. **These two folders must be writable by PHP.**
 
 ### After Installation
 
