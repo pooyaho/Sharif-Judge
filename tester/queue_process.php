@@ -35,7 +35,6 @@ function addJudgeResultToDB($sr){
 	$assignment=$sr['assignment'];
 	$problem=$sr['problem'];
 	$time=$sr['time'];
-	$late_time=$sr['late_time'];
 	$status=$sr['status'];
 	$pre_score=$sr['pre_score'];
 	$submit_count=$sr['submit_number'];
@@ -47,12 +46,12 @@ function addJudgeResultToDB($sr){
 
 	if($r==null){
 		mysql_query("INSERT INTO {$prefix}final_submissions
-					( submit_id, username, assignment, problem, time, late_time, status, pre_score, submit_count, file_name, main_file_name, file_type)
-					VALUES ('$submit_id','$username','$assignment','$problem','$time','$late_time','$status','$pre_score','$submit_count','$file_name','$main_file_name','$file_type') ");
+					( submit_id, username, assignment, problem, time, status, pre_score, submit_count, file_name, main_file_name, file_type)
+					VALUES ('$submit_id','$username','$assignment','$problem','$time','$status','$pre_score','$submit_count','$file_name','$main_file_name','$file_type') ");
 	}
 	else{
 		mysql_query("UPDATE {$prefix}final_submissions
-					SET submit_id='$submit_id', time='$time', late_time='$late_time', status='$status', pre_score='$pre_score', submit_count='$submit_count', file_name='$file_name', main_file_name='$main_file_name', file_type='$file_type'
+					SET submit_id='$submit_id', time='$time', status='$status', pre_score='$pre_score', submit_count='$submit_count', file_name='$file_name', main_file_name='$main_file_name', file_type='$file_type'
 					WHERE username='$username' AND assignment='$assignment' AND problem='$problem' ");
 	}
 

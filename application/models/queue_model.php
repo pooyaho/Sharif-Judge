@@ -6,10 +6,13 @@
  */
 
 class Queue_model extends CI_Model {
+
 	public function __construct(){
 		parent::__construct();
 		$this->load->database();
 	}
+
+
 
 
 	/*
@@ -23,6 +26,10 @@ class Queue_model extends CI_Model {
 	}
 
 
+
+
+
+
 	public function add_to_queue($submit_info){
 		$now = shj_now();
 
@@ -33,7 +40,6 @@ class Queue_model extends CI_Model {
 		));
 
 		$submit_info['time']=date('Y-m-d H:i:s',$now);
-		$submit_info['late_time']=0; /* todo */
 		$submit_info['status']='PENDING';
 		$submit_info['pre_score']=0;
 
@@ -51,4 +57,6 @@ class Queue_model extends CI_Model {
 			'problem'=>$submit_info['problem']
 		));
 	}
+
+
 }

@@ -6,10 +6,16 @@
  */
 
 class Scoreboard_model extends CI_Model {
+
 	public function __construct(){
 		parent::__construct();
 		$this->load->database();
 	}
+
+
+
+
+
 
 	public function get_scoreboard($assignment_id){
 		$assignment = $this->assignment_model->assignment_info($assignment_id);
@@ -66,4 +72,6 @@ class Scoreboard_model extends CI_Model {
 		);
 		return array($scores, $scoreboard);
 	}
+
+
 }

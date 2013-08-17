@@ -6,11 +6,18 @@
  */
 
 class Submit_model extends CI_Model {
+
 	public function __construct(){
 		parent::__construct();
 		$this->load->database();
 	}
 
+
+
+
+	/*
+	 * Returns table row for a specific submission
+	 */
 	public function get_submission($username, $assignment, $problem, $submit_id){
 		$query = $this->db->get_where('all_submissions',
 			array(
@@ -26,9 +33,13 @@ class Submit_model extends CI_Model {
 	}
 
 
+
+
+
+
 	public function get_final_submissions($assignment_id, $user_level, $username, $page_number = FALSE){
 		$arr['assignment']=$assignment_id;
-		if ($user_level==0)
+		if ($user_level==0)// students can only get final submissions of themselves
 			$arr['username']=$username;
 		if ($page_number===FALSE)
 			return $this->db->order_by('username asc, problem asc')->get_where('final_submissions',$arr)->result_array();
@@ -38,6 +49,11 @@ class Submit_model extends CI_Model {
 		}
 
 	}
+
+
+
+
+
 
 	public function get_all_submissions($assignment_id, $user_level, $username, $page_number = FALSE){
 		$arr['assignment']=$assignment_id;
@@ -51,6 +67,11 @@ class Submit_model extends CI_Model {
 		}
 	}
 
+
+
+
+
+
 	public function count_final_submissions($assignment_id, $user_level, $username){
 		$arr['assignment']=$assignment_id;
 		if ($user_level==0)
@@ -58,12 +79,23 @@ class Submit_model extends CI_Model {
 		return $this->db->where($arr)->count_all_results('final_submissions');
 	}
 
+
+
+
+
+
+
 	public function count_all_submissions($assignment_id, $user_level, $username){
 		$arr['assignment']=$assignment_id;
 		if ($user_level==0)
 			$arr['username']=$username;
 		return $this->db->where($arr)->count_all_results('all_submissions');
 	}
+
+
+
+
+
 
 	public function set_final_submission($username, $assignment, $problem, $submit_id){
 		$query = $this->db->get_where('final_submissions',
@@ -92,13 +124,19 @@ class Submit_model extends CI_Model {
 	}
 
 
+
+
+
+
+	/*
+	 * add the result of an "upload only" submit to the database
+	 */
 	public function add_upload_only($submit_info){
 		$now = shj_now();
 
 		$submit_query = $this->db->get_where('final_submissions',array('username'=>$submit_info['username'],'assignment'=>$submit_info['assignment'],'problem'=>$submit_info['problem']));
 
 		$submit_info['time']=date('Y-m-d H:i:s',$now);
-		$submit_info['late_time']=0; /* todo */
 		$submit_info['status']='Uploaded ('.$submit_info['file_type'].')';
 		$submit_info['pre_score']=0;
 
@@ -116,5 +154,6 @@ class Submit_model extends CI_Model {
 		$this->db->insert('all_submissions',$submit_info);
 
 	}
+
 
 }

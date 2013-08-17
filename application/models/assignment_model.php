@@ -6,10 +6,15 @@
  */
 
 class Assignment_model extends CI_Model{
+
 	public function __construct(){
 		parent::__construct();
 		$this->load->database();
 	}
+
+
+
+
 
 
 	/*
@@ -79,12 +84,23 @@ class Assignment_model extends CI_Model{
 	}
 
 
+
+
+
+
+
 	/*
 	 * Returns a list of all assignments and their information
 	 */
 	public function all_assignments(){
 		return $this->db->get('assignments')->result_array();
 	}
+
+
+
+
+
+
 
 	/*
 	 * Returns id of last assignment (the largest assignment id). Used for adding new assignment.
@@ -99,13 +115,29 @@ class Assignment_model extends CI_Model{
 		return $max;
 	}
 
+
+
+
+
+
+
 	public function all_problems($assignment_id){
 		return $this->db->get_where('problems',array('assignment'=>$assignment_id))->result_array();
 	}
 
+
+
+
+
+
 	public function problem_info($assignment_id, $problem_id){
 		return $this->db->get_where('problems',array('assignment'=>$assignment_id,'id'=>$problem_id))->row_array();
 	}
+
+
+
+
+
 
 
 	/*
@@ -124,6 +156,12 @@ class Assignment_model extends CI_Model{
 	}
 
 
+
+
+
+
+
+
 	/*
 	 * Returns TRUE if $username if one of the $participants
 	 * Examples for participants: "ALL" or "user1, user2,user3"
@@ -140,19 +178,33 @@ class Assignment_model extends CI_Model{
 		return FALSE;
 	}
 
+
+
+
+
+
+
+
 	public function add_total_submits($assignment_id){
 		$total = $this->db->select('total_submits')->get_where('assignments',array('id'=>$assignment_id))->row()->total_submits;
 		$this->db->where('id',$assignment_id)->update('assignments',array('total_submits'=>($total+1)));
 		return ($total+1);
 	}
 
+
+
+
+
+
 	public function set_moss_time($assignment_id){
 		$now = mdate("%Y-%m-%d %H:%i:%s",shj_now());
 		$this->db->where('id',$assignment_id)->update('assignments',array('moss_update'=>$now));
 	}
 
+
 	public function get_moss_time($assignment_id){
 		return $this->db->select('moss_update')->get_where('assignments',array('id'=>$assignment_id))->row()->moss_update;
 	}
+
 
 }

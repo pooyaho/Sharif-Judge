@@ -44,9 +44,11 @@ class Profile extends CI_Controller{
 			show_error("Permission Denied");
 		$user = $query->row();
 		$this->edit_username = $user->username;
-		if ($this->user_level<=2)
+
+		if ($this->user_level<=2) //Non-admins are not able to update others' profile
 			if ($this->username != $this->edit_username)
 				show_error("Permission Denied");
+
 		$this->form_validation->set_message('_email_check','User with same %s exists.');
 		$this->form_validation->set_message('_password_check','Password must be between 6 and 30 characters in length.');
 		$this->form_validation->set_message('_password_again_check','The Password Confirmation field does not match the Password field.');
@@ -94,18 +96,20 @@ class Profile extends CI_Controller{
 		return TRUE;
 	}
 
-	public function _email_check($email){ // checks whether a user with this email exists (used for validating registration)
+	public function _email_check($email){ // checks whether a user with this email exists
 		if ($this->user_model->have_email($email,$this->edit_username))
 			return FALSE;
 		return TRUE;
 	}
 
-	public function _role_check($role){ // checks whether a user with this email exists (used for validating registration)
+	public function _role_check($role){ // for validating user role
+		// Non-admin users should not be able to change user role:
 		if ($this->user_level<=2)
 			if($role=="")
 				return TRUE;
 			else
 				return FALSE;
+		// Admins can change everybody's user role:
 		$roles = array('admin','head_instructor','instructor','student');
 		if (in_array($role,$roles))
 			return TRUE;
