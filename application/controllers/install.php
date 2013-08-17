@@ -164,7 +164,8 @@ class Install extends CI_Controller {
 				('enable_log', '1'),
 				('submit_penalty', '300'),
 				('enable_registration', '0'),
-				('mail_from', 'sharif_judge@example.com'),
+				('mail_from', 'shj@mjnaderi.ir'),
+				('mail_from_name', 'Sharif Judge'),
 				('moss_userid', ''),
 				('results_per_page', '40');";
 			if (!$this->db->simple_query($query))

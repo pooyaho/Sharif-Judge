@@ -45,9 +45,14 @@
 				<input type="text" name="assignments_root" class="sharif_input medium" value="<?php echo $assignments_root ?>"/>
 			</p>
 			<p class="input_p">
-				<label for="mail_from">Send emails from:</label><br/>
+				<label for="mail_from">Send emails "from" address:</label><br/>
 				<input type="text" name="mail_from" class="sharif_input medium" value="<?php echo $mail_from ?>"/>
 				<?php echo form_error('mail_from','<div class="shj_error">','</div>'); ?>
+			</p>
+			<p class="input_p">
+				<label for="mail_from_name">Send emails "from" name:</label><br/>
+				<input type="text" name="mail_from_name" class="sharif_input medium" value="<?php echo $mail_from_name ?>"/>
+				<?php echo form_error('mail_from_name','<div class="shj_error">','</div>'); ?>
 			</p>
 			<p class="input_p">
 				<label for="file_size_limit">Upload file size limit (kB):</label><br/>

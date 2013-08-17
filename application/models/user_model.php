@@ -105,13 +105,12 @@ class User_model extends CI_Model{
 				$counter++;
 				$config['mailtype']='html';
 				$this->email->initialize($config);
-				$this->email->from($this->settings_model->get_setting('mail_from'), 'Sharif Judge');
+				$this->email->from($this->settings_model->get_setting('mail_from'), $this->settings_model->get_setting('mail_from_name'));
 				$this->email->to($user[1]);
 				$this->email->subject('Sharif Judge Username and Password');
 				$this->email->message('<p>Hello! You are registered in Sharif Judge at '.site_url().' as '.$user[3].'.</p>
-					<p>You username and password is:</p>
-					<p>Username: '.$user[0].'</p>
-					<p>Password: '.$user[2].'</p>
+					<p>Your username: '.$user[0].'</p>
+					<p>Your password: '.$user[2].'</p>
 					<p>You can log in at <a href="'.site_url('login').'">'.site_url('login').'</a></p>
 				');
 				$this->email->send();
@@ -243,7 +242,7 @@ class User_model extends CI_Model{
 		$this->load->library('email');
 		$config['mailtype']='html';
 		$this->email->initialize($config);
-		$this->email->from($this->settings_model->get_setting('mail_from'), 'Sharif Judge');
+		$this->email->from($this->settings_model->get_setting('mail_from'), $this->settings_model->get_setting('mail_from_name'));
 		$this->email->to($email);
 		$this->email->subject('Password Reset');
 		$this->email->message('<p>Someone requested to reset the password for account with this email address at '.site_url().'.</p>

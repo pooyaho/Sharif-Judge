@@ -56,6 +56,7 @@ class Settings extends CI_Controller{
 			'enable_log'=>$this->settings_model->get_setting('enable_log'),
 			'enable_registration'=>$this->settings_model->get_setting('enable_registration'),
 			'mail_from'=>$this->settings_model->get_setting('mail_from'),
+			'mail_from_name'=>$this->settings_model->get_setting('mail_from_name'),
 			'results_per_page'=>$this->settings_model->get_setting('results_per_page'),
 			'form_status' => $this->form_status
 		);
@@ -96,6 +97,7 @@ class Settings extends CI_Controller{
 			$this->settings_model->set_setting('enable_log',$this->input->post('enable_log')===FALSE?0:1);
 			$this->settings_model->set_setting('enable_registration',$this->input->post('enable_registration')===FALSE?0:1);
 			$this->settings_model->set_setting('mail_from',$this->input->post('mail_from'));
+			$this->settings_model->set_setting('mail_from_name',$this->input->post('mail_from_name'));
 			$this->settings_model->set_setting('results_per_page',$this->input->post('results_per_page'));
 		}
 		else
