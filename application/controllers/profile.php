@@ -6,11 +6,15 @@
  */
 
 class Profile extends CI_Controller{
+
 	var $username;
 	var $assignment;
 	var $user_level;
 	var $form_status;
 	var $edit_username;
+
+
+
 	public function __construct(){
 		parent::__construct();
 		$this->load->library('session');
@@ -22,6 +26,11 @@ class Profile extends CI_Controller{
 		$this->user_level = $this->user_model->get_user_level($this->username);
 		$this->form_status = "";
 	}
+
+
+
+
+
 
 	public function index($user_id = FALSE){
 		if ($user_id===FALSE){
@@ -70,6 +79,9 @@ class Profile extends CI_Controller{
 		$this->load->view('templates/footer');
 	}
 
+
+
+
 	public function _password_check($str){
 		if (strlen($str)==0 OR (strlen($str)>=6 && strlen($str)<=30))
 			return TRUE;
@@ -99,4 +111,6 @@ class Profile extends CI_Controller{
 			return TRUE;
 		return FALSE;
 	}
+
+
 }

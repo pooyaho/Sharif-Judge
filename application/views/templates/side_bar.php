@@ -90,7 +90,7 @@
 		<div class="side_box"><a href="<?php echo site_url('scoreboard') ?>"><li <?php echo ($selected=='scoreboard'?'class="selected"':'') ?>><i class="splashy-star_boxed_full"></i> Scoreboard</li></a></div>
 	</ul>
 	<div id="about">
-		<p><a href="http://sharifjudge.ir" target="_blank">Sharif Judge</a></p>
+		<p><a href="http://sharifjudge.ir" target="_blank">Sharif Judge</a>  <a href="http://sharifjudge.ir/docs" target="_blank">Help</a></p>
 		<p id="timer"></p>
 	</div>
 </div>

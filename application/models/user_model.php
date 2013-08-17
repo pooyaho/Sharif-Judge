@@ -26,6 +26,18 @@ class User_model extends CI_Model{
 		return FALSE;
 	}
 
+	/*
+	 * Returns TRUE if there is a user with id $user_id in database
+	 */
+	public function user_id_to_username($user_id){
+		if(!is_numeric($user_id))
+			return FALSE;
+		$query = $this->db->select('username')->get_where('users',array('id'=>$user_id));
+		if ($query->num_rows()==0)
+			return FALSE;
+		return $query->row()->username;
+	}
+
 
 
 	/*
@@ -234,6 +246,7 @@ class User_model extends CI_Model{
 		if ( !$this->have_email($email) )
 			return;
 
+		$this->load->helper('string');
 		$passchange_key = random_string('alnum',50);
 
 		$now = shj_now();

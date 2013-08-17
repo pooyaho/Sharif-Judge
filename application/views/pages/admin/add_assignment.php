@@ -43,9 +43,8 @@
 <?php $this->view('templates/top_bar'); ?>
 <?php $this->view('templates/side_bar',array('selected'=>'assignments')); ?>
 <div id="main_container">
-	<div id="page_title"><img src="<?php echo base_url('assets/images/icons/add.png') ?>"/> <span><?php echo $title ?></span></div>
+	<div id="page_title"><img src="<?php echo base_url('assets/images/icons/add.png') ?>"/> <span><?php echo $title ?></span> <span style="font-size:14px;">(<a href="http://sharifjudge.ir/docs/add_assignment" target="_blank">Help</a>)</span></div>
 	<div id="main_content">
-
 		<?php if ($form_status=="ok"||$form_status=="tests_updated"): ?>
 			<div class="shj_ok">Assignment <?php echo $edit?"updated":'added' ?> successfully.</div>
 		<?php elseif ($form_status=="error"): ?>
@@ -119,7 +118,7 @@
 			</p>
 			<p class="input_p">
 				<label for="tests">Tests (zip file):</label><br>
-				<p class="form_comment medium"><a href="#">Use this structure</a></p>
+				<p class="form_comment medium"><a href="http://sharifjudge.ir/docs/add_assignment" target="_blank">Use this structure</a></p>
 				<input type="file" name="tests" class="sharif_input medium"/>
 				<?php
 					if (!$edit)

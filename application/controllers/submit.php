@@ -6,6 +6,7 @@
  */
 
 class Submit extends CI_Controller{
+
 	var $data; //data sent to view
 	var $username;
 	var $user_level;
@@ -16,6 +17,8 @@ class Submit extends CI_Controller{
 	var $file_type; //type of submitted file
 	var $ext; //uploaded file extension
 	var $file_name; //uploaded file name without extension
+
+
 
 	public function __construct(){
 		parent::__construct();
@@ -33,6 +36,8 @@ class Submit extends CI_Controller{
 	}
 
 
+
+
 	public function _check_filetype($str){
 		if ($str=="0")
 			return FALSE;
@@ -40,6 +45,10 @@ class Submit extends CI_Controller{
 			return TRUE;
 		return FALSE;
 	}
+
+
+
+
 
 
 	public function index(){
@@ -68,6 +77,12 @@ class Submit extends CI_Controller{
 		$this->load->view('templates/footer');
 	}
 
+
+
+
+
+
+
 	private function _upload(){
 		$now = shj_now();
 		foreach($this->problems as $item)
@@ -79,27 +94,27 @@ class Submit extends CI_Controller{
 		$this->ext = substr(strrchr($_FILES['userfile']['name'],'.'),1); // uploaded file extension
 		$this->file_name = basename($_FILES['userfile']['name'], ".{$this->ext}"); // uploaded file name without extension
 		if ( $this->queue_model->in_queue($this->username,$this->assignment['id'],$this->problem['id']) )
-			die('<p>You have submitted for this problem already. Your last submission is still in queue.</p>');
+			show_error('You have already submitted for this problem. Your last submission is still in queue.');
 		if ($this->user_model->get_user_level($this->username)==0 && !$this->assignment['open'])
-			die('<p>Selected assignment has been closed.</p>');
+			show_error('Selected assignment has been closed.');
 		if ($now < strtotime($this->assignment['start_time']))
-			die('<p>Selected assignment has not started.</p>');
+			show_error('Selected assignment has not started.');
 		if ($now > strtotime($this->assignment['finish_time'])+$this->assignment['extra_time'])
-			die('<p>Selected assignment has finished.</p>');
+			show_error('Selected assignment has finished.');
 		if ( !$this->assignment_model->is_participant($this->assignment['participants'],$this->username) )
-			die('<p>You are not registered for submitting.</p>');
+			show_error('You are not registered for submitting.');
 		$filetypes = explode(",",$this->problem['allowed_file_types']);
 		foreach ($filetypes as &$filetype){
 			$filetype = trim($filetype);
 		}
 		if ($_FILES['userfile']['error']==4)
-			die('<p>No file chosen.</p>');
+			show_error('No file chosen.');
 		if (!in_array($this->file_type,$filetypes))
-			die('<p>This file type is not allowed for this problem.</p>');
+			show_error('This file type is not allowed for this problem.');
 		if ($this->file_type !== $this->ext)
-			die('<p>This file type does not match your selected file type.</p>');
+			show_error('This file type does not match your selected file type.');
 		if ( preg_match('/[^\x20-\x7f]/', $_FILES['userfile']['name']))
-			die('<p>Invalid characters in file name.</p>');
+			show_error('Invalid characters in file name.');
 
 		$user_dir=rtrim($this->assignment_root,'/')."/assignment_".$this->assignment['id']."/p".$this->problem['id'].'/'.$this->username;
 		if(!file_exists($user_dir))
@@ -138,5 +153,7 @@ class Submit extends CI_Controller{
 		else
 			$this->data['upload_state']='error';
 	}
+
+
 
 }

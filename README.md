@@ -1,6 +1,6 @@
 # Sharif Judge
 
-[Sharif Judge](http://sharifjudge.ir) is a free and open source online judge system for judging C, C++ and Java programming assignments. It can also be used for programming contests, but it has features specially for programming assignments.
+[Sharif Judge](http://sharifjudge.ir) is a free and open source online judge for C, C++ and Java programming assignments. It can also be used for programming contests, but it has features specially for programming assignments.
 
 Installation doesn't need root privileges.
 
@@ -43,4 +43,4 @@ For running Sharif Judge, a Linux server with following requirements is needed:
 
 ### After Installation
 
-  * Read the [documentation](http://sharifjudge.ir/docs).
+  * Read the [documentation](http://sharifjudge.ir/docs/installation#after_installation).

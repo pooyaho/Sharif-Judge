@@ -5,12 +5,17 @@
  * @author Mohammad Javad Naderi <mjnaderi@gmail.com>
  */
 
+
 class Add_assignment extends CI_Controller{
+
 	var $username;
 	var $assignment;
 	var $user_level;
 	var $form_status;
 	var $edit;
+
+
+
 	public function __construct(){
 		parent::__construct();
 		$this->load->library('session');
@@ -27,6 +32,11 @@ class Add_assignment extends CI_Controller{
 		$this->edit_assignment=array();
 		$this->edit=FALSE;
 	}
+
+
+
+
+
 
 	public function index(){
 		$this->load->model('user_model');
@@ -93,6 +103,12 @@ class Add_assignment extends CI_Controller{
 		$this->load->view('templates/footer');
 	}
 
+
+
+
+
+
+
 	public function add(){
 		$this->form_validation->set_rules('assignment_name','assignment name','required|max_length[50]');
 		$this->form_validation->set_rules('start_time','start time','required');
@@ -148,6 +164,12 @@ class Add_assignment extends CI_Controller{
 		$this->index();
 	}
 
+
+
+
+
+
+
 	public function edit($assignment_id){
 		$this->edit_assignment=$assignment_id;
 		$this->edit=TRUE;
@@ -158,4 +180,7 @@ class Add_assignment extends CI_Controller{
 			$this->add();
 		}
 	}
+
+
+
 }

@@ -6,9 +6,13 @@
  */
 
 class Settings extends CI_Controller{
+
 	var $username;
 	var $assignment;
 	var $user_level;
+
+
+
 	public function __construct(){
 		parent::__construct();
 		$this->load->library('session');
@@ -23,6 +27,10 @@ class Settings extends CI_Controller{
 		$this->form_status = "";
 	}
 
+
+
+
+
 	/*
 	 * This function validates input filed 'timezone'
 	 */
@@ -36,6 +44,9 @@ class Settings extends CI_Controller{
 			return TRUE;
 		return FALSE;
 	}
+
+
+
 
 	public function index(){
 		$data = array(
@@ -68,6 +79,12 @@ class Settings extends CI_Controller{
 		$this->load->view('pages/admin/settings',$data);
 		$this->load->view('templates/footer');
 	}
+
+
+
+
+
+
 
 	public function update(){
 		$this->form_validation->set_message('_check_timezone','Wrong Timezone.');
@@ -104,4 +121,6 @@ class Settings extends CI_Controller{
 			$this->form_status = "error";
 		$this->index();
 	}
+
+
 }

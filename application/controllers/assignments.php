@@ -6,9 +6,13 @@
  */
 
 class Assignments extends CI_Controller{
+
 	var $username;
 	var $assignment;
 	var $user_level;
+
+
+
 	public function __construct(){
 		parent::__construct();
 		$this->load->library('session');
@@ -21,6 +25,13 @@ class Assignments extends CI_Controller{
 		$this->user_level = $this->user_model->get_user_level($this->username);
 		$this->form_validation->set_rules('assignment_select','Assignment',"integer|greater_than[0]");
 	}
+
+
+
+
+
+
+
 
 	public function index(){
 		$data = array(
@@ -42,6 +53,13 @@ class Assignments extends CI_Controller{
 		$this->load->view('templates/footer');
 	}
 
+
+
+
+
+
+
+
 	public function select(){ /* used by ajax request (for select assignment from top bar) */
 		if ( ! $this->input->is_ajax_request() )
 			show_404();
@@ -53,6 +71,13 @@ class Assignments extends CI_Controller{
 		else
 			echo 'shj_failed';
 	}
+
+
+
+
+
+
+
 
 	public function download($assignment_id){ /* compressing and downloading final codes of an assignment to browser */
 		if ( $this->user_level == 0)
@@ -72,6 +97,7 @@ class Assignments extends CI_Controller{
 
 		$this->zip->download("assignment{$assignment_id}_codes_".mdate("%Y-%m-%d_%H-%i",shj_now()).".zip");
 	}
+
 
 
 }

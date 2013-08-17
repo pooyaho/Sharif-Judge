@@ -6,10 +6,14 @@
  */
 
 class Submissions extends CI_Controller{
+
 	var $username;
 	var $assignment;
 	var $user_level;
 	var $final_items;
+
+
+
 	public function __construct(){
 		parent::__construct();
 		$this->load->library('session');
@@ -21,6 +25,10 @@ class Submissions extends CI_Controller{
 		$this->assignment = $this->assignment_model->assignment_info($this->user_model->selected_assignment($this->username));
 		$this->user_level = $this->user_model->get_user_level($this->username);
 	}
+
+
+
+
 
 
 	private function download_excel($view){
@@ -87,6 +95,10 @@ class Submissions extends CI_Controller{
 	}
 
 
+
+
+
+
 	public function the_final($page_number=FALSE){
 
 		if ($page_number=="excel"){
@@ -124,6 +136,12 @@ class Submissions extends CI_Controller{
 		$this->load->view('pages/submissions',$data);
 		$this->load->view('templates/footer');
 	}
+
+
+
+
+
+
 
 
 
@@ -171,6 +189,14 @@ class Submissions extends CI_Controller{
 		$this->load->view('templates/footer');
 	}
 
+
+
+
+
+
+
+
+
 	public function select(){ /* used by ajax request (for selecting final submission) */
 		if ( ! $this->input->is_ajax_request() )
 			show_404();
@@ -185,6 +211,12 @@ class Submissions extends CI_Controller{
 		else
 			echo 'shj_failed';
 	}
+
+
+
+
+
+
 
 	public function view_code(){ /* for "view code" or "view result" or "view log" */
 		$this->form_validation->set_rules('code','integer|greater_than[-1]|less_than[2]');
@@ -255,5 +287,8 @@ class Submissions extends CI_Controller{
 			die("Are you trying to see other users' codes? :)");
 		}
 	}
+
+
+
 
 }

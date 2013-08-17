@@ -10,6 +10,7 @@
 	<div id="page_title"><img src="<?php echo base_url('assets/images/icons/delete_user.png') ?>"/> <span><?php echo $title ?></span></div>
 	<div id="main_content">
 		<p>Are you sure you want to delete this user?</p>
+		<p>Username: <?php echo $delete_username ?></p>
 		<?php echo form_open('users/delete/'.$id); ?>
 		<input type="hidden" name="delete" value="delete"/>
 		<p class="input_p">

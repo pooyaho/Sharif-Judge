@@ -71,15 +71,15 @@
 			<p class="input_p">
 				<input type="checkbox" name="enable_easysandbox" value="1" <?php if ($enable_easysandbox) echo 'checked' ?>/> EasySandbox<br>
 				<p class="form_comment medium">Enable EasySandbox (uses seccomp) for C/C++.
-				You must <a href="#">build EasySandbox</a> before enabling it.</p>
+				You must <a href="http://sharifjudge.ir/docs/sandboxing#build_easysandbox" target="_blank">build EasySandbox</a> before enabling it.</p>
 			</p>
 			<p class="input_p">
 				<input type="checkbox" name="enable_shield" value="1" <?php if ($enable_shield) echo 'checked' ?>/> C/C++ Shield<br>
-				<span class="form_comment">Enable <a href="#">Shield</a> for C/C++</span>
+				<span class="form_comment">Enable <a href="http://sharifjudge.ir/docs/shield" target="_blank">Shield</a> for C/C++</span>
 			</p>
 			<p class="input_p">
 				<input type="checkbox" name="enable_java_policy" value="1" <?php if ($enable_java_policy) echo 'checked' ?>/> Java Policy<br>
-				<span class="form_comment">Enable <a href="#">Java Policy</a> for Java</span>
+				<span class="form_comment">Enable <a href="http://sharifjudge.ir/docs/sandboxing#java_sandboxing" target="_blank">Java Sandboxing</a></span>
 			</p>
 			<p class="input_p">
 				<input type="checkbox" name="enable_log" value="1" <?php if ($enable_log) echo 'checked' ?>/> Log<br>
@@ -88,19 +88,20 @@
 			<p class="input_p">
 				<input type="submit" value="Save" class="sharif_input"/>
 			</p>
+			<br>
 		</div>
 		<div class="panel_right">
 			<p class="input_p">
 				<label for="default_late_rule">Default coefficient rule (PHP script without <?php echo htmlspecialchars('<?php ?>') ?> tags):</label><br>
-				<textarea name="default_late_rule" rows="10" class="sharif_input add_text"><?php echo $default_late_rule ?></textarea>
+				<textarea name="default_late_rule" rows="15" class="sharif_input add_text"><?php echo $default_late_rule ?></textarea>
 			</p>
 			<p class="input_p">
 				<label for="def_c">Shield rules (for C):</label><br>
-				<textarea name="def_c" rows="10" class="sharif_input add_text"><?php if($defc!==FALSE) echo $defc ?></textarea>
+				<textarea name="def_c" rows="15" class="sharif_input add_text"><?php if($defc!==FALSE) echo $defc ?></textarea>
 			</p>
 			<p class="input_p">
 				<label for="def_cpp">Shield rules (for C++):</label><br>
-				<textarea name="def_cpp" rows="10" class="sharif_input add_text"><?php if($defcpp!==FALSE) echo $defcpp ?></textarea>
+				<textarea name="def_cpp" rows="15" class="sharif_input add_text"><?php if($defcpp!==FALSE) echo $defcpp ?></textarea>
 			</p>
 		</div>
 		</form>

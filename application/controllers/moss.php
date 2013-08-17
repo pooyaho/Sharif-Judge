@@ -6,9 +6,13 @@
  */
 
 class Moss extends CI_Controller{
+
 	var $username;
 	var $assignment;
 	var $user_level;
+
+
+
 	public function __construct(){
 		parent::__construct();
 		$this->load->library('session');
@@ -21,6 +25,10 @@ class Moss extends CI_Controller{
 		if ( $this->user_level <=1)
 			show_error("You have not enough permission to access this page.");
 	}
+
+
+
+
 
 
 
@@ -52,6 +60,10 @@ class Moss extends CI_Controller{
 
 
 
+
+
+
+
 	public function update($assignment_id = FALSE) {
 		if ($assignment_id===FALSE)
 			show_404();
@@ -63,6 +75,10 @@ class Moss extends CI_Controller{
 		shell_exec("chmod +x {$moss_path}");
 		$this->index($assignment_id);
 	}
+
+
+
+
 
 
 
@@ -93,5 +109,6 @@ class Moss extends CI_Controller{
 		}
 		$this->index($assignment_id);
 	}
+
 
 }

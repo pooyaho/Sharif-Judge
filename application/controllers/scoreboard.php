@@ -6,10 +6,14 @@
  */
 
 class Scoreboard extends CI_Controller{
+
 	var $username;
 	var $assignment;
 	var $user_level;
 	var $problems;
+
+
+
 	public function __construct(){
 		parent::__construct();
 		$this->load->library('session');
@@ -21,6 +25,11 @@ class Scoreboard extends CI_Controller{
 		$this->user_level = $this->user_model->get_user_level($this->username);
 		$this->problems = $this->assignment_model->all_problems($this->assignment['id']);
 	}
+
+
+
+
+
 
 	public function index(){
 		$data = array(
@@ -44,4 +53,6 @@ class Scoreboard extends CI_Controller{
 		$this->load->view('pages/scoreboard',$data);
 		$this->load->view('templates/footer');
 	}
+
+
 }

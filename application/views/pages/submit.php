@@ -56,7 +56,7 @@
 						$coefficient = "error";
 					ob_end_clean();
 					echo $coefficient;
-				?></p>
+				?>%</p>
 				<?php echo form_open_multipart('submit') ?>
 				<p class="input_p">
 					<label for="problem">Problem:</label><br>

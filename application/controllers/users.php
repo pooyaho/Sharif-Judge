@@ -6,9 +6,13 @@
  */
 
 class Users extends CI_Controller {
+
 	var $username;
 	var $assignment;
 	var $user_level;
+
+
+
 	public function __construct(){
 		parent::__construct();
 		$this->load->library('session');
@@ -21,6 +25,12 @@ class Users extends CI_Controller {
 		if ( $this->user_level <= 2)
 			show_error("You have not enough permission to access this page.");
 	}
+
+
+
+
+
+
 
 	public function index(){
 		$data = array(
@@ -37,6 +47,12 @@ class Users extends CI_Controller {
 		$this->load->view('pages/admin/users',$data);
 		$this->load->view('templates/footer');
 	}
+
+
+
+
+
+
 
 	public function add(){
 		$data = array(
@@ -79,10 +95,18 @@ class Users extends CI_Controller {
 	}
 
 
+
+
+
+
+
+
 	public function delete($user_id=FALSE) {
-		if ($user_id===FALSE || !is_numeric($user_id)){
-			die("Incorrect user id");
-		}
+		if ($user_id===FALSE || !is_numeric($user_id))
+			show_error("Incorrect user id");
+		$username = $this->user_model->user_id_to_username($user_id);
+		if ($username === FALSE)
+			show_error("This user does not exist.");
 		$data = array(
 			'username'=>$this->username,
 			'user_level' => $this->user_level,
@@ -90,7 +114,8 @@ class Users extends CI_Controller {
 			'assignment' => $this->assignment,
 			'title'=>'Delete User',
 			'style'=>'main.css',
-			'id'=>$user_id
+			'id'=>$user_id,
+			'delete_username'=>$username
 		);
 		if ($this->input->post('delete')=="delete"){
 			$this->user_model->delete_user($user_id,$this->input->post('delete_submissions')===FALSE?FALSE:TRUE);
@@ -107,4 +132,8 @@ class Users extends CI_Controller {
 			$this->load->view('templates/footer');
 		}
 	}
+
+
+
+
 }

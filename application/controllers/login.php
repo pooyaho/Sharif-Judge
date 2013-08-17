@@ -12,21 +12,31 @@ class Login extends CI_Controller{
 		$this->load->library('session');
 	}
 
+
+
+
 	public function _username_check($username){ // checks whether a user with this username exists (used for validating registration)
 		if ($this->user_model->have_user($username))
 			return FALSE;
 		return TRUE;
 	}
+
 	public function _lowercase ($string) {
 		if (strtolower($string)===$string)
 			return TRUE;
 		return FALSE;
 	}
+
 	public function _email_check($email){ // checks whether a user with this email exists (used for validating registration)
 		if ($this->user_model->have_email($email))
 			return FALSE;
 		return TRUE;
 	}
+
+
+
+
+
 
 	public function index(){ // login
 		$this->form_validation->set_rules('username','Username','required|min_length[3]|max_length[20]|alpha_numeric');
@@ -57,6 +67,13 @@ class Login extends CI_Controller{
 		$this->load->view('templates/footer');
 	}
 
+
+
+
+
+
+
+
 	public function register(){
 		if (!$this->settings_model->get_setting('enable_registration'))
 			show_error("Registration is closed.");
@@ -83,10 +100,19 @@ class Login extends CI_Controller{
 	}
 
 
+
+
+
+
 	public function logout(){ // logging out and redirecting to login page
 		$this->session->sess_destroy();
 		redirect('login');
 	}
+
+
+
+
+
 
 
 	public function lost(){
@@ -104,6 +130,12 @@ class Login extends CI_Controller{
 		$this->load->view('pages/authentication/lost', $data);
 		$this->load->view('templates/footer');
 	}
+
+
+
+
+
+
 
 
 	public function reset($passchange_key){
@@ -125,4 +157,7 @@ class Login extends CI_Controller{
 		$this->load->view('templates/footer');
 		//$user = $this->user_model->get_
 	}
+
+
+
 }

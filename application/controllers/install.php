@@ -10,13 +10,19 @@ class Install extends CI_Controller {
 	public function __construct(){
 		parent::__construct();
 		$this->load->database();
+		$this->load->helper('string');
 	}
+
+
 
 	public function _lowercase ($string) {
 		if (strtolower($string)===$string)
 			return TRUE;
 		return FALSE;
 	}
+
+
+
 
 	public function index(){
 
@@ -164,7 +170,7 @@ class Install extends CI_Controller {
 				('enable_log', '1'),
 				('submit_penalty', '300'),
 				('enable_registration', '0'),
-				('mail_from', 'shj@mjnaderi.ir'),
+				('mail_from', 'shj@sharifjudge.ir'),
 				('mail_from_name', 'Sharif Judge'),
 				('moss_userid', ''),
 				('results_per_page', '40');";
@@ -197,6 +203,17 @@ class Install extends CI_Controller {
 				$this->input->post('email'),
 				$this->input->post('password'),
 				'admin');
+
+			// Using a random string as encryption key
+			$config_path = rtrim(APPPATH,'/').'/config/config.php';
+			$config_content = file_get_contents( $config_path );
+			$random_key = random_string('alnum',32);
+			$res = file_put_contents( $config_path , str_replace('919RgokTjymS34AhPzF76tcLjTVYMV8T',$random_key,$config_content) );
+			if ($res===FALSE)
+				$data['key_changed']=FALSE;
+			else
+				$data['key_changed']=TRUE;
+
 			$data['status']='Installed';
 		}
 
