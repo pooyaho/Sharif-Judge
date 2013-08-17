@@ -58,7 +58,7 @@ class Login extends CI_Controller{
 	}
 
 	public function register(){
-		if ($this->settings_model->get_setting('enable_registration'))
+		if (!$this->settings_model->get_setting('enable_registration'))
 			show_error("Registration is closed.");
 		$this->form_validation->set_message('_username_check','User with same %s exists.');
 		$this->form_validation->set_message('_email_check','User with same %s exists.');

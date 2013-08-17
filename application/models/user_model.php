@@ -99,7 +99,10 @@ class User_model extends CI_Model{
 		}
 		if ($send_mail){
 			$this->load->library('email');
+			$count_users = count($users_ok);
+			$counter=0;
 			foreach ($users_ok as $user){
+				$counter++;
 				$config['mailtype']='html';
 				$this->email->initialize($config);
 				$this->email->from($this->settings_model->get_setting('mail_from'), 'Sharif Judge');
@@ -109,10 +112,11 @@ class User_model extends CI_Model{
 					<p>You username and password is:</p>
 					<p>Username: '.$user[0].'</p>
 					<p>Password: '.$user[2].'</p>
-					<p>You can log in at <a href="'.site_url('login').'"></a></p>
+					<p>You can log in at <a href="'.site_url('login').'">'.site_url('login').'</a></p>
 				');
 				$this->email->send();
-				sleep($delay);
+				if ($counter<$count_users)
+					sleep($delay);
 			}
 		}
 		return array($users_ok, $users_error);
