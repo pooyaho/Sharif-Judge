@@ -15,10 +15,12 @@
 		<p><i class="splashy-group_blue_add"></i> <?php echo anchor('users/add','Add Users') ?></p>
 		<table class="sharif_table">
 			<thead>
-			<tr><th>ID</th><th>Username</th><th>Display Name</th><th>Email</th><th>Role</th><th>Actions</th></tr>
+			<tr><th>#</th><th>User ID</th><th>Username</th><th>Display Name</th><th>Email</th><th>Role</th><th>Actions</th></tr>
 			</thead>
+			<?php $counter = 0; ?>
 			<?php foreach($users as $user): ?>
 				<tr>
+					<td><?php echo ++$counter; ?></td>
 					<td><?php echo $user['id'] ?></td>
 					<td><?php echo $user['username'] ?></td>
 					<td><?php echo $user['display_name'] ?></td>

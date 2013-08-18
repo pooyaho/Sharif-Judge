@@ -9,7 +9,7 @@
 <div id="main_container">
 	<div id="page_title"><img src="<?php echo base_url('assets/images/icons/assignments.png') ?>"/> <span><?php echo $title ?></span>
 		<?php if ($user_level>=2): ?>
-		<span style="font-size:14px;">(<?php echo anchor('add_assignment','Add') ?>)</span>
+		<span style="font-size:14px;margin-left:10px;"><a href="<?php echo site_url('add_assignment') ?>"><i class="splashy-add_small"></i> Add</a></span>
 		<?php endif ?>
 	</div>
 	<div id="main_content">

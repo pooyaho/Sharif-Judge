@@ -201,7 +201,7 @@ class Submissions extends CI_Controller{
 		if ( ! $this->input->is_ajax_request() )
 			show_404();
 		if (shj_now() > strtotime($this->assignment['finish_time'])+$this->assignment['extra_time'])
-			die('shj_failed');
+			die('shj_finished');
 		$this->form_validation->set_rules('submit_id','Submit ID',"integer|greater_than[0]");
 		$this->form_validation->set_rules('problem','problem',"integer|greater_than[0]");
 		//echo $this->input->post('problem'); echo '<br>'; echo $this->input->post('submit_id');

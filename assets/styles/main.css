@@ -13,6 +13,10 @@
 	-webkit-box-sizing: border-box;
 }
 
+img {
+	border: 0;
+}
+
 body {
 	padding: 0;
 	color: #2d2d2d;
@@ -118,9 +122,9 @@ span.time_label {
 div#side_bar {
 	left: 0;
 	top: 37px;
+	width: 170px;
 	bottom: 0;
 	z-index: 1;
-	width: 170px;
 	position: fixed;
 	background-color: #f0f0f0;
 	border-right: 1px solid #a3a3a3;
@@ -149,8 +153,34 @@ div#side_bar ul li.selected {
 	border-right: 5px solid #4f4f4f;
 }
 
+.sidebar_text {
+	margin-left: 5px;
+	width: 170px;
+	position: absolute;
+}
+
 div#side_bar ul a {
 	text-decoration: none;
+}
+
+div#sidebar_bottom {
+	bottom: 0;
+	z-index: 2;
+	width: 100%;
+	padding: 0;
+	position: absolute;
+}
+
+div#sidebar_bottom p {
+	font-size: 10px;
+	margin: 0 0 7px 5px;
+	width: 164px;
+}
+
+div#shj_collapse {
+	cursor: pointer;
+	background-color: #CECECE;
+	padding: 7px 0 7px 12px;
 }
 
 /*********************************************/
@@ -179,21 +209,6 @@ div#main_container div#main_content {
 	padding: 0 20px;
 }
 
-
-/**********************************************/
-
-div#about {
-	bottom: 0;
-	z-index: 2;
-	width: 100%;
-	padding: 0 7px;
-	position: absolute;
-}
-
-div#about p {
-	font-size: 10px;
-	margin: 0 0 7px 0;
-}
 
 /***********************************************/
 

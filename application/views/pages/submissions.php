@@ -23,6 +23,9 @@
 							$(".set_final.p"+problem).removeClass('checked');
 							$(".set_final#sf"+submit_id+"_"+problem).addClass('checked');
 						}
+						else if (a == "shj_finished" ){
+							alert("This assignment is finished. You cannot change your final submissions.");
+						}
 					}
 				});
 			}
@@ -37,9 +40,9 @@ $finish = strtotime($assignment['finish_time']);
 	<div id="main_container">
 		<div id="page_title"><img src="<?php echo base_url("assets/images/icons/{$view}_submissions.png") ?>"/> <span><?php echo $title ?></span></div>
 		<div id="main_content">
-			<p><?php echo ucfirst($view); ?> Submissions of <?php echo $assignment['name']; ?> (<?php echo anchor("submissions/{$view}/excel",'Excel'); ?>)</p>
+			<p><?php echo ucfirst($view); ?> Submissions of <?php echo $assignment['name']; ?> (<a href="<?php echo site_url("submissions/{$view}/excel") ?>"><i class="splashy-document_small_download"></i> Excel</a>)</p>
 			<?php if($view=="all"): ?>
-			<p>You cannot select final submission when assignment finishes.</p>
+			<p>You cannot change your final submissions when assignment finishes.</p>
 			<?php endif ?>
 			<table class="sharif_table">
 				<thead>
