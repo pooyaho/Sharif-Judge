@@ -71,15 +71,15 @@
 			<p class="input_p">
 				<input type="checkbox" name="enable_easysandbox" value="1" <?php if ($enable_easysandbox) echo 'checked' ?>/> EasySandbox<br>
 				<p class="form_comment medium">Enable EasySandbox (uses seccomp) for C/C++.
-				You must <a href="http://sharifjudge.ir/docs/sandboxing#build_easysandbox" target="_blank">build EasySandbox</a> before enabling it.</p>
+				You must <a href="http://docs.sharifjudge.ir/sandboxing#build_easysandbox" target="_blank">build EasySandbox</a> before enabling it.</p>
 			</p>
 			<p class="input_p">
 				<input type="checkbox" name="enable_shield" value="1" <?php if ($enable_shield) echo 'checked' ?>/> C/C++ Shield<br>
-				<span class="form_comment">Enable <a href="http://sharifjudge.ir/docs/shield" target="_blank">Shield</a> for C/C++</span>
+				<span class="form_comment">Enable <a href="http://docs.sharifjudge.ir/shield" target="_blank">Shield</a> for C/C++</span>
 			</p>
 			<p class="input_p">
 				<input type="checkbox" name="enable_java_policy" value="1" <?php if ($enable_java_policy) echo 'checked' ?>/> Java Policy<br>
-				<span class="form_comment">Enable <a href="http://sharifjudge.ir/docs/sandboxing#java_sandboxing" target="_blank">Java Sandboxing</a></span>
+				<span class="form_comment">Enable <a href="http://docs.sharifjudge.ir/sandboxing#java_sandboxing" target="_blank">Java Sandboxing</a></span>
 			</p>
 			<p class="input_p">
 				<input type="checkbox" name="enable_log" value="1" <?php if ($enable_log) echo 'checked' ?>/> Log<br>

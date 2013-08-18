@@ -67,15 +67,31 @@
 	}
 
 	function sidebar_open(time){
-		$("#side_bar").animate({width: '170px'},time,function(){$(".sidebar_text").css('display','inline-block');$("#sidebar_bottom p").css('display','block');});
-		$("#main_container").animate({'margin-left':'170px'},time*1.7);
+		if (time==0){
+			$(".sidebar_text").css('display','inline-block');
+			$("#sidebar_bottom p").css('display','block');
+			$("#side_bar").css('width', '170px');
+			$("#main_container").css('margin-left','170px');
+		}
+		else{
+			$("#side_bar").animate({width: '170px'},time,function(){$(".sidebar_text").css('display','inline-block');$("#sidebar_bottom p").css('display','block');});
+			$("#main_container").animate({'margin-left':'170px'},time*1.7);
+		}
 		$("i#collapse").removeClass("splashy-pagination_1_next");
 		$("i#collapse").addClass("splashy-pagination_1_previous");
 	}
 
 	function sidebar_close(time){
-		$("#side_bar").animate({width: '40px'},time,function(){$(".sidebar_text").css('display','none');$("#sidebar_bottom p").css('display','none');});
-		$("#main_container").animate({'margin-left':'40px'},time*1.7);
+		if (time==0){
+			$(".sidebar_text").css('display','none');
+			$("#sidebar_bottom p").css('display','none');
+			$("#side_bar").css('width', '40px');
+			$("#main_container").css('margin-left','40px');
+		}
+		else{
+			$("#side_bar").animate({width: '40px'},time,function(){$(".sidebar_text").css('display','none');$("#sidebar_bottom p").css('display','none');});
+			$("#main_container").animate({'margin-left':'40px'},time*1.7);
+		}
 		$("i#collapse").removeClass("splashy-pagination_1_previous");
 		$("i#collapse").addClass("splashy-pagination_1_next");
 	}
@@ -84,12 +100,12 @@
 		if (sidebar == "open"){
 			sidebar = "close";
 			sidebar_close(200);
-			$.cookie('shj_sidebar','close',{path:'/'});
+			$.cookie('shj_sidebar','close',{path:'/', expires: 365});
 		}
 		else if (sidebar == "close"){
 			sidebar = "open";
 			sidebar_open(200);
-			$.cookie('shj_sidebar','open',{path:'/'});
+			$.cookie('shj_sidebar','open',{path:'/', expires: 365});
 		}
 	}
 
@@ -97,12 +113,14 @@
 		sidebar = $.cookie('shj_sidebar');
 		if (sidebar!='open' && sidebar!='close'){
 			sidebar='open';
-			$.cookie('shj_sidebar','open',{path:'/'});
+			$.cookie('shj_sidebar','open',{path:'/', expires: 365});
 		}
 		if (sidebar=="open")
 			sidebar_open(0);
 		else
 			sidebar_close(0);
+
+		$("#shj_collapse").click(toggle_collapse);
 
 		time = moment();
 		finish_time = moment("<?php echo $assignment['finish_time'] ?>");
@@ -111,7 +129,6 @@
 		update_clock();
 		window.setInterval(update_clock,1000);
 
-		$("#shj_collapse").click(toggle_collapse);
 	});
 
 </script>
@@ -132,7 +149,7 @@
 		<div class="side_box"><a href="<?php echo site_url('scoreboard') ?>"><li <?php echo ($selected=='scoreboard'?'class="selected"':'') ?>><i class="splashy-star_boxed_full"></i><span class="sidebar_text">Scoreboard</span></li></a></div>
 	</ul>
 	<div id="sidebar_bottom">
-		<p><a href="http://sharifjudge.ir" target="_blank">Sharif Judge</a>  <a href="http://sharifjudge.ir/docs" target="_blank">Help</a></p>
+		<p><a href="http://sharifjudge.ir" target="_blank">&copy; Sharif Judge</a>  <a href="http://docs.sharifjudge.ir" target="_blank">Help</a></p>
 		<p id="timer"></p>
 		<div id="shj_collapse"><i id="collapse" class="splashy-pagination_1_previous"></i><span class="sidebar_text">Collapse Menu</span></div>
 	</div>

@@ -49,8 +49,8 @@
 	<div class="top_object" id="user_top">
 		<?php echo anchor('profile',$username,'id="profile_link"') ?>
 		<div class="top_menu" id="user_menu">
-			<?php echo anchor('profile','Profile') ?><br>
-			<?php echo anchor('logout','Log Out'); ?>
+			<a href="<?php echo site_url('profile') ?>"><div>Profile</div></a>
+			<a href="<?php echo site_url('logout') ?>"><div>Logout</div></a>
 		</div>
 	</div>
 	<div class="top_object" id="select_assignment_top">
