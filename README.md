@@ -6,6 +6,8 @@ Installation doesn't need root privileges.
 
 The web interface is written in PHP (CodeIgniter framework) and the main backend is written in BASH.
 
+The full documentation is at [http://sharifjudge.ir/docs/home](http://sharifjudge.ir/docs/home)
+
 ## Features
   * Multiple user roles (admin, head instructor, instructor, student)
   * Sandboxing
@@ -43,4 +45,4 @@ For running Sharif Judge, a Linux server with following requirements is needed:
 
 ### After Installation
 
-  * Read the [documentation](http://sharifjudge.ir/docs/installation#after_installation).
+  * Read the [documentation](http://sharifjudge.ir/docs/installation#after_installation)

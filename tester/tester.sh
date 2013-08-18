@@ -66,12 +66,13 @@ if [ ${13} = "1" ]; then
 else
 	JAVA_POLICY=""
 fi
-# DIFFOPTION can be "ignore_all_whitespace". In this case, before diff command,
+# DIFFOPTION can be "ignore". In this case, before diff command,
 # all newlines and whitespaces will be removed from both files.
+DIFFARGUMENT=""
 if [ "$DIFFOPTION" = "" ]; then
 	DIFFOPTION="-bB"
 fi
-if [ "$DIFFOPTION" != "ignore_all_whitespace" ]; then
+if [ "$DIFFOPTION" != "ignore" ]; then
 	DIFFARGUMENT=$DIFFOPTION
 fi
 
@@ -341,7 +342,7 @@ for((i=1;i<=TST;i++)); do
 		fi
 	else
 		cp $PROBLEMPATH/out/output$i.txt correctout
-		if [ "$DIFFOPTION" = "ignore_all_whitespace" ];then #removing all newlines and whitespaces before diff
+		if [ "$DIFFOPTION" = "ignore" ];then #removing all newlines and whitespaces before diff
 			tr -d ' \t\n\r\f' <out >tmp1 && mv tmp1 out;
 			tr -d ' \t\n\r\f' <correctout >tmp1 && mv tmp1 correctout;
 		fi

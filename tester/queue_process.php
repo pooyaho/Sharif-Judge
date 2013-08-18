@@ -139,7 +139,7 @@ do{
 	
 	$time_limit = round($time_limit, 3);
 	
-	$cmd = "cd $tester_path; ./tester.sh $problemdir $username $main_filename $raw_filename $file_type $time_limit $memory_limit $diff_cmd $diff_arg $op1 $op2 $op3 $op4"; /* todo */
+	$cmd = "cd $tester_path; ./tester.sh $problemdir $username $main_filename $raw_filename $file_type $time_limit $memory_limit $diff_cmd $diff_arg $op1 $op2 $op3 $op4";
 
 	file_put_contents($userdir."/log",$cmd);
 

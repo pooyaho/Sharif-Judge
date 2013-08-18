@@ -12,6 +12,7 @@ class Add_assignment extends CI_Controller{
 	var $assignment;
 	var $user_level;
 	var $form_status;
+	var $edit_assignment;
 	var $edit;
 
 
@@ -39,8 +40,6 @@ class Add_assignment extends CI_Controller{
 
 
 	public function index(){
-		$this->load->model('user_model');
-		$user=$this->user_model->get_user($this->username);
 		$data = array(
 			'username'=>$this->username,
 			'user_level' => $this->user_level,
