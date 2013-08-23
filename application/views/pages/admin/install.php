@@ -29,22 +29,22 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		<?php else: ?>
 		<?php echo form_open('install') ?>
 		<p class="input_p">
-			<label for="username">Admin username:</label><br>
+			<label for="username">Admin username:</label>
 			<input class="sharif_input" type="text" name="username"  value="<?php echo set_value('username'); ?>"/>
 			<?php echo form_error('username','<div class="shj_error">','</div>'); ?>
 		</p>
 		<p class="input_p">
-			<label for="email">Admin email:</label><br>
+			<label for="email">Admin email:</label>
 			<input class="sharif_input" type="text" name="email" value="<?php echo set_value('email'); ?>"/>
 			<?php echo form_error('email','<div class="shj_error">','</div>'); ?>
 		</p>
 		<p class="input_p">
-			<label for="username">Admin password:</label><br>
+			<label for="username">Admin password:</label>
 			<input class="sharif_input" type="password" name="password"/>
 			<?php echo form_error('password','<div class="shj_error">','</div>'); ?>
 		</p>
 		<p class="input_p">
-			<label for="username">Password, again:</label><br>
+			<label for="username">Password, again:</label>
 			<input class="sharif_input" type="password" name="password_again"/>
 			<?php echo form_error('password_again','<div class="shj_error">','</div>'); ?>
 		</p>
