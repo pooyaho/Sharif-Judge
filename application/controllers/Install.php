@@ -113,6 +113,17 @@ class Install extends CI_Controller {
 				show_error("Error creating database table");
 
 
+			$query = "CREATE TABLE IF NOT EXISTS `".$this->db->dbprefix('notifications')."` (
+				`id` int(11) NOT NULL AUTO_INCREMENT,
+				`title` varchar(200) CHARACTER SET utf8 NOT NULL,
+				`text` text CHARACTER SET utf8 NOT NULL,
+				`time` datetime NOT NULL,
+				PRIMARY KEY (`id`)
+				);";
+			if (!$this->db->simple_query($query))
+				show_error("Error creating database table");
+
+
 			$query = "CREATE TABLE IF NOT EXISTS `".$this->db->dbprefix('problems')."` (
 				`assignment` smallint(4) NOT NULL,
 				`id` smallint(4) NOT NULL,
@@ -185,8 +196,8 @@ class Install extends CI_Controller {
 				`role` varchar(20) CHARACTER SET utf8 NOT NULL,
 				`passchange_key` varchar(60) CHARACTER SET utf8 NOT NULL,
 				`passchange_time` datetime NOT NULL,
-				`first_login_time` datetime NOT NULL,
-				`last_login_time` datetime NOT NULL,
+				`first_login_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+				`last_login_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
 				`timezone` varchar(7) CHARACTER SET utf8 NOT NULL DEFAULT 'UP35',
 				`selected_assignment` smallint(4) NOT NULL DEFAULT '0',
 				`dashboard_widget_positions` varchar(500) NOT NULL,
