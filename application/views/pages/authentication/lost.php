@@ -3,7 +3,9 @@
  * Sharif Judge online judge
  * @file login.php
  * @author Mohammad Javad Naderi <mjnaderi@gmail.com>
- */?>
+ */
+defined('BASEPATH') OR exit('No direct script access allowed');
+?>
 <?php echo form_open('login/lost') ?>
 <form method="post" action="">
 	<div class="box login">

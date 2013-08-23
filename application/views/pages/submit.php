@@ -3,7 +3,9 @@
  * Sharif Judge online judge
  * @file submit.php
  * @author Mohammad Javad Naderi <mjnaderi@gmail.com>
- */?>
+ */
+defined('BASEPATH') OR exit('No direct script access allowed');
+?>
 <script>
 	p=[];
 	<?php foreach ($problems as $problem){
@@ -59,7 +61,7 @@
 				?>%</p>
 				<?php echo form_open_multipart('submit') ?>
 				<p class="input_p">
-					<label for="problem">Problem:</label><br>
+					<label for="problem" class="tiny">Problem:</label>
 					<select id="problems" name ="problem" class="sharif_input">
 						<option value="0" selected="selected">-- Select One --</option>
 						<?php foreach ($problems as $problem): ?>
@@ -69,15 +71,15 @@
 					<?php echo form_error('problem','<div class="shj_error">','</div>'); ?>
 				</p>
 				<p class="input_p">
-					<label for="problem">File Type:</label><br>
+					<label for="problem" class="tiny">File Type:</label>
 					<select id="filetypes" name="filetype" class="sharif_input">
 						<option value="0" selected="selected">-- Select One --</option>
 					</select>
 					<?php echo form_error('filetype','<div class="shj_error">','</div>'); ?>
 				</p>
 				<p class="input_p">
-					<label for="userfile">File:</label><br>
-					<input type="file" id="file" class="sharif_input" name="userfile" />
+					<label for="userfile" class="tiny">File:</label>
+					<input type="file" id="file" class="sharif_input medium" name="userfile" />
 					<?php if ($upload_state==='error'): ?>
 					<div class="shj_error">Error uploading file.</div>
 					<?php elseif ($upload_state==='ok'): ?>

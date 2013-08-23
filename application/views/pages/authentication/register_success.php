@@ -3,7 +3,9 @@
  * Sharif Judge online judge
  * @file register.php
  * @author Mohammad Javad Naderi <mjnaderi@gmail.com>
- */?>
+ */
+defined('BASEPATH') OR exit('No direct script access allowed');
+?>
 <div class="box success">
 	<div class="judge_logo">
 		<a href="#"><img src="<?php echo base_url("assets/images/banner.png") ?>"/></a>

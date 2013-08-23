@@ -3,7 +3,9 @@
  * Sharif Judge online judge
  * @file add_assignment.php
  * @author Mohammad Javad Naderi <mjnaderi@gmail.com>
- */?>
+ */
+defined('BASEPATH') OR exit('No direct script access allowed');
+?>
 <script type="text/javascript" src="<?php echo base_url("assets/js/jquery-ui-1.10.3.custom.min.js") ?>"></script>
 <script type="text/javascript" src="<?php echo base_url("assets/js/jquery-ui-timepicker-addon.js") ?>"></script>
 <link rel="stylesheet" href="<?php echo base_url("assets/styles/flick/jquery-ui-1.10.3.custom.min.css") ?>"/>
@@ -44,24 +46,24 @@
 <?php $this->view('templates/side_bar',array('selected'=>'assignments')); ?>
 <div id="main_container">
 	<div id="page_title"><img src="<?php echo base_url('assets/images/icons/add.png') ?>"/> <span><?php echo $title ?></span>
-		<span style="font-size:14px;margin-left: 10px;"><a href="http://docs.sharifjudge.ir/add_assignment" target="_blank"><i class="splashy-help"></i> Help</a></span></div>
+		<span class="help_span"><a href="http://docs.sharifjudge.ir/add_assignment" target="_blank"><i class="splashy-help"></i> Help</a></span></div>
 	<div id="main_content">
 		<?php if ($form_status=="ok"||$form_status=="tests_updated"): ?>
-			<div class="shj_ok">Assignment <?php echo $edit?"updated":'added' ?> successfully.</div>
+			<div class="shj_ok">Assignment <?php echo $edit?'updated':'added' ?> successfully.</div>
 		<?php elseif ($form_status=="error"): ?>
-			<div class="shj_error">Error <?php echo $edit?"updating":'adding' ?> assignment.</div>
+			<div class="shj_error">Error <?php echo $edit?'updating':'adding' ?> assignment.</div>
 		<?php elseif ($form_status=="corrupted"): ?>
-			<div class="shj_error">Error <?php echo $edit?"updating":'adding' ?> assignment. Unable to unzip uploaded file.</div>
+			<div class="shj_error">Error <?php echo $edit?'updating':'adding' ?> assignment. Unable to unzip uploaded file.</div>
 		<?php endif ?>
 		<?php if ($form_status=="tests_updated"): ?>
-			<div class="shj_ok">Tests <?php echo $edit?"updated":'added' ?> successfully.</div>
+			<div class="shj_ok">Tests <?php echo $edit?'updated':'added' ?> successfully.</div>
 		<?php endif ?>
 
-		<?php echo form_open_multipart($edit?"assignments/edit/".$edit_assignment['id']:"add_assignment/add") ?>
+		<?php echo form_open_multipart($edit?'assignments/edit/'.$edit_assignment['id']:'add_assignment/add') ?>
 		<div class="panel_left">
 			<input type="hidden" name="number_of_problems" id="nop" value="<?php echo $edit?$edit_assignment['problems']:1; ?>"/>
 			<p class="input_p">
-				<label for="assignment_name">Assignment Name:</label><br/>
+				<label for="assignment_name">Assignment Name:</label>
 				<input type="text" name="assignment_name" class="sharif_input medium" value="<?php
 					if ($edit)
 						echo $edit_assignment['name'];
@@ -71,7 +73,7 @@
 				<?php echo form_error('assignment_name','<div class="shj_error">','</div>'); ?>
 			</p>
 			<p class="input_p">
-				<label for="start_time">Start Time:</label><br>
+				<label for="start_time">Start Time:</label>
 				<input type="text" name="start_time" id="start_time" class="sharif_input medium" value="<?php
 					if ($edit)
 						echo date('m/d/Y H:i',strtotime($edit_assignment['start_time']));
@@ -81,7 +83,7 @@
 				<?php echo form_error('start_time','<div class="shj_error">','</div>'); ?>
 			</p>
 			<p class="input_p">
-				<label for="finish_time">Finish Time:</label><br>
+				<label for="finish_time">Finish Time:</label>
 				<input type="text" name="finish_time" id="finish_time" class="sharif_input medium" value="<?php
 					if ($edit)
 						echo date('m/d/Y H:i',strtotime($edit_assignment['finish_time']));
@@ -91,13 +93,15 @@
 				<?php echo form_error('finish_time','<div class="shj_error">','</div>'); ?>
 			</p>
 			<p class="input_p">
-				<label for="extra_time">Extra Time (minutes):</label><br>
-				<p class="form_comment">Extra time for late submissions.</p>
+				<label for="extra_time">
+					Extra Time (minutes):<br>
+					<span class="form_comment">Extra time for late submissions.</span>
+				</label>
 				<input type="text" name="extra_time" id="extra_time" class="sharif_input medium" value="<?php
 					if ($edit){
 						$extra_time = floor($edit_assignment['extra_time']/60);
 						if ($extra_time%60==0)
-							echo ($extra_time/60)."*60";
+							echo ($extra_time/60).'*60';
 						else
 							echo $extra_time;
 					}
@@ -107,10 +111,11 @@
 				<?php echo form_error('extra_time','<div class="shj_error">','</div>'); ?>
 			</p>
 			<p class="input_p">
-				<label for="participants">Participants:</label><br>
-				<p class="form_comment medium">Enter username of participants here (comma separated).
-				Only these users are able to submit. You can use keyword "ALL".</p>
-				<textarea name="participants" rows="3" class="sharif_input medium"><?php
+				<label for="participants">Participants:<br>
+					<span class="form_comment medium">Enter username of participants here (comma separated).
+						Only these users are able to submit. You can use keyword "ALL".</span>
+				</label>
+				<textarea name="participants" rows="5" class="sharif_input medium"><?php
 					if ($edit)
 						echo $edit_assignment['participants'];
 					else
@@ -118,8 +123,12 @@
 					?></textarea>
 			</p>
 			<p class="input_p">
-				<label for="tests">Tests (zip file):</label><br>
-				<p class="form_comment medium"><a href="http://docs.sharifjudge.ir/add_assignment" target="_blank">Use this structure</a></p>
+				<label for="tests">Tests (zip file):<br>
+					<span class="form_comment medium">
+						<a href="http://docs.sharifjudge.ir/add_assignment" target="_blank">Use this structure</a>
+					</span>
+				</label>
+
 				<input type="file" name="tests" class="sharif_input medium"/>
 				<?php
 					if (!$edit)
@@ -139,8 +148,9 @@
 				<?php echo form_error('scoreboard','<div class="shj_error">','</div>'); ?>
 			</p>
 			<p class="input_p">
-				<label for="late_rule">Coefficient rule (PHP script without <?php echo htmlspecialchars('<?php ?>') ?> tags):</label><br>
-				<textarea name="late_rule" rows="26" class="sharif_input add_text"><?php
+				<label for="late_rule">Coefficient rule:</label>
+				<p class="form_comment medium clear">PHP script without <?php echo htmlspecialchars('<?php ?>') ?> tags</p>
+				<textarea name="late_rule" rows="14" class="sharif_input add_text"><?php
 						if ($edit)
 							echo $edit_assignment['late_rule'];
 						else
@@ -177,7 +187,7 @@
 		<?php echo form_error('diff_cmd[]','<div class="shj_error">','</div>'); ?>
 		<?php echo form_error('diff_arg[]','<div class="shj_error">','</div>'); ?>
 		<p class="input_p">
-			<input type="submit" value="<?php echo $edit?"Edit":"Add" ?> Assignment" class="sharif_input"/>
+			<input type="submit" value="<?php echo $edit?'Edit':'Add' ?> Assignment" class="sharif_input"/>
 		</p>
 		</form>
 	</div>

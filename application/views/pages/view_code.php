@@ -3,7 +3,9 @@
  * Sharif Judge online judge
  * @file view_code.php
  * @author Mohammad Javad Naderi <mjnaderi@gmail.com>
- */?>
+ */
+defined('BASEPATH') OR exit('No direct script access allowed');
+?>
 <script type="text/javascript" src="<?php echo base_url("assets/jquery-syntax/jquery.syntax.min.js") ?>"></script>
 <script type="text/javascript">
 	// This function is executed when the page has finished loading.

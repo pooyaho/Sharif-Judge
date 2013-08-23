@@ -3,7 +3,9 @@
  * Sharif Judge online judge
  * @file all_submissions.php
  * @author Mohammad Javad Naderi <mjnaderi@gmail.com>
- */?>
+ */
+defined('BASEPATH') OR exit('No direct script access allowed');
+?>
 <script>
 	$(document).ready(function(){
 		$(".set_final").click(

@@ -3,7 +3,9 @@
  * Sharif Judge online judge
  * @file register.php
  * @author Mohammad Javad Naderi <mjnaderi@gmail.com>
- */?>
+ */
+defined('BASEPATH') OR exit('No direct script access allowed');
+?>
 <?php echo form_open('login/register') ?>
 	<div class="box register">
 		<div class="judge_logo">

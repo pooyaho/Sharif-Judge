@@ -1,0 +1,92 @@
+<?php
+/**
+ * Sharif Judge online judge
+ * @file Dashboard.php
+ * @author Mohammad Javad Naderi <mjnaderi@gmail.com>
+ */
+defined('BASEPATH') OR exit('No direct script access allowed');
+
+class Dashboard extends CI_Controller{
+
+	var $username;
+	var $assignment;
+	var $user_level;
+
+
+	// ------------------------------------------------------------------------
+
+
+	public function __construct(){
+		parent::__construct();
+		if (!$this->db->table_exists('sessions'))
+			redirect('install');
+		$this->load->driver('session');
+		if ( ! $this->session->userdata('logged_in')){ // if not logged in
+			redirect('login');
+		}
+		$this->username = $this->session->userdata('username');
+		$this->assignment = $this->assignment_model->assignment_info($this->user_model->selected_assignment($this->username));
+		$this->user_level = $this->user_model->get_user_level($this->username);
+		$this->load->model('notifications_model');
+		$this->load->helper('text');
+	}
+
+
+	// ------------------------------------------------------------------------
+
+
+	public function index(){
+		echo 'hello';
+		$data = array(
+			'username'=>$this->username,
+			'user_level' => $this->user_level,
+			'all_assignments'=>$this->assignment_model->all_assignments(),
+			'assignment' => $this->assignment,
+			'title'=>'Dashboard',
+			'style'=>'main.css',
+			'week_start'=>$this->settings_model->get_setting('week_start'),
+			'widget_positions'=>$this->user_model->get_widget_positions($this->username),
+			'notifications' => $this->notifications_model->get_latest_notifications()
+		);
+
+		$this->load->view('templates/header',$data);
+		$this->load->view('pages/dashboard',$data);
+		$this->load->view('templates/footer');
+	}
+
+
+	// ------------------------------------------------------------------------
+
+
+	/*
+	 * Used for Fullcalendar in Dashboard
+	 */
+	public function json(){
+		$assignments = $this->assignment_model->all_assignments();
+		$arr = array();
+		$i=0;
+		$colors = array ('#812C8C','#FF750D','#2C578C','#013440','#A6222C','#42758C','#02A300','#BA6900');
+		foreach ($assignments as $assignment){
+			$arr[$i] = array(
+				'id' => $assignment['id'],
+				'title' => $assignment['name'],
+				'start' => $assignment['start_time'],
+				'end' => $assignment['finish_time'],
+				'allDay' => FALSE,
+				'color' => $colors[($i)%count($colors)]
+			);
+			$i++;
+		}
+		echo json_encode($arr);
+	}
+
+
+	// ------------------------------------------------------------------------
+
+
+	public function widget_positions(){
+		if ($this->input->post('positions')!==NULL)
+			$this->user_model->save_widget_positions($this->username, $this->input->post('positions'));
+	}
+
+}

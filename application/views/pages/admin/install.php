@@ -3,7 +3,9 @@
  * Sharif Judge online judge
  * @file install.php
  * @author Mohammad Javad Naderi <mjnaderi@gmail.com>
- */?>
+ */
+defined('BASEPATH') OR exit('No direct script access allowed');
+?>
 <div id="main_container">
 	<div id="page_title"><span><?php echo $title ?></span></div>
 	<div id="main_content">

@@ -3,8 +3,9 @@
  * Sharif Judge online judge
  * @file settings.php
  * @author Mohammad Javad Naderi <mjnaderi@gmail.com>
- */?>
-
+ */
+defined('BASEPATH') OR exit('No direct script access allowed');
+?>
 <?php $this->view('templates/top_bar'); ?>
 <?php $this->view('templates/side_bar',array('selected'=>'settings')); ?>
 <div id="main_container">
@@ -30,80 +31,114 @@
 		<?php endif ?>
 		</p>
 		<?php echo form_open('settings/update') ?>
-		<div class="panel_left">
 			<p class="input_p">
-				<label for="timezones">Timezone:</label><br/>
+				<label for="timezones">Timezone:</label>
+				<span class="form_comment timer"></span><br>
 				<?php echo timezone_menu($tz,'sharif_input medium') ?>
 				<?php echo form_error('timezone','<div class="shj_error">','</div>'); ?>
 			</p>
 			<p class="input_p">
-				<label for="tester_path">"tester" full path:</label><br/>
+				<label for="week_start">Week start day:</label>
+				<select name="week_start" class="sharif_input">
+					<option value="0" <?php if($week_start==0) echo 'selected="selected"' ?>>Sunday</option>
+					<option value="1" <?php if($week_start==1) echo 'selected="selected"' ?>>Monday</option>
+					<option value="2" <?php if($week_start==2) echo 'selected="selected"' ?>>Tuesday</option>
+					<option value="3" <?php if($week_start==3) echo 'selected="selected"' ?>>Wednesday</option>
+					<option value="4" <?php if($week_start==4) echo 'selected="selected"' ?>>Thursday</option>
+					<option value="5" <?php if($week_start==5) echo 'selected="selected"' ?>>Friday</option>
+					<option value="6" <?php if($week_start==6) echo 'selected="selected"' ?>>Saturday</option>
+				</select>
+			</p>
+			<p class="input_p">
+				<label for="tester_path">"tester" full path:</label>
 				<input type="text" name="tester_path" class="sharif_input medium" value="<?php echo $tester_path ?>"/>
 			</p>
 			<p class="input_p">
-				<label for="assignments_root">"assignments" full path:</label><br/>
+				<label for="assignments_root">"assignments" full path:</label>
 				<input type="text" name="assignments_root" class="sharif_input medium" value="<?php echo $assignments_root ?>"/>
 			</p>
 			<p class="input_p">
-				<label for="mail_from">Send emails "from" address:</label><br/>
-				<input type="text" name="mail_from" class="sharif_input medium" value="<?php echo $mail_from ?>"/>
-				<?php echo form_error('mail_from','<div class="shj_error">','</div>'); ?>
-			</p>
-			<p class="input_p">
-				<label for="mail_from_name">Send emails "from" name:</label><br/>
-				<input type="text" name="mail_from_name" class="sharif_input medium" value="<?php echo $mail_from_name ?>"/>
-				<?php echo form_error('mail_from_name','<div class="shj_error">','</div>'); ?>
-			</p>
-			<p class="input_p">
-				<label for="file_size_limit">Upload file size limit (kB):</label><br/>
+				<label for="file_size_limit">Upload size limit (kB):</label>
 				<input type="text" name="file_size_limit" class="sharif_input medium" value="<?php echo $file_size_limit ?>"/>
 				<?php echo form_error('file_size_limit','<div class="shj_error">','</div>'); ?>
 			</p>
 			<p class="input_p">
-				<label for="results_per_page">Results per page:</label><br/>
+				<label for="results_per_page">Results per page:</label>
 				<input type="text" name="results_per_page" class="sharif_input medium" value="<?php echo $results_per_page ?>"/>
 				<?php echo form_error('results_per_page','<div class="shj_error">','</div>'); ?>
 			</p>
 			<p class="input_p">
 				<input type="checkbox" name="enable_registration" value="1" <?php if ($enable_registration) echo 'checked' ?>/> Registration<br>
-				<p class="form_comment medium">Open public registration.</p>
-			</p>
-			<p class="input_p">
-				<input type="checkbox" name="enable_easysandbox" value="1" <?php if ($enable_easysandbox) echo 'checked' ?>/> EasySandbox<br>
-				<p class="form_comment medium">Enable EasySandbox (uses seccomp) for C/C++.
-				You must <a href="http://docs.sharifjudge.ir/sandboxing#build_easysandbox" target="_blank">build EasySandbox</a> before enabling it.</p>
-			</p>
-			<p class="input_p">
-				<input type="checkbox" name="enable_shield" value="1" <?php if ($enable_shield) echo 'checked' ?>/> C/C++ Shield<br>
-				<span class="form_comment">Enable <a href="http://docs.sharifjudge.ir/shield" target="_blank">Shield</a> for C/C++</span>
-			</p>
-			<p class="input_p">
-				<input type="checkbox" name="enable_java_policy" value="1" <?php if ($enable_java_policy) echo 'checked' ?>/> Java Policy<br>
-				<span class="form_comment">Enable <a href="http://docs.sharifjudge.ir/sandboxing#java_sandboxing" target="_blank">Java Sandboxing</a></span>
+				<p class="form_comment">Open public registration.</p>
 			</p>
 			<p class="input_p">
 				<input type="checkbox" name="enable_log" value="1" <?php if ($enable_log) echo 'checked' ?>/> Log<br>
 				<span class="form_comment">Enable Log</span>
 			</p>
 			<p class="input_p">
-				<input type="submit" value="Save" class="sharif_input"/>
+				<label for="default_late_rule">Default coefficient rule</label>
+				<p class="form_comment clear">PHP script without <?php echo htmlspecialchars('<?php ?>') ?> tags</p>
+				<textarea name="default_late_rule" rows="15" class="sharif_input add_text clear"><?php echo $default_late_rule ?></textarea>
 			</p>
-			<br>
-		</div>
-		<div class="panel_right">
+
+
+
+			<h2 class="shj_form">Email</h2>
+
 			<p class="input_p">
-				<label for="default_late_rule">Default coefficient rule (PHP script without <?php echo htmlspecialchars('<?php ?>') ?> tags):</label><br>
-				<textarea name="default_late_rule" rows="15" class="sharif_input add_text"><?php echo $default_late_rule ?></textarea>
+				<label for="mail_from">Send emails "from" address:</label>
+				<input type="text" name="mail_from" class="sharif_input medium" value="<?php echo $mail_from ?>"/>
+				<?php echo form_error('mail_from','<div class="shj_error">','</div>'); ?>
+			</p>
+			<p class="input_p">
+				<label for="mail_from_name">Send emails "from" name:</label>
+				<input type="text" name="mail_from_name" class="sharif_input medium" value="<?php echo $mail_from_name ?>"/>
+				<?php echo form_error('mail_from_name','<div class="shj_error">','</div>'); ?>
+			</p>
+			<p class="input_p">
+				<label for="reset_password_mail">Password reset email:</label>
+				<p class="form_comment clear">You can use {SITE_URL} and {RESET_LINK}</p>
+				<textarea name="reset_password_mail" rows="15" class="sharif_input add_text clear"><?php echo $reset_password_mail ?></textarea>
+			</p>
+			<p class="input_p">
+				<label for="add_user_mail">Add user email:</label>
+				<p class="form_comment clear">You can use {SITE_URL}, {LOGIN_URL}, {ROLE}, {USERNAME} and {PASSWORD}</p>
+				<textarea name="add_user_mail" rows="15" class="sharif_input add_text clear"><?php echo $add_user_mail ?></textarea>
+			</p>
+
+
+			<h2 class="shj_form">Sandboxing <span class="help_span"><a href="http://docs.sharifjudge.ir/sandboxing" target="_blank"><i class="splashy-help"></i> Help</a></span></h2>
+
+			<p class="input_p">
+				<input type="checkbox" name="enable_easysandbox" value="1" <?php if ($enable_easysandbox) echo 'checked' ?>/> EasySandbox<br>
+				<p class="form_comment">Enable EasySandbox (uses seccomp) for C/C++.
+				You must <a href="http://docs.sharifjudge.ir/sandboxing#build_easysandbox" target="_blank">build EasySandbox</a> before enabling it.</p>
+			</p>
+			<p class="input_p">
+				<input type="checkbox" name="enable_java_policy" value="1" <?php if ($enable_java_policy) echo 'checked' ?>/> Java Policy<br>
+				<span class="form_comment">Enable <a href="http://docs.sharifjudge.ir/sandboxing#java_sandboxing" target="_blank">Java Sandboxing</a></span>
+			</p>
+
+
+
+			<h2 class="shj_form">Shield <span class="help_span"><a href="http://docs.sharifjudge.ir/shield" target="_blank"><i class="splashy-help"></i> Help</a></span></h2>
+
+			<p class="input_p">
+				<input type="checkbox" name="enable_shield" value="1" <?php if ($enable_shield) echo 'checked' ?>/> C/C++ Shield<br>
+				<span class="form_comment">Enable <a href="http://docs.sharifjudge.ir/shield" target="_blank">Shield</a> for C/C++</span>
 			</p>
 			<p class="input_p">
 				<label for="def_c">Shield rules (for C):</label><br>
-				<textarea name="def_c" rows="15" class="sharif_input add_text"><?php if($defc!==FALSE) echo $defc ?></textarea>
+				<textarea name="def_c" rows="15" class="sharif_input add_text clear"><?php if($defc!==FALSE) echo $defc ?></textarea>
 			</p>
 			<p class="input_p">
 				<label for="def_cpp">Shield rules (for C++):</label><br>
-				<textarea name="def_cpp" rows="15" class="sharif_input add_text"><?php if($defcpp!==FALSE) echo $defcpp ?></textarea>
+				<textarea name="def_cpp" rows="15" class="sharif_input add_text clear"><?php if($defcpp!==FALSE) echo $defcpp ?></textarea>
 			</p>
-		</div>
+			<p class="input_p">
+				<br>
+				<input type="submit" value="Save Changes" class="sharif_input"/>
+			</p>
 		</form>
 	</div>
 </div>

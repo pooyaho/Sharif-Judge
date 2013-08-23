@@ -3,7 +3,9 @@
  * Sharif Judge online judge
  * @file reset_password.php
  * @author Mohammad Javad Naderi <mjnaderi@gmail.com>
- */?>
+ */
+defined('BASEPATH') OR exit('No direct script access allowed');
+?>
 <?php if ($result !== TRUE): ?>
 	<div class="shj_error"><?php echo $result ?></div>
 <?php else: ?>

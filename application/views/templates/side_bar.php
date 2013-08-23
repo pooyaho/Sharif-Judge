@@ -3,7 +3,9 @@
  * Sharif Judge online judge
  * @file side_bar.php
  * @author Mohammad Javad Naderi <mjnaderi@gmail.com>
- */?>
+ */
+defined('BASEPATH') OR exit('No direct script access allowed');
+?>
 <script type= "text/javascript">
 	var offset;
 	var time;
@@ -26,7 +28,7 @@
 		}
 		time = moment();
 		var now = moment().add('milliseconds',offset);
-		$('#timer').html('Server Time: '+now.format('MMM DD - HH:mm:ss'));
+		$('.timer').html('Server Time: '+now.format('MMM DD - HH:mm:ss'));
 		var countdown = finish_time.diff(now);
 		if (countdown<=0 && countdown + extra_time.asMilliseconds()>=0){
 			countdown = countdown + extra_time.asMilliseconds();
@@ -135,13 +137,13 @@
 <div id="side_bar" class="sidebar_open">
 	<ul>
 		<div class="side_box"><a href="<?php echo site_url('dashboard') ?>"><li <?php echo ($selected=='dashboard'?'class="selected"':'') ?>><i class="splashy-home_green"></i><span class="sidebar_text">Dashboard</span></li></a></div>
-		<div class="side_box"><a href="<?php echo site_url('profile') ?>"><li <?php echo ($selected=='profile'?'class="selected"':'') ?>><i class="splashy-contact_grey"></i><span class="sidebar_text">Profile</span></li></a></div>
 		<?php if ($user_level==3): ?>
 		<div class="side_box"><a href="<?php echo site_url('settings') ?>"><li <?php echo ($selected=='settings'?'class="selected"':'') ?>><i class="splashy-sprocket_light"></i><span class="sidebar_text">Settings</span></li></a></div>
 		<?php endif ?>
 		<?php if ($user_level==3): ?>
 			<div class="side_box"><a href="<?php echo site_url('users') ?>"><li <?php echo ($selected=='users'?'class="selected"':'') ?>><i class="splashy-group_blue"></i><span class="sidebar_text">Users</span></li></a></div>
 		<?php endif ?>
+		<div class="side_box"><a href="<?php echo site_url('notifications') ?>"><li <?php echo ($selected=='notifications'?'class="selected"':'') ?>><i class="splashy-comment_reply"></i><span class="sidebar_text">Notifications</span></li></a></div>
 		<div class="side_box"><a href="<?php echo site_url('assignments') ?>"><li <?php echo ($selected=='assignments'?'class="selected"':'') ?>><i class="splashy-folder_modernist_opened"></i><span class="sidebar_text">Assignments</span></li></a></div>
 		<div class="side_box"><a href="<?php echo site_url('submit') ?>"><li <?php echo ($selected=='submit'?'class="selected"':'') ?>><i class="splashy-arrow_large_up"></i><span class="sidebar_text">Submit</span></li></a></div>
 		<div class="side_box"><a href="<?php echo site_url('submissions/final') ?>"><li <?php echo ($selected=='final_submissions'?'class="selected"':'') ?>><i class="splashy-marker_rounded_violet"></i><span class="sidebar_text">Final Submissions</span></li></a></div>
@@ -150,7 +152,7 @@
 	</ul>
 	<div id="sidebar_bottom">
 		<p><a href="http://sharifjudge.ir" target="_blank">&copy; Sharif Judge</a>  <a href="http://docs.sharifjudge.ir" target="_blank">Help</a></p>
-		<p id="timer"></p>
+		<p class="timer"></p>
 		<div id="shj_collapse"><i id="collapse" class="splashy-pagination_1_previous"></i><span class="sidebar_text">Collapse Menu</span></div>
 	</div>
 </div>

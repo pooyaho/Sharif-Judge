@@ -3,7 +3,9 @@
  * Sharif Judge online judge
  * @file moss.php
  * @author Mohammad Javad Naderi <mjnaderi@gmail.com>
- */?>
+ */
+defined('BASEPATH') OR exit('No direct script access allowed');
+?>
 <?php $this->view('templates/top_bar'); ?>
 <?php $this->view('templates/side_bar',array('selected'=>'moss')); ?>
 <div id="main_container">

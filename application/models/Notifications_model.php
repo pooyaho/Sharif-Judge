@@ -1,0 +1,87 @@
+<?php
+/**
+ * Sharif Judge online judge
+ * @file notifications_model.php
+ * @author Mohammad Javad Naderi <mjnaderi@gmail.com>
+ */
+
+class Notifications_model extends CI_Model {
+
+	public function __construct(){
+		parent::__construct();
+		$this->load->database();
+	}
+
+
+	// ------------------------------------------------------------------------
+
+
+	/*
+	 * Returns all notifications
+	 */
+	public function get_all_notifications(){
+		return $this->db->order_by('id','desc')->get('notifications')->result_array();
+	}
+
+
+	// ------------------------------------------------------------------------
+
+
+	/*
+	 * Returns 4 latest notifications
+	 */
+	public function get_latest_notifications(){
+		return $this->db->limit(10)->order_by('id','desc')->get('notifications')->result_array();
+	}
+
+
+	// ------------------------------------------------------------------------
+
+
+	/*
+	 * Add a new notification
+	 */
+	public function add_notification($title, $text){
+		$now=date('Y-m-d H:i:s',shj_now());
+		$this->db->insert('notifications',array('title'=>$title, 'text'=>$text, 'time'=> $now));
+	}
+
+
+	// ------------------------------------------------------------------------
+
+
+	/*
+	 * Update (edit) a notification
+	 */
+	public function update_notification($id,$title, $text){
+		$now=date('Y-m-d H:i:s',shj_now());
+		$this->db->where('id',$id)->update('notifications',array('title'=>$title, 'text'=>$text, 'time'=> $now));
+	}
+
+
+	// ------------------------------------------------------------------------
+
+
+	/*
+     * Delete a notification
+	 */
+	public function delete_notification($id){
+		$now=date('Y-m-d H:i:s',shj_now());
+		$this->db->delete('notifications',array('id'=>$id));
+	}
+
+
+	// ------------------------------------------------------------------------
+
+
+	/*
+	 * Returns a notification
+	 */
+	public function get_notification($notif_id) {
+		$query = $this->db->get_where('notifications',array('id'=>$notif_id));
+		if ($query->num_rows()!=1)
+			return FALSE;
+		return $query->row_array();
+	}
+
+}

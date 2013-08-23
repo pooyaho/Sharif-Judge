@@ -3,7 +3,9 @@
  * Sharif Judge online judge
  * @file top_bar.php
  * @author Mohammad Javad Naderi <mjnaderi@gmail.com>
- */?>
+ */
+defined('BASEPATH') OR exit('No direct script access allowed');
+?>
 <script>
 	$(document).ready(function(){
 		$("#select_assignment_top").hoverIntent (
@@ -31,7 +33,6 @@
 					data: {assignment_select:id},
 					timeout: 1000,
 					success: function(a) {
-						//if (a != "shj_failed"){
 						if (a != "shj_failed"){
 							$(".select_assignment").removeClass('checked');
 							$(".i"+id).addClass('checked');
@@ -78,6 +79,9 @@
 		</div>
 	</div>
 	<div id="shj_logo">
-		<a href="<?php echo site_url('/'); ?>"><img src="<?php echo base_url('assets/images/logo_small.png'); ?>"/><img src="<?php echo base_url('assets/images/banner_small.png'); ?>"/></a>
+		<a href="<?php echo site_url('/'); ?>">
+			<img src="<?php echo base_url('assets/images/logo_small.png'); ?>"/>
+			<img src="<?php echo base_url('assets/images/banner_small.png'); ?>"/>
+		</a>
 	</div>
 </div>
