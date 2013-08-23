@@ -36,7 +36,6 @@ class Dashboard extends CI_Controller{
 
 
 	public function index(){
-		echo 'hello';
 		$data = array(
 			'username'=>$this->username,
 			'user_level' => $this->user_level,
