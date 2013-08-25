@@ -16,7 +16,7 @@ class Queue_model extends CI_Model {
 	// ------------------------------------------------------------------------
 
 
-	/*
+	/**
 	 * Returns TRUE if one submission with $username, $assignment and $problem is already in queue (for preventing multiple submission)
 	 */
 	public function in_queue ($username, $assignment, $problem){

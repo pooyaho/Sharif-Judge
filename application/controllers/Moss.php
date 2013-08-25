@@ -12,7 +12,6 @@ class Moss extends CI_Controller{
 	var $assignment;
 	var $user_level;
 
-
 	// ------------------------------------------------------------------------
 
 
@@ -67,8 +66,8 @@ class Moss extends CI_Controller{
 			show_404();
 		$userid = $this->input->post('moss_userid');
 		$this->settings_model->set_setting('moss_userid', $userid);
-		$moss_original = trim( file_get_contents(rtrim($this->settings_model->get_setting('tester_path'),'/').'/moss/moss_original') );
-		$moss_path = rtrim($this->settings_model->get_setting('tester_path'),'/').'/moss/moss';
+		$moss_original = trim( file_get_contents(rtrim($this->settings_model->get_setting('tester_path'),'/').'/moss_original') );
+		$moss_path = rtrim($this->settings_model->get_setting('tester_path'),'/').'/moss';
 		file_put_contents( $moss_path , str_replace('MOSS_USER_ID',$userid,$moss_original) );
 		shell_exec("chmod +x {$moss_path}");
 		$this->index($assignment_id);
@@ -84,7 +83,7 @@ class Moss extends CI_Controller{
 		$this->load->model('submit_model');
 		$assignments_path = rtrim($this->settings_model->get_setting('assignments_root'),'/');
 		$tester_path = rtrim($this->settings_model->get_setting('tester_path'),'/');
-		shell_exec("chmod +x {$tester_path}/moss/moss");
+		shell_exec("chmod +x {$tester_path}/moss");
 		$items = $this->submit_model->get_final_submissions($assignment_id, $this->user_level, $this->username);
 		$groups = array();
 		foreach ($items as $item) {
@@ -99,7 +98,7 @@ class Moss extends CI_Controller{
 			foreach ($group as $item)
 				if ($item['file_type']!='zip')
 					$list .= "p{$problem_id}/{$item['username']}/{$item['file_name']}.{$item['file_type']}" . " ";
-			$rc = shell_exec("cd $assignment_path; $tester_path/moss/moss $list | grep http >p{$problem_id}/moss_link.txt; echo $?");
+			$rc = shell_exec("cd $assignment_path; $tester_path/moss $list | grep http >p{$problem_id}/moss_link.txt; echo $?");
 			$this->assignment_model->set_moss_time($assignment_id);
 		}
 		$this->index($assignment_id);

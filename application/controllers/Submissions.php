@@ -36,8 +36,9 @@ class Submissions extends CI_Controller{
 	private function download_excel($view){
 		$now=date('Y-m-d H:i:s',shj_now());
 		$this->load->library('excel');
-		$this->excel->set_file_name('judge_result.xls'); /* todo more relevant file name */
-		$this->excel->addHeader('Time: $now');
+		$this->excel->set_file_name('judge_'.$view.'_submissions.xls');
+		$this->excel->addHeader($this->assignment['name']);
+		$this->excel->addHeader(array('Time',$now));
 		$this->excel->addHeader(NULL); //newline
 		$row=array(/*"#1","#2",*/'Final','Submit ID','Username','Display Name','Problem','Submit Time','Score','Coefficient','Final Score','Status','#');
 		$this->excel->addRow($row);

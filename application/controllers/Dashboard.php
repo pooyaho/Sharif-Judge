@@ -48,6 +48,22 @@ class Dashboard extends CI_Controller{
 			'notifications' => $this->notifications_model->get_latest_notifications()
 		);
 
+		// detecting errors:
+		$data['errors'] = array();
+		if($this->user_level===3){
+			$path = $this->settings_model->get_setting('assignments_root');
+			if (!file_exists($path))
+				array_push($data['errors'],'The path to folder "assignments" is not set correctly. Move this folder somewhere not publicly accessible, and set its full path in Settings.');
+			elseif (!is_writable($path))
+				array_push($data['errors'],'The folder <code>"'.$path.'"</code> is not writable by PHP. Make it writable. But make sure that this folder is only accessible by you. Codes will be saved in this folder!');
+
+			$path = $this->settings_model->get_setting('tester_path');
+			if (!file_exists($path))
+				array_push($data['errors'],'The path to folder "tester" is not set correctly. Move this folder somewhere not publicly accessible, and set its full path in Settings.');
+			elseif (!is_writable($path))
+				array_push($data['errors'],'The folder <code>"'.$path.'"</code> is not writable by PHP. Make it writable. But make sure that this folder is only accessible by you.');
+		}
+
 		$this->load->view('templates/header',$data);
 		$this->load->view('pages/dashboard',$data);
 		$this->load->view('templates/footer');

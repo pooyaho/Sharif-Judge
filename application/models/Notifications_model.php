@@ -16,7 +16,7 @@ class Notifications_model extends CI_Model {
 	// ------------------------------------------------------------------------
 
 
-	/*
+	/**
 	 * Returns all notifications
 	 */
 	public function get_all_notifications(){
@@ -27,7 +27,7 @@ class Notifications_model extends CI_Model {
 	// ------------------------------------------------------------------------
 
 
-	/*
+	/**
 	 * Returns 4 latest notifications
 	 */
 	public function get_latest_notifications(){
@@ -38,7 +38,7 @@ class Notifications_model extends CI_Model {
 	// ------------------------------------------------------------------------
 
 
-	/*
+	/**
 	 * Add a new notification
 	 */
 	public function add_notification($title, $text){
@@ -50,7 +50,7 @@ class Notifications_model extends CI_Model {
 	// ------------------------------------------------------------------------
 
 
-	/*
+	/**
 	 * Update (edit) a notification
 	 */
 	public function update_notification($id,$title, $text){
@@ -62,7 +62,7 @@ class Notifications_model extends CI_Model {
 	// ------------------------------------------------------------------------
 
 
-	/*
+	/**
      * Delete a notification
 	 */
 	public function delete_notification($id){
@@ -74,7 +74,7 @@ class Notifications_model extends CI_Model {
 	// ------------------------------------------------------------------------
 
 
-	/*
+	/**
 	 * Returns a notification
 	 */
 	public function get_notification($notif_id) {

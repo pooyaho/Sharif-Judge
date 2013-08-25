@@ -60,6 +60,7 @@ class Settings extends CI_Controller{
 			'assignment' => $this->assignment,
 			'title'=>'Settings',
 			'style'=>'main.css',
+			'sandbox_built'=>file_exists(rtrim($this->settings_model->get_setting('tester_path'),'/').'/easysandbox/EasySandbox.so'),
 			'tz'=>$this->settings_model->get_setting('timezone'),
 			'tester_path'=>$this->settings_model->get_setting('tester_path'),
 			'assignments_root'=>$this->settings_model->get_setting('assignments_root'),

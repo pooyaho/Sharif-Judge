@@ -16,7 +16,7 @@ class Submit_model extends CI_Model {
 	// ------------------------------------------------------------------------
 
 
-	/*
+	/**
 	 * Returns table row for a specific submission
 	 */
 	public function get_submission($username, $assignment, $problem, $submit_id){
@@ -122,7 +122,7 @@ class Submit_model extends CI_Model {
 	// ------------------------------------------------------------------------
 
 
-	/*
+	/**
 	 * add the result of an "upload only" submit to the database
 	 */
 	public function add_upload_only($submit_info){

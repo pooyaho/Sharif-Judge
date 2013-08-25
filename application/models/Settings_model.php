@@ -5,7 +5,7 @@
  * @author Mohammad Javad Naderi <mjnaderi@gmail.com>
  */
 
-/*
+/**
  * This model deals with global settings
  */
 

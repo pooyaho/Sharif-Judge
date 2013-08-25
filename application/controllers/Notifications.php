@@ -63,7 +63,7 @@ class Notifications extends CI_Controller {
 		$this->form_validation->set_rules('text','text','');
 
 		if($this->form_validation->run()){
-			if ($this->input->post('id')===FALSE)
+			if ($this->input->post('id')===NULL)
 				$this->notifications_model->add_notification($this->input->post('title'),$this->input->post('text'));
 			else
 				$this->notifications_model->update_notification($this->input->post('id'),$this->input->post('title'),$this->input->post('text'));

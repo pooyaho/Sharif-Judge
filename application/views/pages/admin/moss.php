@@ -28,7 +28,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		<p>
 		<?php echo form_open('moss/update/'.$moss_assignment['id']) ?>
 		<p class="input_p">
-			<label for="moss_userid">Your Moss user id is:</label><br>
+			<label for="moss_userid">Your Moss user id is:</label>
 			<input type="text" name="moss_userid" class="sharif_input" value="<?php echo $moss_userid ?>"/>
 		</p>
 		<input type="submit" class="sharif_input" value="Save"/>
@@ -40,7 +40,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		<h3>Detect similar submissions of assignment "<?php echo $moss_assignment['name'] ?>":</h3>
 		<p>
 		<?php echo form_open('moss/detect/'.$moss_assignment['id']) ?>
-		You can send final submissions of assignment "<?php echo $moss_assignment['name'] ?>" to Moss by clicking on this button. It may take a minute. Please be patient.<br>
+		You can send final submissions of assignment "<?php echo $moss_assignment['name'] ?>" to Moss by clicking on this button.<br>
+		Zip files will not be sent.<br>
+		It may take a minute. Please be patient.<br>
 		<input type="submit" class="sharif_input" value="Detect similar codes"/>
 		</form>
 		</p>

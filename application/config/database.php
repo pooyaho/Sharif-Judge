@@ -87,10 +87,10 @@ $db['default'] = array(
 	'username' => '',
 	'password' => '',
 	'database' => '',
+	'dbprefix' => 'shj_',
 	/**********************************************/
 
 	'dbdriver' => 'mysqli',
-	'dbprefix' => 'shj_',
 	'pconnect' => TRUE,
 	'db_debug' => TRUE,
 	'cache_on' => FALSE,

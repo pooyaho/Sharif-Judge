@@ -64,6 +64,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<div id="page_title"><img src="<?php echo base_url('assets/images/icons/dashboard.png') ?>"/>
 		<span><?php echo $title ?></span></div>
 	<div id="main_content">
+		<?php foreach($errors as $error): ?>
+			<p class="shj_error"><?php echo $error ?></p>
+		<?php endforeach ?>
 		<div style="height: 15px;"></div>
 		<div id="result"></div>
 		<div class="gridster">

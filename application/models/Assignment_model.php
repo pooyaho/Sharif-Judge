@@ -16,7 +16,7 @@ class Assignment_model extends CI_Model{
 	// ------------------------------------------------------------------------
 
 
-	/*
+	/**
 	 * Adds new assignment to database
 	 */
 	public function add_assignment($id,$edit=FALSE){
@@ -86,7 +86,7 @@ class Assignment_model extends CI_Model{
 	// ------------------------------------------------------------------------
 
 
-	/*
+	/**
 	 * Returns a list of all assignments and their information
 	 */
 	public function all_assignments(){
@@ -97,7 +97,7 @@ class Assignment_model extends CI_Model{
 	// ------------------------------------------------------------------------
 
 
-	/*
+	/**
 	 * Returns id of last assignment (the largest assignment id). Used for adding new assignment.
 	 */
 	public function last_assignment_id(){
@@ -130,7 +130,7 @@ class Assignment_model extends CI_Model{
 	// ------------------------------------------------------------------------
 
 
-	/*
+	/**
 	 * Returns info about given assignment
 	 */
 	public function assignment_info($assignment_id){
@@ -149,7 +149,7 @@ class Assignment_model extends CI_Model{
 	// ------------------------------------------------------------------------
 
 
-	/*
+	/**
 	 * Returns TRUE if $username if one of the $participants
 	 * Examples for participants: "ALL" or "user1, user2,user3"
 	 */

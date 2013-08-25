@@ -16,7 +16,7 @@ class User_model extends CI_Model{
 	// ------------------------------------------------------------------------
 
 
-	/*
+	/**
 	 * Returns TRUE if there is a user with username $username in database
 	 */
 	public function have_user($username){
@@ -32,7 +32,7 @@ class User_model extends CI_Model{
 	// ------------------------------------------------------------------------
 
 
-	/*
+	/**
 	 * Converts user id to username (returns FALSE if user does not exist)
 	 */
 	public function user_id_to_username($user_id){
@@ -48,7 +48,7 @@ class User_model extends CI_Model{
 	// ------------------------------------------------------------------------
 
 
-	/*
+	/**
 	 * Returns TRUE if there is a user (except $username) with email $email in database
 	 */
 	public function have_email($email, $username=FALSE){
@@ -66,7 +66,7 @@ class User_model extends CI_Model{
 	// ------------------------------------------------------------------------
 
 
-	/*
+	/**
 	 * Add a new user to database
 	 */
 	public function add_user($username, $email, $password, $role){
@@ -96,7 +96,7 @@ class User_model extends CI_Model{
 	// ------------------------------------------------------------------------
 
 
-	/*
+	/**
 	 * Add multiple users
 	 */
 	public function add_users($text, $send_mail, $delay){
@@ -166,7 +166,7 @@ class User_model extends CI_Model{
 	// ------------------------------------------------------------------------
 
 
-	/*
+	/**
 	 * Delete a user from database
 	 */
 	public function delete_user($user_id, $delete_submissions){
@@ -183,7 +183,7 @@ class User_model extends CI_Model{
 	// ------------------------------------------------------------------------
 
 
-	/*
+	/**
 	 * Function used for validating user login
 	 */
 	public function validate_user($username, $password){
@@ -212,7 +212,7 @@ class User_model extends CI_Model{
 	// ------------------------------------------------------------------------
 
 
-	/*
+	/**
 	 * Returns selected assignment by user $username
 	 */
 	public function selected_assignment($username){
@@ -228,7 +228,7 @@ class User_model extends CI_Model{
 	// ------------------------------------------------------------------------
 
 
-	/*
+	/**
 	 * Sets selected assignment for $username
 	 */
 	public function select_assignment($username, $assignment_id){
@@ -239,7 +239,7 @@ class User_model extends CI_Model{
 	// ------------------------------------------------------------------------
 
 
-	/*
+	/**
 	 * Returns database row of user $username
 	 */
 	public function get_user($username){
@@ -253,7 +253,7 @@ class User_model extends CI_Model{
 	// ------------------------------------------------------------------------
 
 
-	/*
+	/**
 	 * Returns permission level of given user
 	 * admin            -> 3
 	 * head_instructor  -> 2
@@ -274,7 +274,7 @@ class User_model extends CI_Model{
 	// ------------------------------------------------------------------------
 
 
-	/*
+	/**
 	 * Update user profile
 	 */
 	public function update_profile($user_id){
@@ -307,7 +307,7 @@ class User_model extends CI_Model{
 	// ------------------------------------------------------------------------
 
 
-	/*
+	/**
 	 * Generate a password reset key and
 	 * send an email containing the link for resetting password (in case of password lost)
 	 */
@@ -342,7 +342,7 @@ class User_model extends CI_Model{
 	// ------------------------------------------------------------------------
 
 
-	/*
+	/**
 	 * Returns TRUE if the given password reset key is valid
 	 */
 	public function have_passchange($passchange_key){
@@ -360,7 +360,7 @@ class User_model extends CI_Model{
 	// ------------------------------------------------------------------------
 
 
-	/*
+	/**
 	 * Resets password for given password reset key (in case of lost password)
 	 */
 	public function reset_password($passchange_key, $newpassword){
@@ -376,7 +376,7 @@ class User_model extends CI_Model{
 	// ------------------------------------------------------------------------
 
 
-	/*
+	/**
 	 * Get All Users Table (for users page)
 	 */
 	public function get_all_users(){
@@ -387,7 +387,7 @@ class User_model extends CI_Model{
 	// ------------------------------------------------------------------------
 
 
-	/*
+	/**
 	 * Saves positions of dashboard widgets in database
 	 */
 	public function save_widget_positions($username, $positions){
@@ -398,7 +398,7 @@ class User_model extends CI_Model{
 	// ------------------------------------------------------------------------
 
 
-	/*
+	/**
 	 * Returns positions of dashboard widgets from database
 	 */
 	public function get_widget_positions($username){
