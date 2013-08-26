@@ -43,25 +43,26 @@ MAINFILENAME=${3} # used only for java
 FILENAME=${4} # file name without extension
 EXT=${5} # file extension
 TIMELIMIT=${6}
-MEMLIMIT=${7}
-DIFFTOOL=${8}
-DIFFOPTION=${9}
-if [ ${10} = "1" ]; then
+TIMELIMITINT=${7}
+MEMLIMIT=${8}
+DIFFTOOL=${9}
+DIFFOPTION=${10}
+if [ ${11} = "1" ]; then
 	LOG_ON=true
 else
 	LOG_ON=false
 fi
-if [ ${11} = "1" ]; then
+if [ ${12} = "1" ]; then
 	SANDBOX_ON=true
 else
 	SANDBOX_ON=false
 fi
-if [ ${12} = "1" ]; then
+if [ ${13} = "1" ]; then
 	SHIELD_ON=true
 else
 	SHIELD_ON=false
 fi
-if [ ${13} = "1" ]; then
+if [ ${14} = "1" ]; then
 	JAVA_POLICY="-Djava.security.manager -Djava.security.policy=java.policy"
 else
 	JAVA_POLICY=""
@@ -100,6 +101,9 @@ fi
 cd $JAIL
 cp ../timeout ./timeout
 chmod +x timeout
+
+cp ../runcode.sh ./runcode.sh
+chmod +x runcode.sh
 
 judge_log "$(date)"
 judge_log "Time Limit: $TIMELIMIT s"
@@ -233,21 +237,15 @@ for((i=1;i<=TST;i++)); do
 	judge_log "TEST$i"
 	#sleep 0.05
 	echo "<span class=\"shj_b\">Test $i </span>" >>$PROBLEMPATH/$UN/result.html
-	if [ "$EXT" != "java" ]; then # TODO memory limit for java
-		ulimit -v $((MEMLIMIT+10000))
-		ulimit -m $((MEMLIMIT+10000))
-		#ulimit -s $((MEMLIMIT+10000))
-	fi
-	ulimit -t `echo "$TIMELIMIT/1+1"|bc` # kar az mohkamkari eyb nemikone!
 	
 	touch err
 	
 	if [ "$EXT" = "java" ]; then
 		cp ../java.policy java.policy
 		if $PERL_EXISTS; then
-			./timeout --just-kill -nosandbox -t $TIMELIMIT java $JAVA_POLICY $MAINFILENAME  <$PROBLEMPATH/in/input$i.txt >out 2>err
+			./runcode.sh $EXT $MEMLIMIT $TIMELIMIT $TIMELIMITINT ./timeout --just-kill -nosandbox -t $TIMELIMIT java $JAVA_POLICY $MAINFILENAME  <$PROBLEMPATH/in/input$i.txt >out 2>err
 		else
-			java $JAVA_POLICY $MAINFILENAME  <$PROBLEMPATH/in/input$i.txt >out 2>err
+			./runcode.sh $EXT $MEMLIMIT $TIMELIMIT $TIMELIMITINT java $JAVA_POLICY $MAINFILENAME  <$PROBLEMPATH/in/input$i.txt >out 2>err
 		fi
 		EXITCODE=$?
 	elif [ "$EXT" = "c" ] || [ "$EXT" = "cpp" ]; then
@@ -255,9 +253,9 @@ for((i=1;i<=TST;i++)); do
 		if $SANDBOX_ON; then
 			#LD_PRELOAD=./EasySandbox.so ./$FILENAME <$PROBLEMPATH/in/input$i.txt >out 2>/dev/null
 			if $PERL_EXISTS; then
-				./timeout --just-kill --sandbox -t $TIMELIMIT -m $MEMLIMIT ./$FILENAME <$PROBLEMPATH/in/input$i.txt >out 2>err
+				./runcode.sh $EXT $MEMLIMIT $TIMELIMIT $TIMELIMITINT ./timeout --just-kill --sandbox -t $TIMELIMIT -m $MEMLIMIT ./$FILENAME <$PROBLEMPATH/in/input$i.txt >out 2>err
 			else
-				LD_PRELOAD=./EasySandbox.so ./$FILENAME <$PROBLEMPATH/in/input$i.txt >out 2>err
+				./runcode.sh $EXT $MEMLIMIT $TIMELIMIT $TIMELIMITINT LD_PRELOAD=./EasySandbox.so ./$FILENAME <$PROBLEMPATH/in/input$i.txt >out 2>err
 			fi
 			EXITCODE=$?
 			# remove <<entering SECCOMP mode>> from beginning of output:
@@ -265,14 +263,14 @@ for((i=1;i<=TST;i++)); do
 		else
 			#./$FILENAME <$PROBLEMPATH/in/input$i.txt >out 2>/dev/null
 			if $PERL_EXISTS; then
-				./timeout --just-kill -nosandbox -t $TIMELIMIT -m $MEMLIMIT ./$FILENAME <$PROBLEMPATH/in/input$i.txt >out 2>err
+				./runcode.sh $EXT $MEMLIMIT $TIMELIMIT $TIMELIMITINT ./timeout --just-kill -nosandbox -t $TIMELIMIT -m $MEMLIMIT ./$FILENAME <$PROBLEMPATH/in/input$i.txt >out 2>err
 			else
-				./$FILENAME <$PROBLEMPATH/in/input$i.txt >out 2>err
+				./runcode.sh $EXT $MEMLIMIT $TIMELIMIT $TIMELIMITINT ./$FILENAME <$PROBLEMPATH/in/input$i.txt >out 2>err
 			fi
 			EXITCODE=$?
 		fi
 	elif [ "$EXT" = "py" ]; then
-		./timeout --just-kill -nosandbox -t $TIMELIMIT -m $MEMLIMIT python3 -O $FILENAME.$EXT <$PROBLEMPATH/in/input$i.txt >out 2>err
+		./runcode.sh $EXT $MEMLIMIT $TIMELIMIT $TIMELIMITINT ./timeout --just-kill -nosandbox -t $TIMELIMIT -m $MEMLIMIT python3 -O $FILENAME.$EXT <$PROBLEMPATH/in/input$i.txt >out 2>err
 		EXITCODE=$?
 		echo "<span>" >>$PROBLEMPATH/$UN/result.html
 		(cat err | head -5 | sed "s/$FILENAME.$EXT//g" | sed 's/&/\&amp;/g' | sed 's/</\&lt;/g' | sed 's/>/\&gt;/g' | sed 's/"/\&quot;/g') >> $PROBLEMPATH/$UN/result.html

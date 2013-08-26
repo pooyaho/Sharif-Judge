@@ -13,17 +13,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	var extra_time;
 	var sidebar;
 	function sync_server_time() {
-		$.ajax({
-			type: 'POST',
-			url: '<?php echo site_url('server_time') ?>',
-			timeout: 1000,
-			success: function(data) {
+		$.post("<?php echo site_url('server_time') ?>",
+			{},
+			function(data) {
 				offset = moment(data).diff(moment());
 			}
-		});
+		);
 	}
 	function update_clock(){
-		if (Math.abs(moment().diff(time))>1500){
+		if (Math.abs(moment().diff(time))>3500){
+			//console.log('moment: '+moment()+' time: '+time+' diff: '+Math.abs(moment().diff(time)));
 			sync_server_time();
 		}
 		time = moment();
@@ -32,10 +31,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		var countdown = finish_time.diff(now);
 		if (countdown<=0 && countdown + extra_time.asMilliseconds()>=0){
 			countdown = countdown + extra_time.asMilliseconds();
-			$("#extra_time").css("display","block");
+			$("div#extra_time").css("display","block");
 		}
 		else
-			$("#extra_time").css("display","none");
+			$("div#extra_time").css("display","none");
 		if (countdown<=0){
 			countdown=0;
 		}
@@ -127,7 +126,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		time = moment();
 		finish_time = moment("<?php echo $assignment['finish_time'] ?>");
 		extra_time = moment.duration(<?php echo $assignment['extra_time'] ?>, 'seconds');
-		sync_server_time();
+		offset = moment('<?php echo date("Y-m-d H:i:s",shj_now()); ?>').diff(moment());
 		update_clock();
 		window.setInterval(update_clock,1000);
 

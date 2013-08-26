@@ -24,6 +24,6 @@ class Server_time extends CI_Controller {
 	 * prints server time, used for server synchronization by jquery script which shows server time to users
 	 */
 	public function index(){
-		echo date(DATE_ISO8601,shj_now());
+		echo date("Y-m-d H:i:s",shj_now());
 	}
 }

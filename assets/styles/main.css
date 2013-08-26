@@ -136,6 +136,10 @@ span.time_label {
 	background-color: #efefef;
 }
 
+div#extra_time {
+	display: none;
+}
+
 /*********************************************/
 div#side_bar {
 	left: 0;
