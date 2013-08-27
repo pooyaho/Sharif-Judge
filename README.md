@@ -19,6 +19,7 @@ The full documentation is at [http://docs.sharifjudge.ir](http://docs.sharifjudg
   * Add multiple users
   * Rejudge _(Will be added soon)_
   * Scoreboard
+  * Notifications
 
 ## Installation
 

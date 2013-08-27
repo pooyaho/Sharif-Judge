@@ -333,6 +333,7 @@ class User_model extends CI_Model{
 		$text = $this->settings_model->get_setting('reset_password_mail');
 		$text = str_replace('{SITE_URL}',site_url(),$text);
 		$text = str_replace('{RESET_LINK}',site_url('login/reset/'.$passchange_key),$text);
+		$text = str_replace('{VALID_TIME}','1 hour',$text); // links are valid for 1 hour
 		$this->email->message($text);
 		$this->email->send();
 	}

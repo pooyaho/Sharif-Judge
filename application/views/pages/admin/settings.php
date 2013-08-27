@@ -97,7 +97,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			</p>
 			<p class="input_p">
 				<label for="reset_password_mail">Password reset email:</label>
-				<p class="form_comment clear">You can use {SITE_URL} and {RESET_LINK}</p>
+				<p class="form_comment clear">You can use {SITE_URL}, {RESET_LINK} and {VALID_TIME}</p>
 				<textarea name="reset_password_mail" rows="15" class="sharif_input add_text clear"><?php echo $reset_password_mail ?></textarea>
 			</p>
 			<p class="input_p">
