@@ -129,7 +129,7 @@ class Install extends CI_Controller {
 				`id` smallint(4) NOT NULL,
 				`name` varchar(50) CHARACTER SET utf8 NOT NULL,
 				`score` int(11) NOT NULL,
-				`judge` tinyint(1) NOT NULL,
+				`is_upload_only` tinyint(1) NOT NULL,
 				`c_time_limit` int(11) NOT NULL DEFAULT '500',
 				`java_time_limit` int(11) NOT NULL DEFAULT '2000',
 				`python_time_limit` int(11) NOT NULL DEFAULT '1000',

@@ -84,4 +84,20 @@ class Notifications_model extends CI_Model {
 		return $query->row_array();
 	}
 
+
+	// ------------------------------------------------------------------------
+
+
+	/**
+	 * Returns true if there is a notification after $time
+	 */
+	public function have_new_notification($time) {
+		$notifs = $this->db->select('time')->get('notifications')->result_array();
+		foreach ($notifs as $notif) {
+			if (strtotime($notif['time'])>$time)
+				return TRUE;
+		}
+		return FALSE;
+	}
+
 }

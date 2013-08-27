@@ -68,7 +68,7 @@ class Add_assignment extends CI_Controller{
 					'allowed_file_types' => 'c,cpp,java',
 					'diff_cmd' => 'diff',
 					'diff_arg' => '-iw',
-					'judge' => 1
+					'is_upload_only' => 0
 				));
 			else {
 				$names = $this->input->post('name');
@@ -92,7 +92,7 @@ class Add_assignment extends CI_Controller{
 						'allowed_file_types' => $ft[$i],
 						'diff_cmd' => $dc[$i],
 						'diff_arg' => $da[$i],
-						'judge' => in_array($i+1,$this->input->post('judge'))?1:0,
+						'is_upload_only' => in_array($i+1,$this->input->post('is_upload_only'))?1:0,
 					));
 				}
 			}

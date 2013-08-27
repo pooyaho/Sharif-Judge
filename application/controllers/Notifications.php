@@ -119,4 +119,21 @@ class Notifications extends CI_Controller {
 		$this->notifications_model->delete_notification($this->input->post('id'));
 	}
 
+
+	// ------------------------------------------------------------------------
+
+
+	public function check($input = FALSE) {
+		if ($input !== FALSE)
+			show_404();
+		if ( ! $this->input->is_ajax_request() )
+			show_404();
+		$time  = $this->input->post('time');
+		if ($time === NULL)
+			show_404();
+		if ($this->notifications_model->have_new_notification(strtotime($time)))
+			exit('new_notification');
+		exit('no_new_notification');
+	}
+
 }

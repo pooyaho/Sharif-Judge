@@ -113,9 +113,9 @@ class Users extends CI_Controller {
 			'id'=>$user_id,
 			'delete_username'=>$username
 		);
-		if ($this->input->post('delete')=='delete'){
-			$this->user_model->delete_user($user_id,$this->input->post('delete_submissions')===NULL?FALSE:TRUE);
-			$data['deleted'] = TRUE;
+		if ($this->input->post('delete')==='delete'){
+			$this->user_model->delete_user($username, $this->input->post('delete_submissions')===NULL?FALSE:TRUE);
+			$data['deleted_user'] = TRUE;
 			$data['title']='Users';
 			$data['users']=$this->user_model->get_all_users();
 			$this->load->view('templates/header',$data);
@@ -133,13 +133,54 @@ class Users extends CI_Controller {
 	// ------------------------------------------------------------------------
 
 
+	public function delete_submissions($user_id=FALSE) {
+		if ($user_id===FALSE || !is_numeric($user_id))
+			show_error('Incorrect user id');
+		$username = $this->user_model->user_id_to_username($user_id);
+		if ($username === FALSE)
+			show_error('This user does not exist.');
+		$data = array(
+			'username'=>$this->username,
+			'user_level' => $this->user_level,
+			'all_assignments'=>$this->assignment_model->all_assignments(),
+			'assignment' => $this->assignment,
+			'title'=>'Delete Submissions',
+			'style'=>'main.css',
+			'id'=>$user_id,
+			'delete_username'=>$username
+		);
+		if ($this->input->post('delete')==='delete'){
+			shell_exec("cd {$this->settings_model->get_setting('assignments_root')}; rm -r */*/{$username};");
+			if ($this->input->post('delete_from_database')!==NULL){// also delete all submissions from database
+				$this->db->delete('final_submissions',array('username'=>$username));
+				$this->db->delete('all_submissions',array('username'=>$username));
+			}
+
+			$data['deleted_submissions'] = TRUE;
+			$data['title']='Users';
+			$data['users']=$this->user_model->get_all_users();
+			$this->load->view('templates/header',$data);
+			$this->load->view('pages/admin/users',$data);
+			$this->load->view('templates/footer');
+		}
+		else{
+			$this->load->view('templates/header',$data);
+			$this->load->view('pages/admin/delete_submissions',$data);
+			$this->load->view('templates/footer');
+		}
+	}
+
+
+	// ------------------------------------------------------------------------
+
+
 	public function list_excel() {
 		$now=date('Y-m-d H:i:s',shj_now());
 		$this->load->library('excel');
-		$this->excel->set_file_name('judge_users.xls'); /* todo more relevant file name */
+		$this->excel->set_file_name('sharifjudge_users.xls');
 		$this->excel->addHeader("Time: $now");
 		$this->excel->addHeader(NULL); //newline
-		$row=array('#','User ID','Username','Display Name','Email','Role');
+		$row=array('#','User ID','Username','Display Name','Email','Role','First Login','Last Login');
 		$this->excel->addRow($row);
 
 		$users = $this->user_model->get_all_users();
@@ -151,7 +192,9 @@ class Users extends CI_Controller {
 				$user['username'],
 				$user['display_name'],
 				$user['email'],
-				$user['role']
+				$user['role'],
+				$user['first_login_time']==='0000-00-00 00:00:00'?'Never':$user['first_login_time'],
+				$user['last_login_time']==='0000-00-00 00:00:00'?'Never':$user['last_login_time']
 			);
 			$this->excel->addRow($row);
 		}

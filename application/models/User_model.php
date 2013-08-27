@@ -169,9 +169,8 @@ class User_model extends CI_Model{
 	/**
 	 * Delete a user from database
 	 */
-	public function delete_user($user_id, $delete_submissions){
-		$username = $this->db->select('username')->get_where('users',array('id'=>$user_id))->row()->username;
-		$this->db->delete('users',array('id'=>$user_id));
+	public function delete_user($username, $delete_submissions){
+		$this->db->delete('users',array('username'=>$username));
 		if ($delete_submissions){// also delete all submissions and submitted codes
 			$this->db->delete('final_submissions',array('username'=>$username));
 			$this->db->delete('all_submissions',array('username'=>$username));

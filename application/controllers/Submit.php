@@ -142,7 +142,7 @@ class Submit extends CI_Controller{
 				'main_file_name' =>$this->file_name,
 				'file_type' => ltrim($result['file_ext'],'.')
 			);
-			if($this->problem['judge']){
+			if($this->problem['is_upload_only']==0){
 				$this->queue_model->add_to_queue($submit_info);
 				shell_exec('php '.rtrim($this->settings_model->get_setting('tester_path'),'/').'/queue_process.php >/dev/null 2>/dev/null &');
 			}else{

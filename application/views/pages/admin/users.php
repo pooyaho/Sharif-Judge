@@ -11,8 +11,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <div id="main_container">
 	<div id="page_title"><img src="<?php echo base_url('assets/images/icons/users.png') ?>"/> <span><?php echo $title ?></span></div>
 	<div id="main_content">
-		<?php if (isset($deleted) && $deleted===TRUE): ?>
+		<?php if (isset($deleted_user) && $deleted_user===TRUE): ?>
 			<p class="shj_ok">User deleted successfully.</p>
+		<?php endif ?>
+		<?php if (isset($deleted_submissions) && $deleted_submissions===TRUE): ?>
+			<p class="shj_ok">Submissions of selected user deleted successfully.</p>
 		<?php endif ?>
 		<p>
 			<i class="splashy-group_blue_add"></i> <?php echo anchor('users/add','Add Users') ?>
@@ -35,7 +38,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					<td><?php echo $user['last_login_time']==='0000-00-00 00:00:00'?'Never':$user['last_login_time'] ?></td>
 					<td>
 						<a title="Edit" href="<?php echo site_url('profile/'.$user['id']) ?>"><i class="splashy-contact_blue_edit"></i></a>
-						<a title="Delete" href="<?php echo site_url('users/delete/'.$user['id']) ?>"><i class="splashy-contact_blue_remove"></i></a>
+						<a title="Delete User" href="<?php echo site_url('users/delete/'.$user['id']) ?>"><i class="splashy-contact_blue_remove"></i></a>
+						<a title="Delete Submissions" href="<?php echo site_url('users/delete_submissions/'.$user['id']) ?>"><i class="splashy-documents_remove"></i></a>
 					</td>
 				</tr>
 			<?php endforeach ?>

@@ -22,8 +22,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		<td><input type="text" name="filetypes[]" class="sharif_input short" value="c,cpp,java"/></td>\
 		<td><input type="text" name="diff_cmd[]" class="sharif_input short" value="diff"/></td>\
 		<td><input type="text" name="diff_arg[]" class="sharif_input short" value="-iw"/></td>\
-		<td><input type="checkbox" name="judge[]" class="check" value="';
-	var row3='" checked/></td>\
+		<td><input type="checkbox" name="is_upload_only[]" class="check" value="';
+	var row3='"/></td>\
 	</tr>';
 	$(document).ready(function(){
 		$("#add").click(function(){
@@ -161,7 +161,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		</div>
 		<p class="input_p" id="add_problems">Problems <i class="splashy-add" id="add"></i> <i class="splashy-remove_minus_sign" id="remove"></i>
 		<table id="problems_table">
-			<thead><tr><th></th><th>Problem<br>Name</th><th>Problem<br>Score</th><th>C, C++ Time<br>Limit (ms)</th><th>Java Time<br>Limit (ms)</th><th>Memory<br>Limit (kB)</th><th>Allowed<br>Filetypes</th><th>Diff<br>Command (<a href="#">?</a>)</th><th>Diff<br>Argument (<a href="#">?</a>)</th><th>Judge?</th></tr></thead>
+			<thead><tr><th></th><th>Problem<br>Name</th><th>Problem<br>Score</th><th>C, C++ Time<br>Limit (ms)</th><th>Java Time<br>Limit (ms)</th><th>Memory<br>Limit (kB)</th><th>Allowed<br>Filetypes</th><th>Diff<br>Command (<a href="#">?</a>)</th><th>Diff<br>Argument (<a href="#">?</a>)</th><th>Upload Only</th></tr></thead>
 			<?php foreach ($problems as $problem): ?>
 				<tr>
 					<td><?php echo $problem['id']?></td>
@@ -173,7 +173,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					<td><input type="text" name="filetypes[]" class="sharif_input short" value="<?php echo $problem['allowed_file_types'] ?>"/></td>
 					<td><input type="text" name="diff_cmd[]" class="sharif_input short" value="<?php echo $problem['diff_cmd'] ?>"/></td>
 					<td><input type="text" name="diff_arg[]" class="sharif_input short" value="<?php echo $problem['diff_arg'] ?>"/></td>
-					<td><input type="checkbox" name="judge[]" class="check" value="<?php echo $problem['id'] ?>" <?php if ($problem['judge']) echo "checked" ?>/></td>
+					<td><input type="checkbox" name="is_upload_only[]" class="check" value="<?php echo $problem['id'] ?>" <?php if ($problem['is_upload_only']) echo "checked" ?>/></td>
 				</tr>
 			<?php endforeach ?>
 		</table>

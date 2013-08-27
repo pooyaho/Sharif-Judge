@@ -69,7 +69,7 @@ class Assignment_model extends CI_Model{
 				'id' => $i,
 				'name' => $names[$i-1],
 				'score' => $scores[$i-1],
-				'judge' => in_array($i,$this->input->post('judge'))?1:0,
+				'is_upload_only' => in_array($i,$this->input->post('is_upload_only'))?1:0,
 				'c_time_limit' => $c_tl[$i-1],
 				//'python_time_limit' => $py_tl[$i-1],
 				'java_time_limit' => $java_tl[$i-1],

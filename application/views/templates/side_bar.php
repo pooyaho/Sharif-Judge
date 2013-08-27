@@ -36,7 +36,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		extra_time = moment.duration(<?php echo $assignment['extra_time'] ?>, 'seconds');
 		update_clock();
 		window.setInterval(update_clock,1000);
-
 	});
 </script>
 

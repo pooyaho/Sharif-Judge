@@ -25,7 +25,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			height: 280,
 			firstDay: <?php echo $week_start ?>,
 			events: [<?php
-				$arr = array();
 				$i=0;
 				$colors = array ('#812C8C','#FF750D','#2C578C','#013440','#A6222C','#42758C','#02A300','#BA6900');
 				foreach ($all_assignments as $assignment){
