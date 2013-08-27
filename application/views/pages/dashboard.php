@@ -24,7 +24,24 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			editable: false,
 			height: 280,
 			firstDay: <?php echo $week_start ?>,
-			events: "<?php echo site_url('dashboard/json') ?>"
+			events: [<?php
+				$arr = array();
+				$i=0;
+				$colors = array ('#812C8C','#FF750D','#2C578C','#013440','#A6222C','#42758C','#02A300','#BA6900');
+				foreach ($all_assignments as $assignment){
+					echo '{';
+					echo 'id:'.$assignment['id'].',';
+					echo 'title:\''.$assignment['name'].'\',';
+					echo 'start:\''.$assignment['start_time'].'\',';
+					echo 'end:\''.$assignment['finish_time'].'\',';
+					echo 'allDay:false,';
+					echo 'color:\''.$colors[($i)%count($colors)].'\'';
+					echo '}';
+					$i++;
+					if ($i!==count($all_assignments))
+						echo ',';
+				}
+			?>]
 		})
 
 		var gridster = $(".gridster ul").gridster({

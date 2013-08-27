@@ -73,32 +73,6 @@ class Dashboard extends CI_Controller{
 	// ------------------------------------------------------------------------
 
 
-	/*
-	 * Used for Fullcalendar in Dashboard
-	 */
-	public function json(){
-		$assignments = $this->assignment_model->all_assignments();
-		$arr = array();
-		$i=0;
-		$colors = array ('#812C8C','#FF750D','#2C578C','#013440','#A6222C','#42758C','#02A300','#BA6900');
-		foreach ($assignments as $assignment){
-			$arr[$i] = array(
-				'id' => $assignment['id'],
-				'title' => $assignment['name'],
-				'start' => $assignment['start_time'],
-				'end' => $assignment['finish_time'],
-				'allDay' => FALSE,
-				'color' => $colors[($i)%count($colors)]
-			);
-			$i++;
-		}
-		echo json_encode($arr);
-	}
-
-
-	// ------------------------------------------------------------------------
-
-
 	public function widget_positions(){
 		if ($this->input->post('positions')!==NULL)
 			$this->user_model->save_widget_positions($this->username, $this->input->post('positions'));
