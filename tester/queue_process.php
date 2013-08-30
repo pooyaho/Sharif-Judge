@@ -132,18 +132,25 @@ do{
 	$op1 = $srrr['shj_value'];
 	$srrr = mysql_fetch_assoc(mysql_query("SELECT shj_value FROM {$prefix}settings WHERE shj_key='enable_easysandbox'"));
 	$op2 = $srrr['shj_value'];
-	$srrr = mysql_fetch_assoc(mysql_query("SELECT shj_value FROM {$prefix}settings WHERE shj_key='enable_c_shield'"));
-	$op3 = $srrr['shj_value'];
+	$op3 = 0;
+	if ($file_type==='c'){
+		$srrr = mysql_fetch_assoc(mysql_query("SELECT shj_value FROM {$prefix}settings WHERE shj_key='enable_c_shield'"));
+		$op3 = $srrr['shj_value'];
+	}
+	elseif ($file_type === 'cpp'){
+		$srrr = mysql_fetch_assoc(mysql_query("SELECT shj_value FROM {$prefix}settings WHERE shj_key='enable_cpp_shield'"));
+		$op3 = $srrr['shj_value'];
+	}
 	$srrr = mysql_fetch_assoc(mysql_query("SELECT shj_value FROM {$prefix}settings WHERE shj_key='enable_java_policy'"));
 	$op4 = $srrr['shj_value'];
 
 	// compiling and judging the code (with tester.sh) :
 	
-	if ($file_type=="c" OR $file_type == "cpp")
+	if ($file_type=='c' OR $file_type == 'cpp')
 		$time_limit = $c_time_limit;
-	else if ($file_type=="java")
+	else if ($file_type=='java')
 		$time_limit = $java_time_limit;
-	else if ($file_type=="py2" OR $file_type=="py3")
+	else if ($file_type=='py2' OR $file_type=='py3')
 		$time_limit = $python_time_limit;
 	
 	$time_limit = round($time_limit, 3);
@@ -152,7 +159,7 @@ do{
 	
 	$cmd = "cd $tester_path;\n./tester.sh $problemdir $username $main_filename $raw_filename $file_type $time_limit $time_limit_int $memory_limit $diff_cmd $diff_arg $op1 $op2 $op3 $op4";
 
-	file_put_contents($userdir."/log",$cmd);
+	file_put_contents($userdir.'/log',$cmd);
 
 
 	// adding shield to python source if shield is on for python
@@ -186,7 +193,7 @@ do{
 	copy($from, $to);
 
 
-	$stat = "OK";
+	$stat = 'OK';
 	$score = ($output<0?0:$output);
 	if($output==-1) $stat = 'Compilation Error';
 	else if($output==-2) $stat = 'Syntax Error';

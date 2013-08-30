@@ -17,7 +17,7 @@ def shj_make_secure():
     if func in __builtins__.__dict__:
       del __builtins__.__dict__[func]
 
-# If you want to deny importing modules,
-# You can import modules like "math" for students here
+# If you want to deny importing modules, you can
+# import modules like "math" for students here
 
 shj_make_secure()

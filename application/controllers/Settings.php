@@ -71,6 +71,7 @@ class Settings extends CI_Controller{
 			'default_late_rule'=>$this->settings_model->get_setting('default_late_rule'),
 			'enable_easysandbox'=>$this->settings_model->get_setting('enable_easysandbox'),
 			'enable_c_shield'=>$this->settings_model->get_setting('enable_c_shield'),
+			'enable_cpp_shield'=>$this->settings_model->get_setting('enable_cpp_shield'),
 			'enable_py2_shield'=>$this->settings_model->get_setting('enable_py2_shield'),
 			'enable_py3_shield'=>$this->settings_model->get_setting('enable_py3_shield'),
 			'enable_java_policy'=>$this->settings_model->get_setting('enable_java_policy'),
@@ -128,6 +129,7 @@ class Settings extends CI_Controller{
 			$this->settings_model->set_setting('default_late_rule',$this->input->post('default_late_rule'));
 			$this->settings_model->set_setting('enable_easysandbox',$this->input->post('enable_easysandbox')===NULL?0:1);
 			$this->settings_model->set_setting('enable_c_shield',$this->input->post('enable_c_shield')===NULL?0:1);
+			$this->settings_model->set_setting('enable_cpp_shield',$this->input->post('enable_cpp_shield')===NULL?0:1);
 			$this->settings_model->set_setting('enable_py2_shield',$this->input->post('enable_py2_shield')===NULL?0:1);
 			$this->settings_model->set_setting('enable_py3_shield',$this->input->post('enable_py3_shield')===NULL?0:1);
 			$this->settings_model->set_setting('enable_java_policy',$this->input->post('enable_java_policy')===NULL?0:1);

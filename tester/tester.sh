@@ -206,6 +206,7 @@ if [ "$EXT" = "c" ] || [ "$EXT" = "cpp" ]; then
 		echo '#define main themainmainfunction' | cat - code.c > thetemp && mv thetemp code.c
 		$COMPILER shield.$EXT -lm -O2 -o $FILENAME >/dev/null 2>cerr
 	else
+		mv code.c code.$EXT
 		$COMPILER code.$EXT -lm -O2 -o $FILENAME >/dev/null 2>cerr
 	fi
 	EXITCODE=$?
@@ -294,14 +295,22 @@ for((i=1;i<=TST;i++)); do
 		fi
 
 	elif [ "$EXT" = "py2" ]; then
-		./runcode.sh $EXT $MEMLIMIT $TIMELIMIT $TIMELIMITINT ./timeout --just-kill -nosandbox -t $TIMELIMIT -m $MEMLIMIT python -O $FILENAME.py <$PROBLEMPATH/in/input$i.txt >out 2>err
+		if $PERL_EXISTS; then
+			./runcode.sh $EXT $MEMLIMIT $TIMELIMIT $TIMELIMITINT ./timeout --just-kill -nosandbox -t $TIMELIMIT -m $MEMLIMIT python -O $FILENAME.py <$PROBLEMPATH/in/input$i.txt >out 2>err
+		else
+			./runcode.sh $EXT $MEMLIMIT $TIMELIMIT $TIMELIMITINT python -O $FILENAME.py <$PROBLEMPATH/in/input$i.txt >out 2>err
+		fi
 		EXITCODE=$?
 		#echo "<span>" >>$PROBLEMPATH/$UN/result.html
 		#(cat err | head -5 | sed "s/$FILENAME.$EXT//g" | sed 's/&/\&amp;/g' | sed 's/</\&lt;/g' | sed 's/>/\&gt;/g' | sed 's/"/\&quot;/g') >> $PROBLEMPATH/$UN/result.html
 		#echo "</span>" >>$PROBLEMPATH/$UN/result.html
 
 	elif [ "$EXT" = "py3" ]; then
-		./runcode.sh $EXT $MEMLIMIT $TIMELIMIT $TIMELIMITINT ./timeout --just-kill -nosandbox -t $TIMELIMIT -m $MEMLIMIT python3 -O $FILENAME.py <$PROBLEMPATH/in/input$i.txt >out 2>err
+		if $PERL_EXISTS; then
+			./runcode.sh $EXT $MEMLIMIT $TIMELIMIT $TIMELIMITINT ./timeout --just-kill -nosandbox -t $TIMELIMIT -m $MEMLIMIT python3 -O $FILENAME.py <$PROBLEMPATH/in/input$i.txt >out 2>err
+		else
+			./runcode.sh $EXT $MEMLIMIT $TIMELIMIT $TIMELIMITINT python3 -O $FILENAME.py <$PROBLEMPATH/in/input$i.txt >out 2>err
+		fi
 		EXITCODE=$?
 		#echo "<span>" >>$PROBLEMPATH/$UN/result.html
 		#(cat err | head -5 | sed "s/$FILENAME.$EXT//g" | sed 's/&/\&amp;/g' | sed 's/</\&lt;/g' | sed 's/>/\&gt;/g' | sed 's/"/\&quot;/g') >> $PROBLEMPATH/$UN/result.html
@@ -336,6 +345,9 @@ for((i=1;i<=TST;i++)); do
 			echo "<span class=\"shj_o\">Killed by a signal</span>" >>$PROBLEMPATH/$UN/result.html
 			continue
 		fi
+	else
+		t=`grep "FINISHED" err|cut -d" " -f3`
+		judge_log "Time: $t s"
 	fi
 	
 	if [ $EXITCODE -eq 137 ]; then

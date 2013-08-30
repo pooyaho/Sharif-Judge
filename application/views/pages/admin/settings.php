@@ -122,8 +122,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			<h2 class="shj_form">Shield <span class="help_span"><a href="http://docs.sharifjudge.ir/shield" target="_blank"><i class="splashy-help"></i> Help</a></span></h2>
 
 			<p class="input_p">
-				<input type="checkbox" name="enable_c_shield" value="1" <?php if ($enable_c_shield) echo 'checked' ?>/> C/C++ Shield<br>
-				<span class="form_comment">Enable <a href="http://docs.sharifjudge.ir/shield" target="_blank">Shield</a> for C/C++</span>
+				<input type="checkbox" name="enable_c_shield" value="1" <?php if ($enable_c_shield) echo 'checked' ?>/> C Shield<br>
+				<span class="form_comment">Enable <a href="http://docs.sharifjudge.ir/shield" target="_blank">Shield</a> for C</span>
+			</p>
+			<p class="input_p">
+				<input type="checkbox" name="enable_cpp_shield" value="1" <?php if ($enable_cpp_shield) echo 'checked' ?>/> C++ Shield<br>
+				<span class="form_comment">Enable <a href="http://docs.sharifjudge.ir/shield" target="_blank">Shield</a> for C++</span>
 			</p>
 			<p class="input_p">
 				<input type="checkbox" name="enable_py2_shield" value="1" <?php if ($enable_py2_shield) echo 'checked' ?>/> Python 2 Shield<br>
