@@ -1,7 +1,7 @@
 # @file shield_py3.py
 
-def shj_make_secure():
-  UNSAFE = [
+def shj_py3_shield():
+  BLACKLIST = [
     'open',
     'file',
     'exec',
@@ -13,11 +13,13 @@ def shj_make_secure():
     'eval', # eval is evil
     #'input'
     ]
-  for func in UNSAFE:
+  for func in BLACKLIST:
     if func in __builtins__.__dict__:
       del __builtins__.__dict__[func]
 
 # If you want to deny importing modules, you can
-# import modules like "math" for students here
+# import modules like "math" for students here:
 
-shj_make_secure()
+
+# enabling shield:
+shj_py3_shield()
