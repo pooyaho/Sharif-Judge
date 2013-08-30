@@ -190,6 +190,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		<?php echo form_error('name[]','<div class="shj_error">','</div>'); ?>
 		<?php echo form_error('score[]','<div class="shj_error">','</div>'); ?>
 		<?php echo form_error('c_time_limit[]','<div class="shj_error">','</div>'); ?>
+		<?php echo form_error('python_time_limit[]','<div class="shj_error">','</div>'); ?>
 		<?php echo form_error('java_time_limit[]','<div class="shj_error">','</div>'); ?>
 		<?php echo form_error('memory_limit[]','<div class="shj_error">','</div>'); ?>
 		<?php echo form_error('filetypes[]','<div class="shj_error">','</div>'); ?>
