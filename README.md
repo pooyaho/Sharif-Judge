@@ -1,6 +1,6 @@
 # Sharif Judge
 
-[Sharif Judge](http://sharifjudge.ir) is a free and open source online judge for C, C++ and Java programming assignments. It can also be used for programming contests, but it has features specially for programming assignments.
+[Sharif Judge](http://sharifjudge.ir) is a free and open source online judge for C, C++, Java and Python programming assignments. It can also be used for programming contests, but it has features specially for programming assignments.
 
 Installation doesn't need root privileges.
 
@@ -10,7 +10,7 @@ The full documentation is at [http://docs.sharifjudge.ir](http://docs.sharifjudg
 
 ## Features
   * Multiple user roles (admin, head instructor, instructor, student)
-  * Sandboxing
+  * Sandboxing _(not yet for python)_
   * Cheat detection (similar codes detection) using [Moss](http://theory.stanford.edu/~aiken/moss/)
   * Custom rule for grading late submissions
   * Download results in excel file
