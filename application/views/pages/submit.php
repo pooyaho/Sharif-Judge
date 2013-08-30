@@ -9,8 +9,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <script>
 	p=[];
 	<?php foreach ($problems as $problem){
-		$languages = explode(",",$problem['allowed_languages']);
-		$items="";
+		$languages = explode(',',$problem['allowed_languages']);
+		$items='';
 		foreach ($languages as $language){
 			$items = $items."'".trim($language)."',";
 		}

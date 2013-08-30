@@ -9,7 +9,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <?php echo form_open('login/register') ?>
 	<div class="box register">
 		<div class="judge_logo">
-			<a href="#"><img src="<?php echo base_url("assets/images/banner.png") ?>"/></a>
+			<a href="<?php echo site_url() ?>"><img src="<?php echo base_url("assets/images/banner.png") ?>"/></a>
 		</div>
 		<div class="login_form">
 			<div class="login1">
