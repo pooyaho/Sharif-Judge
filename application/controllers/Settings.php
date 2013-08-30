@@ -11,6 +11,8 @@ class Settings extends CI_Controller{
 	var $username;
 	var $assignment;
 	var $user_level;
+	var $form_status;
+	var $errors;
 
 
 	// ------------------------------------------------------------------------
@@ -28,6 +30,7 @@ class Settings extends CI_Controller{
 		if ( $this->user_level <= 2)
 			show_error('You have not enough permission to access this page.');
 		$this->form_status = '';
+		$this->errors = array();
 	}
 
 
@@ -67,7 +70,9 @@ class Settings extends CI_Controller{
 			'file_size_limit'=>$this->settings_model->get_setting('file_size_limit'),
 			'default_late_rule'=>$this->settings_model->get_setting('default_late_rule'),
 			'enable_easysandbox'=>$this->settings_model->get_setting('enable_easysandbox'),
-			'enable_shield'=>$this->settings_model->get_setting('enable_shield'),
+			'enable_c_shield'=>$this->settings_model->get_setting('enable_c_shield'),
+			'enable_py2_shield'=>$this->settings_model->get_setting('enable_py2_shield'),
+			'enable_py3_shield'=>$this->settings_model->get_setting('enable_py3_shield'),
 			'enable_java_policy'=>$this->settings_model->get_setting('enable_java_policy'),
 			'enable_log'=>$this->settings_model->get_setting('enable_log'),
 			'enable_registration'=>$this->settings_model->get_setting('enable_registration'),
@@ -77,11 +82,14 @@ class Settings extends CI_Controller{
 			'add_user_mail'=>$this->settings_model->get_setting('add_user_mail'),
 			'results_per_page'=>$this->settings_model->get_setting('results_per_page'),
 			'week_start'=>$this->settings_model->get_setting('week_start'),
-			'form_status' => $this->form_status
+			'form_status' => $this->form_status,
+			'errors' => $this->errors
 		);
 		ob_start();
 		$data ['defc'] = file_get_contents(rtrim($this->settings_model->get_setting('tester_path'),'/').'/shield/defc.h');
 		$data ['defcpp'] = file_get_contents(rtrim($this->settings_model->get_setting('tester_path'),'/').'/shield/defcpp.h');
+		$data ['shield_py2'] = file_get_contents(rtrim($this->settings_model->get_setting('tester_path'),'/').'/shield/shield_py2.py');
+		$data ['shield_py3'] = file_get_contents(rtrim($this->settings_model->get_setting('tester_path'),'/').'/shield/shield_py3.py');
 		ob_end_clean();
 		$this->load->view('templates/header',$data);
 		$this->load->view('pages/admin/settings',$data);
@@ -99,23 +107,29 @@ class Settings extends CI_Controller{
 		$this->form_validation->set_rules('results_per_page','results per page','integer|greater_than[-1]');
 		if($this->form_validation->run()){
 			ob_start();
-			$this->form_status = '';
+			$this->form_status = 'ok';
 			$defc_path = rtrim($this->settings_model->get_setting('tester_path'),'/').'/shield/defc.h';
 			$defcpp_path = rtrim($this->settings_model->get_setting('tester_path'),'/').'/shield/defcpp.h';
+			$shpy2_path = rtrim($this->settings_model->get_setting('tester_path'),'/').'/shield/shield_py2.py';
+			$shpy3_path = rtrim($this->settings_model->get_setting('tester_path'),'/').'/shield/shield_py3.py';
 			if (file_exists($defc_path) && file_put_contents($defc_path,$this->input->post('def_c'))===FALSE)
-				$this->form_status .= 'defc';
+				array_push($this->errors,'File defc.h is not writable. Edit it manually.');
 			if (file_exists($defcpp_path) && file_put_contents($defcpp_path,$this->input->post('def_cpp'))===FALSE)
-				$this->form_status .= 'defcpp';
+				array_push($this->errors,'File defcpp.h is not writable. Edit it manually.');
+			if (file_exists($shpy2_path) && file_put_contents($shpy2_path,$this->input->post('shield_py2'))===FALSE)
+				array_push($this->errors,'File shield_py2.py is not writable. Edit it manually.');
+			if (file_exists($shpy3_path) && file_put_contents($shpy3_path,$this->input->post('shield_py3'))===FALSE)
+				array_push($this->errors,'File shield_py3.py is not writable. Edit it manually.');
 			ob_end_clean();
-			if ($this->form_status=='')
-				$this->form_status = 'ok';
 			$this->settings_model->set_setting('timezone',$this->input->post('timezones'));
 			$this->settings_model->set_setting('tester_path',$this->input->post('tester_path'));
 			$this->settings_model->set_setting('assignments_root',$this->input->post('assignments_root'));
 			$this->settings_model->set_setting('file_size_limit',$this->input->post('file_size_limit'));
 			$this->settings_model->set_setting('default_late_rule',$this->input->post('default_late_rule'));
 			$this->settings_model->set_setting('enable_easysandbox',$this->input->post('enable_easysandbox')===NULL?0:1);
-			$this->settings_model->set_setting('enable_shield',$this->input->post('enable_shield')===NULL?0:1);
+			$this->settings_model->set_setting('enable_c_shield',$this->input->post('enable_c_shield')===NULL?0:1);
+			$this->settings_model->set_setting('enable_py2_shield',$this->input->post('enable_py2_shield')===NULL?0:1);
+			$this->settings_model->set_setting('enable_py3_shield',$this->input->post('enable_py3_shield')===NULL?0:1);
 			$this->settings_model->set_setting('enable_java_policy',$this->input->post('enable_java_policy')===NULL?0:1);
 			$this->settings_model->set_setting('enable_log',$this->input->post('enable_log')===NULL?0:1);
 			$this->settings_model->set_setting('enable_registration',$this->input->post('enable_registration')===NULL?0:1);

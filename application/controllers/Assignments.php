@@ -84,12 +84,12 @@ class Assignments extends CI_Controller{
 
 		foreach ($items as $item){
 			$file_path = rtrim($this->settings_model->get_setting('assignments_root'),'/').
-				"/assignment_{$item['assignment']}/p{$item['problem']}/{$item['username']}/{$item['file_name']}.{$item['file_type']}";
+				"/assignment_{$item['assignment']}/p{$item['problem']}/{$item['username']}/{$item['file_name']}.".filetype_to_extension($item['file_type']);
 			if (!file_exists($file_path))
 				continue;
 			$file = file_get_contents($file_path);
-			$this->zip->add_data("by_user/{$item['username']}/p{$item['problem']}.{$item['file_type']}",$file);
-			$this->zip->add_data("by_problem/problem_{$item['problem']}/{$item['username']}.{$item['file_type']}",$file);
+			$this->zip->add_data("by_user/{$item['username']}/p{$item['problem']}.".filetype_to_extension($item['file_type']),$file);
+			$this->zip->add_data("by_problem/problem_{$item['problem']}/{$item['username']}.".filetype_to_extension($item['file_type']),$file);
 		}
 
 		$this->zip->download("assignment{$assignment_id}_codes_".mdate('%Y-%m-%d_%H-%i',shj_now()).'.zip');

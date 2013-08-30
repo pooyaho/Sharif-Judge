@@ -108,6 +108,9 @@ do{
 
 	$sr = mysql_fetch_assoc(mysql_query("SELECT * FROM {$prefix}all_submissions WHERE username='$username' AND assignment='$assignment' AND problem='$problem' AND submit_id='$submit_id'")); // submitrow
 	$file_type = $sr['file_type'];
+	$file_extension = $file_type;
+	if ($file_extension==='py2' || $file_extension==='py3')
+		$file_extension = 'py';
 	$raw_filename=$sr['file_name'];
 	$main_filename=$sr['main_file_name'];
 
@@ -117,13 +120,19 @@ do{
 	$tester_path = rtrim($srrr['shj_value'],'/');
 	$problemdir = $assignments_dir."/assignment_$assignment/p$problem";
 	$userdir = "$problemdir/$username";
-	$the_file = "$userdir/$raw_filename.$file_type";
+	$the_file = "$userdir/$raw_filename.$file_extension";
+
+	// python shield settings
+	$srrr = mysql_fetch_assoc(mysql_query("SELECT shj_value FROM {$prefix}settings WHERE shj_key='enable_py2_shield'"));
+	$enable_py2_shield = $srrr['shj_value'];
+	$srrr = mysql_fetch_assoc(mysql_query("SELECT shj_value FROM {$prefix}settings WHERE shj_key='enable_py3_shield'"));
+	$enable_py3_shield = $srrr['shj_value'];
 
 	$srrr = mysql_fetch_assoc(mysql_query("SELECT shj_value FROM {$prefix}settings WHERE shj_key='enable_log'"));
 	$op1 = $srrr['shj_value'];
 	$srrr = mysql_fetch_assoc(mysql_query("SELECT shj_value FROM {$prefix}settings WHERE shj_key='enable_easysandbox'"));
 	$op2 = $srrr['shj_value'];
-	$srrr = mysql_fetch_assoc(mysql_query("SELECT shj_value FROM {$prefix}settings WHERE shj_key='enable_shield'"));
+	$srrr = mysql_fetch_assoc(mysql_query("SELECT shj_value FROM {$prefix}settings WHERE shj_key='enable_c_shield'"));
 	$op3 = $srrr['shj_value'];
 	$srrr = mysql_fetch_assoc(mysql_query("SELECT shj_value FROM {$prefix}settings WHERE shj_key='enable_java_policy'"));
 	$op4 = $srrr['shj_value'];
@@ -141,12 +150,33 @@ do{
 
 	$time_limit_int = floor($time_limit) +1;
 	
-	$cmd = "cd $tester_path; ./tester.sh $problemdir $username $main_filename $raw_filename $file_type $time_limit $time_limit_int $memory_limit $diff_cmd $diff_arg $op1 $op2 $op3 $op4";
+	$cmd = "cd $tester_path;\n./tester.sh $problemdir $username $main_filename $raw_filename $file_type $time_limit $time_limit_int $memory_limit $diff_cmd $diff_arg $op1 $op2 $op3 $op4";
 
 	file_put_contents($userdir."/log",$cmd);
 
+
+	// adding shield to python source if shield is on for python
+	if ($file_type=='py2' && $enable_py2_shield==1){
+		$source = file_get_contents($the_file);
+		file_put_contents($the_file, file_get_contents($tester_path.'/shield/shield_py2.py').$source);
+	}
+	if ($file_type=='py3' && $enable_py3_shield==1){
+		$source = file_get_contents($the_file);
+		file_put_contents($the_file, file_get_contents($tester_path.'/shield/shield_py3.py').$source);
+	}
+
+
+	// running tester (judging the code)
 	$output = shell_exec($cmd);
 
+
+	// removing shield from python source if shield is on for python
+	if ($file_type=='py2' && $enable_py2_shield==1)
+		file_put_contents($the_file, $source);
+	if ($file_type=='py3' && $enable_py3_shield==1)
+		file_put_contents($the_file, $source);
+
+	// deleting the jail folder, if still exists
 	shell_exec("cd $tester_path; rm -r jail*");
 
 	$output = trim($output);

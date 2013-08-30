@@ -285,6 +285,10 @@ input.sharif_input:disabled {
 	width: 65px !important;
 }
 
+.tiny2 {
+	width: 55px !important;
+}
+
 .form_comment {
 	color: #828282;
 	font-size: 11px;

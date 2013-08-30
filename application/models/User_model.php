@@ -146,11 +146,11 @@ class User_model extends CI_Model{
 				$this->email->to($user[1]);
 				$this->email->subject('Sharif Judge Username and Password');
 				$text = $this->settings_model->get_setting('add_user_mail');
-				$text = str_replace('{SITE_URL}',site_url(),$text);
+				$text = str_replace('{SITE_URL}',base_url(),$text);
 				$text = str_replace('{ROLE}',$user[3],$text);
 				$text = str_replace('{USERNAME}',$user[0],$text);
 				$text = str_replace('{PASSWORD}',$user[2],$text);
-				$text = str_replace('{LOGIN_URL}',site_url('login'),$text);
+				$text = str_replace('{LOGIN_URL}',base_url(),$text);
 				$this->email->message($text);
 				$this->email->send();
 				if ($counter<$count_users)
@@ -331,7 +331,7 @@ class User_model extends CI_Model{
 		$this->email->to($email);
 		$this->email->subject('Password Reset');
 		$text = $this->settings_model->get_setting('reset_password_mail');
-		$text = str_replace('{SITE_URL}',site_url(),$text);
+		$text = str_replace('{SITE_URL}',base_url(),$text);
 		$text = str_replace('{RESET_LINK}',site_url('login/reset/'.$passchange_key),$text);
 		$text = str_replace('{VALID_TIME}','1 hour',$text); // links are valid for 1 hour
 		$this->email->message($text);

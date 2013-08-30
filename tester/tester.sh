@@ -58,9 +58,9 @@ else
 	SANDBOX_ON=false
 fi
 if [ ${13} = "1" ]; then
-	SHIELD_ON=true
+	C_SHIELD_ON=true
 else
-	SHIELD_ON=false
+	C_SHIELD_ON=false
 fi
 if [ ${14} = "1" ]; then
 	JAVA_POLICY="-Djava.security.manager -Djava.security.policy=java.policy"
@@ -109,7 +109,7 @@ judge_log "$(date)"
 judge_log "Time Limit: $TIMELIMIT s"
 judge_log "Memory Limit: $MEMLIMIT kB"
 judge_log "SANDBOX_ON: $SANDBOX_ON"
-judge_log "SHIELD_ON: $SHIELD_ON"
+judge_log "C_SHIELD_ON: $C_SHIELD_ON"
 judge_log "JAVA_POLICY: \"$JAVA_POLICY\""
 #echo -e "\nJAILPATH="$PROBLEMPATH/$UN/jail"\nEXT="$EXT"\nTIME LIMIT="$TIMELIMIT"\nMEM LIMIT="$MEMLIMIT"\nSECURITY HEADER="$HEADER"\nTEST CASES="$TST"\nDIFF PARAM="$DIFFOPTION"\n" >>$LOG
 
@@ -138,12 +138,35 @@ if [ "$EXT" = "java" ]; then
 fi
 
 ########################################################################################################
+########################################## COMPILING PYTHON 2 ##########################################
+########################################################################################################
+if [ "$EXT" = "py2" ]; then
+	cp $PROBLEMPATH/$UN/$FILENAME.py $FILENAME.py
+	judge_log "Checking Python Syntax"
+	python -O -m py_compile $FILENAME.py >/dev/null 2>cerr
+	EXITCODE=$?
+	judge_log "Syntax checked. Exit Code=$EXITCODE"
+	if [ $EXITCODE -ne 0 ]; then
+		judge_log "Syntax Error"
+		judge_log "$(cat cerr | head -10)"
+		echo '<span class="shj_b">Syntax Error</span>' >$PROBLEMPATH/$UN/result.html
+		echo '<span class="shj_r">' >> $PROBLEMPATH/$UN/result.html
+		(cat cerr | head -10 | sed 's/&/\&amp;/g' | sed 's/</\&lt;/g' | sed 's/>/\&gt;/g' | sed 's/"/\&quot;/g') >> $PROBLEMPATH/$UN/result.html
+		echo "</span>" >> $PROBLEMPATH/$UN/result.html
+		cd ..
+		rm -r $JAIL >/dev/null 2>/dev/null
+		echo -2
+		exit 0
+	fi
+fi
+
+########################################################################################################
 ########################################## COMPILING PYTHON 3 ##########################################
 ########################################################################################################
-if [ "$EXT" = "py" ]; then
-	cp $PROBLEMPATH/$UN/$FILENAME.$EXT $FILENAME.$EXT
+if [ "$EXT" = "py3" ]; then
+	cp $PROBLEMPATH/$UN/$FILENAME.py $FILENAME.py
 	judge_log "Checking Python Syntax"
-	python3 -O -m py_compile $FILENAME.$EXT >/dev/null 2>cerr
+	python3 -O -m py_compile $FILENAME.py >/dev/null 2>cerr
 	EXITCODE=$?
 	judge_log "Syntax checked. Exit Code=$EXITCODE"
 	if [ $EXITCODE -ne 0 ]; then
@@ -175,7 +198,7 @@ if [ "$EXT" = "c" ] || [ "$EXT" = "cpp" ]; then
 		cp ../easysandbox/EasySandbox.so EasySandbox.so
 		chmod +x EasySandbox.so
 	fi
-	if $SHIELD_ON; then
+	if $C_SHIELD_ON; then
 		judge_log "Enabling Shield"
 		cp ../shield/shield.$EXT shield.$EXT
 		cp ../shield/def$EXT.h def.h
@@ -193,7 +216,7 @@ if [ "$EXT" = "c" ] || [ "$EXT" = "cpp" ]; then
 		echo '<span class="shj_b">Compile Error<br>Error Messages: (line numbers are not correct)</span>' >$PROBLEMPATH/$UN/result.html
 		echo '<span class="shj_r">' >> $PROBLEMPATH/$UN/result.html
 		SHIELD_ACT=false
-		if $SHIELD_ON; then
+		if $C_SHIELD_ON; then
 			while read line; do
 				if [ "`echo $line|cut -d" " -f1`" = "#define" ]; then
 					if grep -wq $(echo $line|cut -d" " -f3) cerr; then
@@ -269,12 +292,21 @@ for((i=1;i<=TST;i++)); do
 			fi
 			EXITCODE=$?
 		fi
-	elif [ "$EXT" = "py" ]; then
-		./runcode.sh $EXT $MEMLIMIT $TIMELIMIT $TIMELIMITINT ./timeout --just-kill -nosandbox -t $TIMELIMIT -m $MEMLIMIT python3 -O $FILENAME.$EXT <$PROBLEMPATH/in/input$i.txt >out 2>err
+
+	elif [ "$EXT" = "py2" ]; then
+		./runcode.sh $EXT $MEMLIMIT $TIMELIMIT $TIMELIMITINT ./timeout --just-kill -nosandbox -t $TIMELIMIT -m $MEMLIMIT python -O $FILENAME.py <$PROBLEMPATH/in/input$i.txt >out 2>err
 		EXITCODE=$?
-		echo "<span>" >>$PROBLEMPATH/$UN/result.html
-		(cat err | head -5 | sed "s/$FILENAME.$EXT//g" | sed 's/&/\&amp;/g' | sed 's/</\&lt;/g' | sed 's/>/\&gt;/g' | sed 's/"/\&quot;/g') >> $PROBLEMPATH/$UN/result.html
-		echo "</span>" >>$PROBLEMPATH/$UN/result.html
+		#echo "<span>" >>$PROBLEMPATH/$UN/result.html
+		#(cat err | head -5 | sed "s/$FILENAME.$EXT//g" | sed 's/&/\&amp;/g' | sed 's/</\&lt;/g' | sed 's/>/\&gt;/g' | sed 's/"/\&quot;/g') >> $PROBLEMPATH/$UN/result.html
+		#echo "</span>" >>$PROBLEMPATH/$UN/result.html
+
+	elif [ "$EXT" = "py3" ]; then
+		./runcode.sh $EXT $MEMLIMIT $TIMELIMIT $TIMELIMITINT ./timeout --just-kill -nosandbox -t $TIMELIMIT -m $MEMLIMIT python3 -O $FILENAME.py <$PROBLEMPATH/in/input$i.txt >out 2>err
+		EXITCODE=$?
+		#echo "<span>" >>$PROBLEMPATH/$UN/result.html
+		#(cat err | head -5 | sed "s/$FILENAME.$EXT//g" | sed 's/&/\&amp;/g' | sed 's/</\&lt;/g' | sed 's/>/\&gt;/g' | sed 's/"/\&quot;/g') >> $PROBLEMPATH/$UN/result.html
+		#echo "</span>" >>$PROBLEMPATH/$UN/result.html
+
 	else
 		judge_log "File format not supported."
 		cd ..

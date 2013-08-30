@@ -63,9 +63,10 @@ class Add_assignment extends CI_Controller{
 					'name' => 'Problem ',
 					'score' => 100,
 					'c_time_limit' => 500,
+					'python_time_limit' => 1500,
 					'java_time_limit' => 2000,
 					'memory_limit' => 50000,
-					'allowed_file_types' => 'c,cpp,java',
+					'allowed_languages' => 'C,C++,Python 2,Python 3,Java',
 					'diff_cmd' => 'diff',
 					'diff_arg' => '-iw',
 					'is_upload_only' => 0
@@ -74,7 +75,7 @@ class Add_assignment extends CI_Controller{
 				$names = $this->input->post('name');
 				$scores = $this->input->post('score');
 				$c_tl = $this->input->post('c_time_limit');
-				//$py_tl = $this->input->post('python_time_limit');
+				$py_tl = $this->input->post('python_time_limit');
 				$java_tl = $this->input->post('java_time_limit');
 				$ml = $this->input->post('memory_limit');
 				$ft = $this->input->post('filetypes');
@@ -87,9 +88,10 @@ class Add_assignment extends CI_Controller{
 						'name' => $names[$i],
 						'score' => $scores[$i],
 						'c_time_limit' => $c_tl[$i],
+						'python_time_limit' => $py_tl[$i],
 						'java_time_limit' => $java_tl[$i],
 						'memory_limit' => $ml[$i],
-						'allowed_file_types' => $ft[$i],
+						'allowed_languages' => $ft[$i],
 						'diff_cmd' => $dc[$i],
 						'diff_arg' => $da[$i],
 						'is_upload_only' => in_array($i+1,$this->input->post('is_upload_only'))?1:0,
@@ -119,6 +121,7 @@ class Add_assignment extends CI_Controller{
 		$this->form_validation->set_rules('name[]','problem name','required|max_length[50]');
 		$this->form_validation->set_rules('score[]','problem score','required|integer');
 		$this->form_validation->set_rules('c_time_limit[]','time limit','required|integer');
+		$this->form_validation->set_rules('python_time_limit[]','time limit','required|integer');
 		$this->form_validation->set_rules('java_time_limit[]','time limit','required|integer');
 		$this->form_validation->set_rules('memory_limit[]','memory limit','required|integer');
 		$this->form_validation->set_rules('filetypes[]','file types','required');

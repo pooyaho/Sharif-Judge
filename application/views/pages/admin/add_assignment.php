@@ -15,13 +15,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		<td>';
 	var row2='</td>\
 		<td><input type="text" name="name[]" class="sharif_input short" value="Problem "/></td>\
-		<td><input type="text" name="score[]" class="sharif_input tiny" value="100"/></td>\
-		<td><input type="text" name="c_time_limit[]" class="sharif_input tiny" value="500"/></td>\
-		<td><input type="text" name="java_time_limit[]" class="sharif_input tiny" value="2000"/></td>\
+		<td><input type="text" name="score[]" class="sharif_input tiny2" value="100"/></td>\
+		<td><input type="text" name="c_time_limit[]" class="sharif_input tiny2" value="500"/></td>\
+		<td><input type="text" name="python_time_limit[]" class="sharif_input tiny2" value="1500"/></td>\
+		<td><input type="text" name="java_time_limit[]" class="sharif_input tiny2" value="2000"/></td>\
 		<td><input type="text" name="memory_limit[]" class="sharif_input tiny" value="50000"/></td>\
-		<td><input type="text" name="filetypes[]" class="sharif_input short" value="c,cpp,java"/></td>\
-		<td><input type="text" name="diff_cmd[]" class="sharif_input short" value="diff"/></td>\
-		<td><input type="text" name="diff_arg[]" class="sharif_input short" value="-iw"/></td>\
+		<td><input type="text" name="filetypes[]" class="sharif_input short2" value="C,C++,Python 2,Python 3,Java"/></td>\
+		<td><input type="text" name="diff_cmd[]" class="sharif_input tiny" value="diff"/></td>\
+		<td><input type="text" name="diff_arg[]" class="sharif_input tiny" value="-iw"/></td>\
 		<td><input type="checkbox" name="is_upload_only[]" class="check" value="';
 	var row3='"/></td>\
 	</tr>';
@@ -161,18 +162,26 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		</div>
 		<p class="input_p" id="add_problems">Problems <i class="splashy-add" id="add"></i> <i class="splashy-remove_minus_sign" id="remove"></i>
 		<table id="problems_table">
-			<thead><tr><th></th><th>Problem<br>Name</th><th>Problem<br>Score</th><th>C, C++ Time<br>Limit (ms)</th><th>Java Time<br>Limit (ms)</th><th>Memory<br>Limit (kB)</th><th>Allowed<br>Filetypes</th><th>Diff<br>Command (<a href="#">?</a>)</th><th>Diff<br>Argument (<a href="#">?</a>)</th><th>Upload Only</th></tr></thead>
+			<thead>
+			<tr>
+				<th rowspan="2"></th><th rowspan="2">Name</th><th rowspan="2">Score</th><th colspan="3" style="border-bottom: 1px solid #BDBDBD">Time Limit (ms)</th><th rowspan="2">Memory<br>Limit (kB)</th><th rowspan="2">Allowed<br>Languages</th><th rowspan="2">Diff<br>Command (<a href="#">?</a>)</th><th rowspan="2">Diff<br>Argument (<a href="#">?</a>)</th><th rowspan="2">Upload<br>Only</th>
+			</tr>
+			<tr>
+				<th>C/C++</th><th>Python</th><th>Java</th>
+			</tr>
+			</thead>
 			<?php foreach ($problems as $problem): ?>
 				<tr>
 					<td><?php echo $problem['id']?></td>
 					<td><input type="text" name="name[]" class="sharif_input short" value="<?php echo $problem['name'] ?>"/></td>
-					<td><input type="text" name="score[]" class="sharif_input tiny" value="<?php echo $problem['score'] ?>"/></td>
-					<td><input type="text" name="c_time_limit[]" class="sharif_input tiny" value="<?php echo $problem['c_time_limit'] ?>"/></td>
-					<td><input type="text" name="java_time_limit[]" class="sharif_input tiny" value="<?php echo $problem['java_time_limit'] ?>"/></td>
+					<td><input type="text" name="score[]" class="sharif_input tiny2" value="<?php echo $problem['score'] ?>"/></td>
+					<td><input type="text" name="c_time_limit[]" class="sharif_input tiny2" value="<?php echo $problem['c_time_limit'] ?>"/></td>
+					<td><input type="text" name="python_time_limit[]" class="sharif_input tiny2" value="<?php echo $problem['python_time_limit'] ?>"/></td>
+					<td><input type="text" name="java_time_limit[]" class="sharif_input tiny2" value="<?php echo $problem['java_time_limit'] ?>"/></td>
 					<td><input type="text" name="memory_limit[]" class="sharif_input tiny" value="<?php echo $problem['memory_limit'] ?>"/></td>
-					<td><input type="text" name="filetypes[]" class="sharif_input short" value="<?php echo $problem['allowed_file_types'] ?>"/></td>
-					<td><input type="text" name="diff_cmd[]" class="sharif_input short" value="<?php echo $problem['diff_cmd'] ?>"/></td>
-					<td><input type="text" name="diff_arg[]" class="sharif_input short" value="<?php echo $problem['diff_arg'] ?>"/></td>
+					<td><input type="text" name="filetypes[]" class="sharif_input short2" value="<?php echo $problem['allowed_languages'] ?>"/></td>
+					<td><input type="text" name="diff_cmd[]" class="sharif_input tiny" value="<?php echo $problem['diff_cmd'] ?>"/></td>
+					<td><input type="text" name="diff_arg[]" class="sharif_input tiny" value="<?php echo $problem['diff_arg'] ?>"/></td>
 					<td><input type="checkbox" name="is_upload_only[]" class="check" value="<?php echo $problem['id'] ?>" <?php if ($problem['is_upload_only']) echo "checked" ?>/></td>
 				</tr>
 			<?php endforeach ?>

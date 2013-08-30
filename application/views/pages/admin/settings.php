@@ -16,16 +16,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			<div class="shj_ok">Settings updated successfully.</div>
 		<?php elseif ($form_status=="error"): ?>
 			<div class="shj_error">Error updating settings.</div>
-		<?php elseif ($form_status=="defc"): ?>
-			<div class="shj_ok">Settings updated.</div>
-			<div class="shj_error">But file defc.h is not writable.</div>
-		<?php elseif ($form_status=="defcpp"): ?>
-			<div class="shj_ok">Settings updated.</div>
-			<div class="shj_error">But file defcpp.h is not writable.</div>
-		<?php elseif ($form_status=="defcdefcpp"): ?>
-			<div class="shj_ok">Settings updated.</div>
-			<div class="shj_error">But files defc.h and defcpp.h are not writable. (Edit them manually)</div>
 		<?php endif ?>
+		<?php foreach ($errors as $error): ?>
+			<div class="shj_error"><?php echo $error ?></div>
+		<?php endforeach ?>
 		<?php if ($defc===FALSE): ?>
 			<div class="shj_error">"Tester path" is not correct.</div>
 		<?php endif ?>
@@ -128,8 +122,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			<h2 class="shj_form">Shield <span class="help_span"><a href="http://docs.sharifjudge.ir/shield" target="_blank"><i class="splashy-help"></i> Help</a></span></h2>
 
 			<p class="input_p">
-				<input type="checkbox" name="enable_shield" value="1" <?php if ($enable_shield) echo 'checked' ?>/> C/C++ Shield<br>
+				<input type="checkbox" name="enable_c_shield" value="1" <?php if ($enable_c_shield) echo 'checked' ?>/> C/C++ Shield<br>
 				<span class="form_comment">Enable <a href="http://docs.sharifjudge.ir/shield" target="_blank">Shield</a> for C/C++</span>
+			</p>
+			<p class="input_p">
+				<input type="checkbox" name="enable_py2_shield" value="1" <?php if ($enable_py2_shield) echo 'checked' ?>/> Python 2 Shield<br>
+				<span class="form_comment">Enable <a href="http://docs.sharifjudge.ir/shield" target="_blank">Shield</a> for Python 2</span>
+			</p>
+			<p class="input_p">
+				<input type="checkbox" name="enable_py3_shield" value="1" <?php if ($enable_py3_shield) echo 'checked' ?>/> Python 3 Shield<br>
+				<span class="form_comment">Enable <a href="http://docs.sharifjudge.ir/shield" target="_blank">Shield</a> for Python 3</span>
 			</p>
 			<p class="input_p">
 				<label for="def_c">Shield rules (for C):</label><br>
@@ -138,6 +140,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			<p class="input_p">
 				<label for="def_cpp">Shield rules (for C++):</label><br>
 				<textarea name="def_cpp" rows="15" class="sharif_input add_text clear"><?php if($defcpp!==FALSE) echo $defcpp ?></textarea>
+			</p>
+			<p class="input_p">
+				<label for="shield_py2">Shield (for Python 2):</label><br>
+				<textarea name="shield_py2" rows="15" class="sharif_input add_text clear"><?php if($shield_py2!==FALSE) echo $shield_py2 ?></textarea>
+			</p>
+			<p class="input_p">
+				<label for="shield_py3">Shield (for Python 3):</label><br>
+				<textarea name="shield_py3" rows="15" class="sharif_input add_text clear"><?php if($shield_py3!==FALSE) echo $shield_py3 ?></textarea>
 			</p>
 			<p class="input_p">
 				<br>

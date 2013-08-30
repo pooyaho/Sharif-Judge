@@ -281,7 +281,7 @@ class Submissions extends CI_Controller{
 					"/assignment_{$submission['assignment']}/p{$submission['problem']}/{$submission['username']}/result-{$submission['submit_id']}.html";
 			else if ($data['code']==1)
 				$file_path = rtrim($this->settings_model->get_setting('assignments_root'),'/').
-					"/assignment_{$submission['assignment']}/p{$submission['problem']}/{$submission['username']}/{$submission['file_name']}.{$submission['file_type']}";
+					"/assignment_{$submission['assignment']}/p{$submission['problem']}/{$submission['username']}/{$submission['file_name']}.".filetype_to_extension($submission['file_type']);
 			else if ($data['code']==2)
 				$file_path = rtrim($this->settings_model->get_setting('assignments_root'),'/').
 					"/assignment_{$submission['assignment']}/p{$submission['problem']}/{$submission['username']}/log";

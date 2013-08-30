@@ -139,14 +139,19 @@ class Login extends CI_Controller{
 	// ------------------------------------------------------------------------
 
 
-	public function reset($passchange_key){
+	public function reset($passchange_key = FALSE){
+		if ($passchange_key === FALSE)
+			show_404();
+		$result = $this->user_model->have_passchange($passchange_key);
+		if ($result !== TRUE)
+			show_error($result);
 		$this->form_validation->set_rules('password','password','required|min_length[6]|max_length[30]|alpha_numeric');
 		$this->form_validation->set_rules('password_again','password confirmation','required|matches[password]');
 		$data = array(
 			'title' => 'Set New Password',
 			'style' => 'login.css',
 			'key' => $passchange_key,
-			'result' => $this->user_model->have_passchange($passchange_key),
+			'result' => $result,
 			'reset' => FALSE
 		);
 		$this->load->view('templates/header', $data);

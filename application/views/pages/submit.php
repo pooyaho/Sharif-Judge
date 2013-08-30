@@ -9,13 +9,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <script>
 	p=[];
 	<?php foreach ($problems as $problem){
-		$filetypes = explode(",",$problem['allowed_file_types']);
-		$types="";
-		foreach ($filetypes as $filetype){
-			$types = $types."'".trim($filetype)."',";
+		$languages = explode(",",$problem['allowed_languages']);
+		$items="";
+		foreach ($languages as $language){
+			$items = $items."'".trim($language)."',";
 		}
-		$types = substr($types,0,strlen($types)-1);
-		echo "p[{$problem['id']}] = [{$types}];";
+		$items = substr($items,0,strlen($items)-1);
+		echo "p[{$problem['id']}] = [{$items}];";
 	} ?>
 	$(document).ready(function(){
 		$("select#problems").change(function(){
@@ -25,7 +25,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				for (i=0;i<p[v].length;i++){
 					text += '<option value="'+p[v][i]+'">'+p[v][i]+'</option>\n';
 				}
-			$("select#filetypes").html(text);
+			$("select#languages").html(text);
 		});
 	});
 </script>
@@ -71,11 +71,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					<?php echo form_error('problem','<div class="shj_error">','</div>'); ?>
 				</p>
 				<p class="input_p">
-					<label for="problem" class="tiny">File Type:</label>
-					<select id="filetypes" name="filetype" class="sharif_input">
+					<label for="problem" class="tiny">Language:</label>
+					<select id="languages" name="language" class="sharif_input">
 						<option value="0" selected="selected">-- Select One --</option>
 					</select>
-					<?php echo form_error('filetype','<div class="shj_error">','</div>'); ?>
+					<?php echo form_error('language','<div class="shj_error">','</div>'); ?>
 				</p>
 				<p class="input_p">
 					<label for="userfile" class="tiny">File:</label>
