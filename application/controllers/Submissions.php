@@ -40,14 +40,23 @@ class Submissions extends CI_Controller{
 		$this->excel->addHeader($this->assignment['name']);
 		$this->excel->addHeader(array('Time',$now));
 		$this->excel->addHeader(NULL); //newline
-		$row=array(/*"#1","#2",*/'Final','Submit ID','Username','Display Name','Problem','Submit Time','Score','Coefficient','Final Score','Status','#');
+		$row=array('Final','Submit ID','Username','Display Name','Problem','Submit Time','Score','Coefficient','Final Score','Status','Type','#');
+		if ($view=='final'){
+			array_unshift($row,"#2");
+			array_unshift($row,"#1");
+		}
 		$this->excel->addRow($row);
 		if ($view=='final')
 			$items = $this->submit_model->get_final_submissions($this->assignment['id'],$this->user_level,$this->username);
 		else
 			$items = $this->submit_model->get_all_submissions($this->assignment['id'],$this->user_level,$this->username);
 		$finish = strtotime($this->assignment['finish_time']);
+		$i=0; $j=0; $un='';
 		foreach ($items as $item){
+			$i++;
+			if ($item['username']!=$un)
+				$j++;
+			$un = $item['username'];
 			if(!isset($name[$item['username']]))
 				$name[$item['username']]=$this->user_model->get_user($item['username'])->display_name;
 
@@ -77,8 +86,6 @@ class Submissions extends CI_Controller{
 			ob_end_clean();
 
 			$row=array(
-				/*"1",
-				"2",*/
 				$checked,
 				$item['submit_id'],
 				$item['username'],
@@ -89,8 +96,13 @@ class Submissions extends CI_Controller{
 				$coefficient,
 				$final_score,
 				$item['status'],
+				$item['file_type'],
 				($view=='final'?$item['submit_count']:$item['submit_number'])
 			);
+			if ($view=='final'){
+				array_unshift($row,$j);
+				array_unshift($row,$i);
+			}
 			$this->excel->addRow($row);
 		}
 		$this->excel->sendFile();
@@ -289,6 +301,7 @@ class Submissions extends CI_Controller{
 			$data2 = array(
 				'file_path'=>$file_path,
 				'file_type'=>$submission['file_type'],
+				'file_name'=>$submission['main_file_name'].'.'.filetype_to_extension($submission['file_type']),
 				'view_username'=>$submission['username'],
 				'view_assignment'=>$this->assignment_model->assignment_info($submission['assignment']),
 				'view_problem'=>$this->assignment_model->problem_info($submission['assignment'], $submission['problem'])

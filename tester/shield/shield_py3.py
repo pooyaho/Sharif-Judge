@@ -2,15 +2,15 @@
 
 def shj_py3_shield():
   BLACKLIST = [
+    'eval', # eval is evil
     'open',
     'file',
     'exec',
     'execfile',
     'compile',
     'reload',
-    '__import__', #deny importing modules
+    '__import__', # deny importing modules
     'reload',
-    'eval', # eval is evil
     #'input'
     ]
   for func in BLACKLIST:

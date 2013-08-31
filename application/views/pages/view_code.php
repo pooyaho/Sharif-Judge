@@ -25,7 +25,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			echo "Username: $view_username\n";
 			echo "Assignment {$view_assignment['id']} ({$assignment['name']})\n";
 			echo "Problem {$view_problem['id']} ({$view_problem['name']})\n";
-			echo "File Type: $file_type";
+			echo "File: $file_name";
 			if($file_type==='py2' || $file_type==='py3')
 				$file_type='python';
 		?></pre>

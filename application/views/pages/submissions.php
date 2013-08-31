@@ -69,6 +69,7 @@ $finish = strtotime($assignment['finish_time']);
 							<?php if ($view=="final"): ?>
 							<th width="6%" rowspan="2">Log</th>
 							<?php endif ?>
+							<th width="1%" rowspan="2">Type</th>
 							<th width="1%" rowspan="2">#</th>
 						</tr>
 						<tr>
@@ -82,6 +83,7 @@ $finish = strtotime($assignment['finish_time']);
 							<th width="7%" colspan="3">Score</th>
 							<th width="30%" rowspan="2">Status</th>
 							<th width="15%" rowspan="2">Code</th>
+							<th width="1%" rowspan="2">Type</th>
 							<th width="5%" rowspan="2">#</th>
 						</tr>
 						<tr>
@@ -91,8 +93,15 @@ $finish = strtotime($assignment['finish_time']);
 						</tr>
 					<?php endif ?>
 				</thead>
+				<?php $i=0; $j=0; $un=''; ?>
 				<?php foreach ($items as $item): ?>
-					<tr>
+					<?php
+					$i++;
+					if ($item['username']!=$un)
+						$j++;
+					$un = $item['username'];
+					?>
+					<tr <?php if ($view=='final' && $j%2==0){ echo 'class="hl"';} ?>>
 					<?php if ($view=='all'): ?>
 						<td>
 						<?php //if($item['username']==$username): ?>
@@ -102,7 +111,7 @@ $finish = strtotime($assignment['finish_time']);
 								if ($final_items[$item['username']][$item['problem']]['submit_id'] == $item['submit_id'])
 									$checked='checked';
 						?>
-						<div submit_id="<?php echo $item['submit_id'] ?>" problem="<?php echo $item['problem'] ?>" class="<?php if ($item['username']==$username) echo 'set_final' ?> check p<?php echo $item['problem'] ?> <?php echo $checked ?>" id="<?php echo "sf".$item['submit_id']."_".$item['problem'] ?>"></div>
+						<div title="Set as Final Submission" submit_id="<?php echo $item['submit_id'] ?>" problem="<?php echo $item['problem'] ?>" class="<?php if ($item['username']==$username) echo 'set_final' ?> check p<?php echo $item['problem'] ?> <?php echo $checked ?>" id="<?php echo "sf".$item['submit_id']."_".$item['problem'] ?>"></div>
 						<?php //endif ?>
 						</td>
 					<?php endif ?>
@@ -110,8 +119,8 @@ $finish = strtotime($assignment['finish_time']);
 						<?php if ($view=='all'): ?>
 							<td><?php echo $item['submit_id'] ?></td>
 						<?php else: ?>
-							<td>1</td>
-							<td>2</td>
+							<td><?php echo $i; ?></td>
+							<td><?php echo $j; ?></td>
 						<?php endif ?>
 
 						<td><?php echo $item['username'] ?></td>
@@ -191,6 +200,9 @@ $finish = strtotime($assignment['finish_time']);
 								<?php endif ?>
 							</td>
 						<?php endif ?>
+						<td>
+							<?php echo $item['file_type'] ?>
+						</td>
 						<td><?php
 							if ($view=="final")
 								echo $item['submit_count'];

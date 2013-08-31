@@ -380,7 +380,7 @@ class User_model extends CI_Model{
 	 * Get All Users Table (for users page)
 	 */
 	public function get_all_users(){
-		return $this->db->get('users')->result_array();
+		return $this->db->order_by('role','asc')->get('users')->result_array();
 	}
 
 

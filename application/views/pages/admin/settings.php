@@ -105,7 +105,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 			<p class="input_p">
 				<input type="checkbox" name="enable_easysandbox" value="1" <?php if ($enable_easysandbox) echo 'checked' ?>/> EasySandbox<br>
-				<p class="form_comment">Enable EasySandbox (uses seccomp) for C/C++.<br>
+				<p class="form_comment">Enable EasySandbox for C/C++.<br>
 				You must <a href="http://docs.sharifjudge.ir/sandboxing#build_easysandbox" target="_blank">build EasySandbox</a> before enabling it.<br>
 				<?php if (!$sandbox_built): ?>
 					<span style="color: red;">You have not built EasySandbox yet.</span>

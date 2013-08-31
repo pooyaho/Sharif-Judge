@@ -131,7 +131,7 @@ class Submit_model extends CI_Model {
 		$submit_query = $this->db->get_where('final_submissions',array('username'=>$submit_info['username'],'assignment'=>$submit_info['assignment'],'problem'=>$submit_info['problem']));
 
 		$submit_info['time']=date('Y-m-d H:i:s',$now);
-		$submit_info['status']='Uploaded ('.$submit_info['file_type'].')';
+		$submit_info['status']='Uploaded';
 		$submit_info['pre_score']=0;
 
 		if ($submit_query->num_rows()==0){

@@ -441,15 +441,15 @@ select.sharif_time {
 }
 
 .sharif_table tr.hl {
-	background: #E0E0E0;
+	background-color: #E0E0E0;
 }
 
 .sharif_table tr {
-	background: #fcfcfc;
+	background-color: #fcfcfc;
 }
 
 .sharif_table tr:hover {
-	background: #f0f0f0;
+	background-color: #f0f0f0;
 }
 
 .sharif_table td, .sharif_table th {

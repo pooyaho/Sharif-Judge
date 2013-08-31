@@ -49,14 +49,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<div id="page_title"><img src="<?php echo base_url('assets/images/icons/add.png') ?>"/> <span><?php echo $title ?></span>
 		<span class="help_span"><a href="http://docs.sharifjudge.ir/add_assignment" target="_blank"><i class="splashy-help"></i> Help</a></span></div>
 	<div id="main_content">
-		<?php if ($form_status=="ok"||$form_status=="tests_updated"): ?>
+		<?php if ($form_status=='ok'||$form_status=='tests_updated'): ?>
 			<div class="shj_ok">Assignment <?php echo $edit?'updated':'added' ?> successfully.</div>
-		<?php elseif ($form_status=="error"): ?>
+		<?php elseif ($form_status=='error'): ?>
 			<div class="shj_error">Error <?php echo $edit?'updating':'adding' ?> assignment.</div>
-		<?php elseif ($form_status=="corrupted"): ?>
+		<?php elseif ($form_status=='corrupted'): ?>
 			<div class="shj_error">Error <?php echo $edit?'updating':'adding' ?> assignment. Unable to unzip uploaded file.</div>
 		<?php endif ?>
-		<?php if ($form_status=="tests_updated"): ?>
+		<?php if ($form_status=='tests_updated'): ?>
 			<div class="shj_ok">Tests <?php echo $edit?'updated':'added' ?> successfully.</div>
 		<?php endif ?>
 
@@ -126,7 +126,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			<p class="input_p">
 				<label for="tests">Tests (zip file):<br>
 					<span class="form_comment medium">
-						<a href="http://docs.sharifjudge.ir/add_assignment" target="_blank">Use this structure</a>
+						<a href="http://docs.sharifjudge.ir/tests_structure" target="_blank">Use this structure</a>
 					</span>
 				</label>
 
@@ -164,7 +164,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		<table id="problems_table">
 			<thead>
 			<tr>
-				<th rowspan="2"></th><th rowspan="2">Name</th><th rowspan="2">Score</th><th colspan="3" style="border-bottom: 1px solid #BDBDBD">Time Limit (ms)</th><th rowspan="2">Memory<br>Limit (kB)</th><th rowspan="2">Allowed<br>Languages</th><th rowspan="2">Diff<br>Command (<a href="#">?</a>)</th><th rowspan="2">Diff<br>Argument (<a href="#">?</a>)</th><th rowspan="2">Upload<br>Only</th>
+				<th rowspan="2"></th>
+				<th rowspan="2">Name</th>
+				<th rowspan="2">Score</th>
+				<th colspan="3" style="border-bottom: 1px solid #BDBDBD">Time Limit (ms)</th>
+				<th rowspan="2">Memory<br>Limit (kB)</th>
+				<th rowspan="2">Allowed<br>Languages (<a target="_blank" href="http://docs.sharifjudge.ir/add_assignment#allowed_languages">?</a>)</th>
+				<th rowspan="2">Diff<br>Command (<a target="_blank" href="http://docs.sharifjudge.ir/add_assignment#diff_command">?</a>)</th>
+				<th rowspan="2">Diff<br>Argument (<a target="_blank" href="http://docs.sharifjudge.ir/add_assignment#diff_arguments">?</a>)</th>
+				<th rowspan="2">Upload<br>Only</th>
 			</tr>
 			<tr>
 				<th>C/C++</th><th>Python</th><th>Java</th>
