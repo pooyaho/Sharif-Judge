@@ -21,7 +21,7 @@ The full documentation is at [http://docs.sharifjudge.ir](http://docs.sharifjudg
   * Download submitted codes in zip file
   * _"input/output compare"_ and _"special script"_ methods for checking output correctness
   * Add multiple users
-  * Rejudge _(Will be added soon)_
+  * Rejudge
   * Scoreboard
   * Notifications
 
