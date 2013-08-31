@@ -78,10 +78,13 @@ class Add_assignment extends CI_Controller{
 				$py_tl = $this->input->post('python_time_limit');
 				$java_tl = $this->input->post('java_time_limit');
 				$ml = $this->input->post('memory_limit');
-				$ft = $this->input->post('filetypes');
+				$ft = $this->input->post('languages');
 				$dc = $this->input->post('diff_cmd');
 				$da = $this->input->post('diff_arg');
 				$data['problems']=array();
+				$uo = $this->input->post('is_upload_only');
+				if ($uo === NULL)
+					$uo = array();
 				for ($i=0;$i<count($names);$i++){
 					array_push($data['problems'],array(
 						'id'=>$i+1,
@@ -94,7 +97,7 @@ class Add_assignment extends CI_Controller{
 						'allowed_languages' => $ft[$i],
 						'diff_cmd' => $dc[$i],
 						'diff_arg' => $da[$i],
-						'is_upload_only' => in_array($i+1,$this->input->post('is_upload_only'))?1:0,
+						'is_upload_only' => in_array($i+1,$uo)?1:0,
 					));
 				}
 			}
@@ -120,11 +123,11 @@ class Add_assignment extends CI_Controller{
 		$this->form_validation->set_rules('scoreboard','scoreboard rule','');
 		$this->form_validation->set_rules('name[]','problem name','required|max_length[50]');
 		$this->form_validation->set_rules('score[]','problem score','required|integer');
-		$this->form_validation->set_rules('c_time_limit[]','time limit','required|integer');
-		$this->form_validation->set_rules('python_time_limit[]','time limit','required|integer');
-		$this->form_validation->set_rules('java_time_limit[]','time limit','required|integer');
+		$this->form_validation->set_rules('c_time_limit[]','C/C++ time limit','required|integer');
+		$this->form_validation->set_rules('python_time_limit[]','python time limit','required|integer');
+		$this->form_validation->set_rules('java_time_limit[]','java time limit','required|integer');
 		$this->form_validation->set_rules('memory_limit[]','memory limit','required|integer');
-		$this->form_validation->set_rules('filetypes[]','file types','required');
+		$this->form_validation->set_rules('languages[]','languages','required');
 		$this->form_validation->set_rules('diff_cmd[]','diff command','required');
 		$this->form_validation->set_rules('diff_arg[]','diff argument','required');
 		$this->form_status='error';

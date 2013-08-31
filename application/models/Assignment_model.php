@@ -59,17 +59,33 @@ class Assignment_model extends CI_Model{
 		$py_tl = $this->input->post('python_time_limit');
 		$java_tl = $this->input->post('java_time_limit');
 		$ml = $this->input->post('memory_limit');
-		$ft = $this->input->post('filetypes');
+		$ft = $this->input->post('languages');
 		$dc = $this->input->post('diff_cmd');
 		$da = $this->input->post('diff_arg');
+		$uo = $this->input->post('is_upload_only');
+		if ($uo === NULL)
+			$uo = array();
 		for ($i=1;$i<=$this->input->post('number_of_problems');$i++){
-
+			$items = explode(',',$ft[$i-1]);
+			$ft[$i-1]='';
+			foreach ($items as $item){
+				$item = trim($item);
+				$item2 = strtolower($item);
+				if ($item2==='python2')
+					$item = 'Python 2';
+				if ($item2==='python3')
+					$item = 'Python 3';
+				$item2 = strtolower($item);
+				if (in_array( $item2 ,array('c','c++','python 2','python 3','java','zip')))
+					$ft[$i-1] .= $item.",";
+			}
+			$ft[$i-1] = substr($ft[$i-1],0,strlen($ft[$i-1])-1);
 			$problem = array(
 				'assignment' => $id,
 				'id' => $i,
 				'name' => $names[$i-1],
 				'score' => $scores[$i-1],
-				'is_upload_only' => in_array($i,$this->input->post('is_upload_only'))?1:0,
+				'is_upload_only' => in_array($i,$uo)?1:0,
 				'c_time_limit' => $c_tl[$i-1],
 				'python_time_limit' => $py_tl[$i-1],
 				'java_time_limit' => $java_tl[$i-1],
@@ -79,6 +95,21 @@ class Assignment_model extends CI_Model{
 				'diff_arg' => $da[$i-1],
 			);
 			$this->db->insert('problems',$problem);
+		}
+	}
+
+
+	// ------------------------------------------------------------------------
+
+
+	public function delete_assignment($assignment_id, $delete_codes){
+		$this->db->delete('assignments',array('id'=>$assignment_id));
+		$this->db->delete('problems',array('assignment'=>$assignment_id));
+		$this->db->delete('all_submissions',array('assignment'=>$assignment_id));
+		$this->db->delete('final_submissions',array('assignment'=>$assignment_id));
+		if ($delete_codes){
+			$cmd = 'rm -r '.rtrim($this->settings_model->get_setting('assignments_root'),'/').'/assignment_'.$assignment_id;
+			shell_exec($cmd);
 		}
 	}
 

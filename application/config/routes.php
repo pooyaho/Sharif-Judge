@@ -81,6 +81,7 @@ $route['submissions/final/(:any)']="submissions/the_final/$1";
 $route['assignments/edit/(:any)']="add_assignment/edit/$1";
 $route['profile/(:num)'] = "profile/index/$1";
 $route['moss/(:num)'] = "moss/index/$1";
+$route['rejudge/(:num)'] = "rejudge/index/$1";
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
 

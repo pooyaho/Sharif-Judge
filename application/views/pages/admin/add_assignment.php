@@ -20,7 +20,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		<td><input type="text" name="python_time_limit[]" class="sharif_input tiny2" value="1500"/></td>\
 		<td><input type="text" name="java_time_limit[]" class="sharif_input tiny2" value="2000"/></td>\
 		<td><input type="text" name="memory_limit[]" class="sharif_input tiny" value="50000"/></td>\
-		<td><input type="text" name="filetypes[]" class="sharif_input short2" value="C,C++,Python 2,Python 3,Java"/></td>\
+		<td><input type="text" name="languages[]" class="sharif_input short2" value="C,C++,Python 2,Python 3,Java"/></td>\
 		<td><input type="text" name="diff_cmd[]" class="sharif_input tiny" value="diff"/></td>\
 		<td><input type="text" name="diff_arg[]" class="sharif_input tiny" value="-iw"/></td>\
 		<td><input type="checkbox" name="is_upload_only[]" class="check" value="';
@@ -187,7 +187,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					<td><input type="text" name="python_time_limit[]" class="sharif_input tiny2" value="<?php echo $problem['python_time_limit'] ?>"/></td>
 					<td><input type="text" name="java_time_limit[]" class="sharif_input tiny2" value="<?php echo $problem['java_time_limit'] ?>"/></td>
 					<td><input type="text" name="memory_limit[]" class="sharif_input tiny" value="<?php echo $problem['memory_limit'] ?>"/></td>
-					<td><input type="text" name="filetypes[]" class="sharif_input short2" value="<?php echo $problem['allowed_languages'] ?>"/></td>
+					<td><input type="text" name="languages[]" class="sharif_input short2" value="<?php echo $problem['allowed_languages'] ?>"/></td>
 					<td><input type="text" name="diff_cmd[]" class="sharif_input tiny" value="<?php echo $problem['diff_cmd'] ?>"/></td>
 					<td><input type="text" name="diff_arg[]" class="sharif_input tiny" value="<?php echo $problem['diff_arg'] ?>"/></td>
 					<td><input type="checkbox" name="is_upload_only[]" class="check" value="<?php echo $problem['id'] ?>" <?php if ($problem['is_upload_only']) echo "checked" ?>/></td>
@@ -201,7 +201,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		<?php echo form_error('python_time_limit[]','<div class="shj_error">','</div>'); ?>
 		<?php echo form_error('java_time_limit[]','<div class="shj_error">','</div>'); ?>
 		<?php echo form_error('memory_limit[]','<div class="shj_error">','</div>'); ?>
-		<?php echo form_error('filetypes[]','<div class="shj_error">','</div>'); ?>
+		<?php echo form_error('languages[]','<div class="shj_error">','</div>'); ?>
 		<?php echo form_error('diff_cmd[]','<div class="shj_error">','</div>'); ?>
 		<?php echo form_error('diff_arg[]','<div class="shj_error">','</div>'); ?>
 		<p class="input_p">

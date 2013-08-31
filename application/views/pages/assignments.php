@@ -13,6 +13,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		<?php if ($user_level>=2): ?>
 		<span style="font-size:14px;margin-left:10px;"><a href="<?php echo site_url('add_assignment') ?>"><i class="splashy-add_small"></i> Add</a></span>
 		<?php endif ?>
+		<?php if ($user_level>=2): ?>
+		<span style="font-size:14px;margin-left:10px;"><a href="<?php echo site_url('rejudge') ?>"><i title="Rejudge" class="splashy-refresh"></i> Rejudge</a></span>
+		<?php endif ?>
 	</div>
 	<div id="main_content">
 		<!--<p>Selected Assignment: <span class="assignment_name"><?php echo $assignment['name'] ?></span></p>-->
@@ -47,14 +50,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						<span style="color: red;">Close</span>
 					<?php endif ?>
 					</div>
-					<?php if ($user_level>=2): ?>
-					<div class="assignment_subitem_zero"><a href="<?php echo site_url('assignments/edit/'.$item['id']) ?>"><i title="Edit" class="splashy-pencil"></i></a></div>
-					<?php endif ?>
 					<?php if ($user_level>=1): ?>
 					<div class="assignment_subitem_zero"><a href="<?php echo site_url('assignments/download/'.$item['id']) ?>"><i title="Download Final Codes" class="splashy-download"></i></a></div>
 					<?php endif ?>
 					<?php if ($user_level>=2): ?>
-					<div class="assignment_subitem_zero"><a href="<?php echo site_url('moss/'.$item['id']) ?>"><i title="Detect Similar Codes" class="splashy-shield"></i></a></div>
+						<div class="assignment_subitem_zero"><a href="<?php echo site_url('moss/'.$item['id']) ?>"><i title="Detect Similar Codes" class="splashy-shield"></i></a></div>
+					<?php endif ?>
+					<?php if ($user_level>=2): ?>
+						<div class="assignment_subitem_zero"><a href="<?php echo site_url('assignments/edit/'.$item['id']) ?>"><i title="Edit" class="splashy-pencil"></i></a></div>
+					<?php endif ?>
+					<?php if ($user_level>=2): ?>
+						<div class="assignment_subitem_zero"><a href="<?php echo site_url('assignments/delete/'.$item['id']) ?>"><i title="Delete" class="splashy-remove_outline"></i></a></div>
 					<?php endif ?>
 				</div>
 				</div>

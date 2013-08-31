@@ -24,12 +24,14 @@ if(!$conn){
 mysql_set_charset('utf8', $conn);
 mysql_select_db($db_database,$conn);
 
-
+// $option can be 'judge' or 'rejudge'
+$option = trim($argv[1]);
 
 
 
 function addJudgeResultToDB($sr){
 	global $prefix;
+	global $option;
 	$submit_id=$sr['submit_id'];
 	$username=$sr['username'];
 	$assignment=$sr['assignment'];
@@ -50,9 +52,12 @@ function addJudgeResultToDB($sr){
 					VALUES ('$submit_id','$username','$assignment','$problem','$time','$status','$pre_score','$submit_count','$file_name','$main_file_name','$file_type') ");
 	}
 	else{
-		mysql_query("UPDATE {$prefix}final_submissions
+		$sid = $r['submit_id'];
+		if ($option==='judge' OR ($option==='rejudge' && $sid===$submit_id)){
+			mysql_query("UPDATE {$prefix}final_submissions
 					SET submit_id='$submit_id', time='$time', status='$status', pre_score='$pre_score', submit_count='$submit_count', file_name='$file_name', main_file_name='$main_file_name', file_type='$file_type'
 					WHERE username='$username' AND assignment='$assignment' AND problem='$problem' ");
+		}
 	}
 
 
@@ -70,7 +75,7 @@ function addJudgeResultToDB($sr){
 
 
 
-sleep(rand(0,15)/10); // for avoiding collision and decreasing server load
+//sleep(rand(0,15)/10); // I think this is not needed
 
 $qr = mysql_fetch_assoc(mysql_query("SELECT * FROM {$prefix}queue LIMIT 1")); // queuerow
 

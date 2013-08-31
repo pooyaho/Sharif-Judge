@@ -49,9 +49,12 @@ class Moss extends CI_Controller{
 
 		$data['moss_problems']=array();
 		$assignments_path = rtrim($this->settings_model->get_setting('assignments_root'),'/');
-		for($i=1 ; $i<=$data['moss_assignment']['problems'];$i++)
-			$data['moss_problems'][$i] = file_get_contents($assignments_path."/assignment_{$assignment_id}/p{$i}/moss_link.txt");
-
+		for($i=1 ; $i<=$data['moss_assignment']['problems'];$i++){
+			$data['moss_problems'][$i] = FALSE;
+			$path = $assignments_path."/assignment_{$assignment_id}/p{$i}/moss_link.txt";
+			if (file_exists($path))
+				$data['moss_problems'][$i] = file_get_contents($path);
+		}
 		$this->load->view('templates/header',$data);
 		$this->load->view('pages/admin/moss',$data);
 		$this->load->view('templates/footer');

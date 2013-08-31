@@ -96,5 +96,39 @@ class Assignments extends CI_Controller{
 	}
 
 
+	// ------------------------------------------------------------------------
+
+
+	public function delete($assignment_id){
+		if ( $this->user_level <= 1)
+			show_error('You have not enough permission to do this.');
+
+		$assignment = $this->assignment_model->assignment_info($assignment_id);
+
+		if ($assignment['id']===0)
+			show_404();
+
+		if ($this->input->post('delete')==='delete'){
+			$this->assignment_model->delete_assignment($assignment_id, $this->input->post('delete_codes')===NULL?FALSE:TRUE);
+			redirect('assignments');
+		}
+
+		$data = array(
+			'username'=>$this->username,
+			'user_level' => $this->user_level,
+			'all_assignments'=>$this->assignment_model->all_assignments(),
+			'assignment' => $this->assignment,
+			'title'=>'Delete Assignment',
+			'style'=>'main.css',
+			'id'=>$assignment_id,
+			'name'=>$assignment['name']
+		);
+
+		$this->load->view('templates/header',$data);
+		$this->load->view('pages/admin/delete_assignment',$data);
+		$this->load->view('templates/footer');
+
+	}
+
 
 }
