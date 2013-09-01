@@ -74,6 +74,8 @@ class Dashboard extends CI_Controller{
 
 
 	public function widget_positions(){
+		if ( ! $this->input->is_ajax_request() )
+			show_404();
 		if ($this->input->post('positions')!==NULL)
 			$this->user_model->save_widget_positions($this->username, $this->input->post('positions'));
 	}

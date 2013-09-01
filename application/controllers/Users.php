@@ -33,7 +33,9 @@ class Users extends CI_Controller {
 	// ------------------------------------------------------------------------
 
 
-	public function index(){
+	public function index($input = FALSE){
+		if ($input !== FALSE)
+			show_404();
 		$data = array(
 			'username'=>$this->username,
 			'user_level' => $this->user_level,
@@ -53,7 +55,9 @@ class Users extends CI_Controller {
 	// ------------------------------------------------------------------------
 
 
-	public function add(){
+	public function add($input = FALSE){
+		if ($input !== FALSE)
+			show_404();
 		$data = array(
 			'username'=>$this->username,
 			'user_level' => $this->user_level,
@@ -174,7 +178,9 @@ class Users extends CI_Controller {
 	// ------------------------------------------------------------------------
 
 
-	public function list_excel() {
+	public function list_excel($input = FALSE) {
+		if ($input !== FALSE)
+			show_404();
 		$now=date('Y-m-d H:i:s',shj_now());
 		$this->load->library('excel');
 		$this->excel->set_file_name('sharifjudge_users.xls');

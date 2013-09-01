@@ -34,8 +34,9 @@ class Notifications extends CI_Controller {
 	// ------------------------------------------------------------------------
 
 
-	public function index(){
-
+	public function index($input = FALSE){
+		if ($input !== FALSE)
+			show_404();
 		$data = array(
 			'username'=>$this->username,
 			'user_level' => $this->user_level,
@@ -55,7 +56,9 @@ class Notifications extends CI_Controller {
 	// ------------------------------------------------------------------------
 
 
-	public function add(){
+	public function add($input = FALSE){
+		if ($input !== FALSE)
+			show_404();
 		if ( $this->user_level <=1)
 			show_error('You have not enough permission to access this page.');
 
@@ -110,12 +113,14 @@ class Notifications extends CI_Controller {
 
 
 	public function delete($input = FALSE) {
-		if ( $this->user_level <=1)
-			show_error('You have not enough permission to access this page.');
+		if ( ! $this->input->is_ajax_request() )
+			show_404();
 		if ($input !== FALSE)
-			show_404();
+			exit('error');
+		if ( $this->user_level <=1)
+			exit('You have not enough permission to access this page.');
 		if ($this->input->post('id')===NULL)
-			show_404();
+			exit('error');
 		$this->notifications_model->delete_notification($this->input->post('id'));
 	}
 
@@ -124,13 +129,13 @@ class Notifications extends CI_Controller {
 
 
 	public function check($input = FALSE) {
-		if ($input !== FALSE)
-			show_404();
 		if ( ! $this->input->is_ajax_request() )
 			show_404();
+		if ($input !== FALSE)
+			exit('error');
 		$time  = $this->input->post('time');
 		if ($time === NULL)
-			show_404();
+			exit('error');
 		if ($this->notifications_model->have_new_notification(strtotime($time)))
 			exit('new_notification');
 		exit('no_new_notification');

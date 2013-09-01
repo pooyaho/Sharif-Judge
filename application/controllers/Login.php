@@ -47,7 +47,9 @@ class Login extends CI_Controller{
 	// ------------------------------------------------------------------------
 
 
-	public function index(){ // login
+	public function index($input = FALSE){ // login
+		if ($input !== FALSE)
+			show_404();
 		$this->form_validation->set_rules('username','Username','required|min_length[3]|max_length[20]|alpha_numeric');
 		$this->form_validation->set_rules('password','Password','required|min_length[6]|max_length[30]|alpha_numeric');
 		$data = array(
@@ -81,7 +83,9 @@ class Login extends CI_Controller{
 	// ------------------------------------------------------------------------
 
 
-	public function register(){
+	public function register($input = FALSE){
+		if ($input !== FALSE)
+			show_404();
 		if (!$this->settings_model->get_setting('enable_registration'))
 			show_error('Registration is closed.');
 		$this->form_validation->set_message('_username_check','User with same %s exists.');
@@ -110,7 +114,9 @@ class Login extends CI_Controller{
 	// ------------------------------------------------------------------------
 
 
-	public function logout(){ // logging out and redirecting to login page
+	public function logout($input = FALSE){ // logging out and redirecting to login page
+		if ($input !== FALSE)
+			show_404();
 		$this->session->sess_destroy();
 		redirect('login');
 	}
@@ -119,7 +125,9 @@ class Login extends CI_Controller{
 	// ------------------------------------------------------------------------
 
 
-	public function lost(){
+	public function lost($input = FALSE){
+		if ($input !== FALSE)
+			show_404();
 		$this->form_validation->set_rules('email','email','required|max_length[40]|callback__lowercase|valid_email');
 		$data = array(
 			'title' => 'Lost Password',

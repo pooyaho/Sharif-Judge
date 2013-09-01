@@ -66,7 +66,10 @@ class Queue_model extends CI_Model {
 	 * Adds submissions of a problem to queue for rejudge
 	 */
 	public function rejudge($assignment_id, $problem_id){
+		// Bringing all submissions of selected problem into PENDING state:
 		$this->db->where(array('assignment'=>$assignment_id,'problem'=>$problem_id))->update('all_submissions',array('pre_score'=>0,'status'=>'PENDING'));
+
+		// Adding submissions to queue:
 		$submissions = $this->db->select('submit_id,username,assignment,problem')->get_where('all_submissions',array('assignment'=>$assignment_id,'problem'=>$problem_id))->result_array();
 		foreach($submissions as $submission){
 			$this->db->insert('queue',array(
@@ -76,5 +79,6 @@ class Queue_model extends CI_Model {
 				'problem'=>$submission['problem']
 			));
 		}
+		// Now ready for rejudge
 	}
 }

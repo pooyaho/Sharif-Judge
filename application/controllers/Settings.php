@@ -55,7 +55,9 @@ class Settings extends CI_Controller{
 	// ------------------------------------------------------------------------
 
 
-	public function index(){
+	public function index($input = FALSE){
+		if ($input !== FALSE)
+			show_404();
 		$data = array(
 			'username'=>$this->username,
 			'user_level' => $this->user_level,
@@ -101,7 +103,9 @@ class Settings extends CI_Controller{
 	// ------------------------------------------------------------------------
 
 
-	public function update(){
+	public function update($input = FALSE){
+		if ($input !== FALSE)
+			show_404();
 		$this->form_validation->set_message('_check_timezone','Wrong Timezone.');
 		$this->form_validation->set_rules('timezones','timezone','callback__check_timezone');
 		$this->form_validation->set_rules('file_size_limit','File size limit','integer|greater_than[-1]');

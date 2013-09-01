@@ -2,6 +2,7 @@
 
 def shj_py2_shield():
   BLACKLIST = [
+    '__import__', # deny importing modules
     'eval', # eval is evil
     'open',
     'file',
@@ -9,7 +10,6 @@ def shj_py2_shield():
     'execfile',
     'compile',
     'reload',
-    '__import__', # deny importing modules
     'reload',
     'input' # input in python 2 uses eval
     ]
@@ -17,7 +17,7 @@ def shj_py2_shield():
     if func in __builtins__.__dict__:
       del __builtins__.__dict__[func]
 
-# If you want to deny importing modules, you can
+# If you want to prevent importing modules, you can
 # import modules like "math" for students here:
 
 

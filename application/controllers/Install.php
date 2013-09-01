@@ -28,8 +28,9 @@ class Install extends CI_Controller {
 	// ------------------------------------------------------------------------
 
 
-	public function index(){
-
+	public function index($input = FALSE){
+		if ($input !== FALSE)
+			show_404();
 		if ($this->db->table_exists('sessions'))
 			show_error('It seems that Sharif Judge has been installed already.');
 

@@ -1,4 +1,4 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php defined('BASEPATH') or exit('No direct script access allowed');
 /*
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by

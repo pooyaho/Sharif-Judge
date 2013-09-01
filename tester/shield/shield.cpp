@@ -1,5 +1,6 @@
 /*
- * Shield
+ * @file shield.cpp
+ * Shield for C++
  *
  * Author:
  *  Mohammad Javad Naderi <mjnaderi@gmail.com>

@@ -86,7 +86,9 @@ class Submit extends CI_Controller{
 	// ------------------------------------------------------------------------
 
 
-	public function index(){
+	public function index($input = FALSE){
+		if ($input !== FALSE)
+			show_404();
 		$this->data = array(
 			'username'=>$this->username,
 			'user_level' => $this->user_level,

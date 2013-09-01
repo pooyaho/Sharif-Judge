@@ -40,7 +40,9 @@ class Add_assignment extends CI_Controller{
 	// ------------------------------------------------------------------------
 
 
-	public function index(){
+	public function index($input = FALSE){
+		if ($input !== FALSE)
+			show_404();
 		$data = array(
 			'username'=>$this->username,
 			'user_level' => $this->user_level,
@@ -54,6 +56,8 @@ class Add_assignment extends CI_Controller{
 
 		if($this->edit){
 			$data['edit_assignment'] = $this->assignment_model->assignment_info($this->edit_assignment);
+			if ($data['edit_assignment']['id']===0)
+				show_404();
 			$data['problems']=$this->assignment_model->all_problems($this->edit_assignment);
 		}else{
 			$names = $this->input->post('name');
@@ -112,7 +116,9 @@ class Add_assignment extends CI_Controller{
 	// ------------------------------------------------------------------------
 
 
-	public function add(){
+	public function add($input = FALSE){
+		if ($input !== FALSE)
+			show_404();
 		$this->form_validation->set_rules('assignment_name','assignment name','required|max_length[50]');
 		$this->form_validation->set_rules('start_time','start time','required');
 		$this->form_validation->set_rules('finish_time','finish time','required');

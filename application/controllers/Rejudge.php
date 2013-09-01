@@ -33,8 +33,8 @@ class Rejudge extends CI_Controller {
 	// ------------------------------------------------------------------------
 
 
-	public function index($assignment_id = FALSE) {
-		if ($assignment_id!==FALSE)
+	public function index($input = FALSE) {
+		if ($input!==FALSE)
 			show_404();
 
 		$this->form_validation->set_rules('problem_id','problem id','required|integer');

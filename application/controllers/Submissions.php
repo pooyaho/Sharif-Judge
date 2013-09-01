@@ -33,7 +33,7 @@ class Submissions extends CI_Controller{
 	// ------------------------------------------------------------------------
 
 
-	private function download_excel($view){
+	private function _download_excel($view){
 		$now=date('Y-m-d H:i:s',shj_now());
 		$this->load->library('excel');
 		$this->excel->set_file_name('judge_'.$view.'_submissions.xls');
@@ -114,15 +114,18 @@ class Submissions extends CI_Controller{
 
 	public function the_final($page_number=FALSE){
 
-		if ($page_number=='excel'){
-			$this->download_excel('final');
+		if ($page_number==='excel'){
+			$this->_download_excel('final');
 			exit;
 		}
 
-		if ($page_number=='')
+		if ($page_number===FALSE)
 			$page_number=1;
 
 		if (!is_numeric($page_number))
+			show_404();
+
+		if ($page_number<1)
 			show_404();
 
 		$this->load->library('pagination');
@@ -178,14 +181,17 @@ class Submissions extends CI_Controller{
 		}
 
 		if ($page_number=='excel'){
-			$this->download_excel('all');
+			$this->_download_excel('all');
 			exit;
 		}
 
-		if ($page_number=='')
+		if ($page_number===FALSE)
 			$page_number=1;
 
 		if (!is_numeric($page_number))
+			show_404();
+
+		if ($page_number<1)
 			show_404();
 
 		$this->load->library('pagination');
@@ -232,9 +238,11 @@ class Submissions extends CI_Controller{
 	// ------------------------------------------------------------------------
 
 
-	public function select(){ /* used by ajax request (for selecting final submission) */
+	public function select($input){ /* used by ajax request (for selecting final submission) */
 		if ( ! $this->input->is_ajax_request() )
 			show_404();
+		if ($input !== FALSE)
+			exit('error');
 		if (shj_now() > strtotime($this->assignment['finish_time'])+$this->assignment['extra_time'])
 			exit('shj_finished');
 		$this->form_validation->set_rules('submit_id','Submit ID','integer|greater_than[0]');
@@ -251,7 +259,9 @@ class Submissions extends CI_Controller{
 	// ------------------------------------------------------------------------
 
 
-	public function view_code(){ /* for "view code" or "view result" or "view log" */
+	public function view_code($input = FALSE){ /* for "view code" or "view result" or "view log" */
+		if ($input !== FALSE)
+			show_404();
 		$this->form_validation->set_rules('code','integer|greater_than[-1]|less_than[2]');
 		$this->form_validation->set_rules('username','required|min_length[3]|max_length[20]|alpha_numeric|xss_clean');
 		$this->form_validation->set_rules('assignment','integer|greater_than[0]');
