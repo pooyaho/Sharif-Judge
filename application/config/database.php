@@ -83,11 +83,11 @@ $db['default'] = array(
 	'dsn'	=> '',
 
 	/* Provide MySql connection information here: */
-	'hostname' => 'localhost',
-	'username' => '',
-	'password' => '',
-	'database' => '',
-	'dbprefix' => 'shj_',
+	'hostname' => 'localhost',  // database host
+	'username' => '',           // database username
+	'password' => '',           // database password
+	'database' => '',           // database name
+	'dbprefix' => 'shj_',       // table prefix
 	/**********************************************/
 
 	'dbdriver' => 'mysqli',
