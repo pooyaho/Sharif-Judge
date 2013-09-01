@@ -9,9 +9,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <?php $this->view('templates/top_bar'); ?>
 <?php $this->view('templates/side_bar',array('selected'=>'scoreboard')); ?>
 	<div id="main_container">
-		<div id="page_title"><img src="<?php echo base_url('assets/images/icons/scoreboard.png') ?>"/> <span><?php echo $title ?></span></div>
+		<div id="page_title">
+			<img src="<?php echo base_url('assets/images/icons/scoreboard.png') ?>"/>
+			<span><?php echo $title ?></span>
+		</div>
 		<div id="main_content">
-			<?php if (!isset($scoreboard)): ?>
+			<?php if ($assignment['id']===0): ?>
+			<p>No assignment is selected.</p>
+			<?php elseif (!isset($scoreboard)): ?>
 			<p>Scoreboard is disabled.</p>
 			<?php else: ?>
 				<p>Scoreboard of <?php echo $assignment['name'] ?></p>

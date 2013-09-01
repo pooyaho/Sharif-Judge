@@ -228,6 +228,12 @@ div#page_title {
 	border-bottom: 1px solid #cacaca;
 }
 
+span.title_menu_item {
+	font-size: 12px;
+	margin-left: 10px;
+	font-weight: normal;
+}
+
 div#page_title img {
 	float: left;
 	margin-right: 5px;
@@ -835,13 +841,6 @@ ul.shj_pagination li>a, ul.shj_pagination li>span {
 	border-left-width: 0;
 }
 
-/***************/
-
-.help_span {
-	font-size: 12px;
-	margin-left: 10px;
-	font-weight: normal;
-}
 
 /******* Dashboard *******/
 

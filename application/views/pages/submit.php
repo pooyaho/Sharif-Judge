@@ -33,7 +33,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <?php $this->view('templates/side_bar',array('selected'=>'submit')); ?>
 <?php $now = shj_now(); ?>
 	<div id="main_container">
-		<div id="page_title"><img src="<?php echo base_url('assets/images/icons/submit.png') ?>"/> <span><?php echo $title ?></span></div>
+		<div id="page_title">
+			<img src="<?php echo base_url('assets/images/icons/submit.png') ?>"/>
+			<span><?php echo $title ?></span>
+		</div>
 		<div id="main_content">
 			<?php if ($assignment['id']==0): ?>
 				<p>Please select an assignment first.</p>

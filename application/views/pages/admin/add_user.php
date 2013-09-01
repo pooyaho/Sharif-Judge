@@ -28,8 +28,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	});
 </script>
 <div id="main_container">
-	<div id="page_title"><img src="<?php echo base_url('assets/images/icons/add_user.png') ?>"/> <span><?php echo $title ?></span>
-		<span class="help_span"><a href="http://docs.sharifjudge.ir/users#add_users" target="_blank"><i class="splashy-help"></i> Help</a></span>
+	<div id="page_title">
+		<img src="<?php echo base_url('assets/images/icons/add_user.png') ?>"/>
+		<span><?php echo $title ?></span>
+		<span class="title_menu_item"><a href="http://docs.sharifjudge.ir/users#add_users" target="_blank"><i class="splashy-help"></i> Help</a></span>
 	</div>
 	<div id="main_content">
 		<p>You can use this field to add multiple users at the same time.</p>

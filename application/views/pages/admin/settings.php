@@ -9,7 +9,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <?php $this->view('templates/top_bar'); ?>
 <?php $this->view('templates/side_bar',array('selected'=>'settings')); ?>
 <div id="main_container">
-	<div id="page_title"><img src="<?php echo base_url('assets/images/icons/settings.png') ?>"/> <span><?php echo $title ?></span></div>
+	<div id="page_title">
+		<img src="<?php echo base_url('assets/images/icons/settings.png') ?>"/>
+		<span><?php echo $title ?></span>
+	</div>
 	<div id="main_content">
 		<p class="input_p">
 		<?php if ($form_status=="ok"): ?>
@@ -104,7 +107,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			</p>
 
 
-			<h2 class="shj_form">Sandboxing <span class="help_span"><a href="http://docs.sharifjudge.ir/sandboxing" target="_blank"><i class="splashy-help"></i> Help</a></span></h2>
+			<h2 class="shj_form">Sandboxing <span class="title_menu_item"><a href="http://docs.sharifjudge.ir/sandboxing" target="_blank"><i class="splashy-help"></i> Help</a></span></h2>
 
 			<p class="input_p">
 				<input type="checkbox" name="enable_easysandbox" value="1" <?php if ($enable_easysandbox) echo 'checked' ?>/> EasySandbox<br>
@@ -122,7 +125,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 
 
-			<h2 class="shj_form">Shield <span class="help_span"><a href="http://docs.sharifjudge.ir/shield" target="_blank"><i class="splashy-help"></i> Help</a></span></h2>
+			<h2 class="shj_form">Shield <span class="title_menu_item"><a href="http://docs.sharifjudge.ir/shield" target="_blank"><i class="splashy-help"></i> Help</a></span></h2>
 
 			<p class="input_p">
 				<input type="checkbox" name="enable_c_shield" value="1" <?php if ($enable_c_shield) echo 'checked' ?>/> C Shield<br>

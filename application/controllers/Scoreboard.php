@@ -45,7 +45,7 @@ class Scoreboard extends CI_Controller{
 			'style'=>'main.css'
 		);
 
-		if ( $this->assignment['scoreboard'] ){
+		if ($this->assignment['id']!==0 &&  $this->assignment['scoreboard'] ){
 			$this->load->model('scoreboard_model');
 			list ($scores , $scoreboard) = $this->scoreboard_model->get_scoreboard($this->assignment['id']);
 			$data['problems'] = $this->problems;

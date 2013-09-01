@@ -41,24 +41,57 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 <div id="side_bar" class="sidebar_open">
 	<ul>
-		<div class="side_box"><a href="<?php echo site_url('dashboard') ?>"><li <?php echo ($selected=='dashboard'?'class="selected"':'') ?>><i class="splashy-home_green"></i><span class="sidebar_text">Dashboard</span></li></a></div>
+
+		<div class="side_box">
+			<a href="<?php echo site_url('dashboard') ?>"><li <?php echo ($selected=='dashboard'?'class="selected"':'') ?>><i class="splashy-home_green"></i><span class="sidebar_text">Dashboard</span></li></a>
+		</div>
+
 		<?php if ($user_level==3): ?>
-		<div class="side_box"><a href="<?php echo site_url('settings') ?>"><li <?php echo ($selected=='settings'?'class="selected"':'') ?>><i class="splashy-sprocket_light"></i><span class="sidebar_text">Settings</span></li></a></div>
+		<div class="side_box">
+			<a href="<?php echo site_url('settings') ?>"><li <?php echo ($selected=='settings'?'class="selected"':'') ?>><i class="splashy-sprocket_light"></i><span class="sidebar_text">Settings</span></li></a>
+		</div>
 		<?php endif ?>
+
 		<?php if ($user_level==3): ?>
-			<div class="side_box"><a href="<?php echo site_url('users') ?>"><li <?php echo ($selected=='users'?'class="selected"':'') ?>><i class="splashy-group_blue"></i><span class="sidebar_text">Users</span></li></a></div>
+		<div class="side_box">
+			<a href="<?php echo site_url('users') ?>"><li <?php echo ($selected=='users'?'class="selected"':'') ?>><i class="splashy-group_blue"></i><span class="sidebar_text">Users</span></li></a>
+		</div>
 		<?php endif ?>
-		<div class="side_box"><a href="<?php echo site_url('notifications') ?>"><li <?php echo ($selected=='notifications'?'class="selected"':'') ?>><i class="splashy-comment_reply"></i><span class="sidebar_text">Notifications</span></li></a></div>
-		<div class="side_box"><a href="<?php echo site_url('assignments') ?>"><li <?php echo ($selected=='assignments'?'class="selected"':'') ?>><i class="splashy-folder_modernist_opened"></i><span class="sidebar_text">Assignments</span></li></a></div>
-		<div class="side_box"><a href="<?php echo site_url('submit') ?>"><li <?php echo ($selected=='submit'?'class="selected"':'') ?>><i class="splashy-arrow_large_up"></i><span class="sidebar_text">Submit</span></li></a></div>
-		<div class="side_box"><a href="<?php echo site_url('submissions/final') ?>"><li <?php echo ($selected=='final_submissions'?'class="selected"':'') ?>><i class="splashy-marker_rounded_violet"></i><span class="sidebar_text">Final Submissions</span></li></a></div>
-		<div class="side_box"><a href="<?php echo site_url('submissions/all') ?>"><li <?php echo ($selected=='all_submissions'?'class="selected"':'') ?>><i class="splashy-view_list_with_thumbnail"></i><span class="sidebar_text">All Submissions</span></li></a></div>
-		<div class="side_box"><a href="<?php echo site_url('scoreboard') ?>"><li <?php echo ($selected=='scoreboard'?'class="selected"':'') ?>><i class="splashy-star_boxed_full"></i><span class="sidebar_text">Scoreboard</span></li></a></div>
+
+		<div class="side_box">
+			<a href="<?php echo site_url('notifications') ?>"><li <?php echo ($selected=='notifications'?'class="selected"':'') ?>><i class="splashy-comment_reply"></i><span class="sidebar_text">Notifications</span></li></a>
+		</div>
+
+		<div class="side_box">
+			<a href="<?php echo site_url('assignments') ?>"><li <?php echo ($selected=='assignments'?'class="selected"':'') ?>><i class="splashy-folder_modernist_opened"></i><span class="sidebar_text">Assignments</span></li></a>
+		</div>
+
+		<div class="side_box">
+			<a href="<?php echo site_url('submit') ?>"><li <?php echo ($selected=='submit'?'class="selected"':'') ?>><i class="splashy-arrow_large_up"></i><span class="sidebar_text">Submit</span></li></a>
+		</div>
+
+		<div class="side_box">
+			<a href="<?php echo site_url('submissions/final') ?>"><li <?php echo ($selected=='final_submissions'?'class="selected"':'') ?>><i class="splashy-marker_rounded_violet"></i><span class="sidebar_text">Final Submissions</span></li></a>
+		</div>
+
+		<div class="side_box">
+			<a href="<?php echo site_url('submissions/all') ?>"><li <?php echo ($selected=='all_submissions'?'class="selected"':'') ?>><i class="splashy-view_list_with_thumbnail"></i><span class="sidebar_text">All Submissions</span></li></a>
+		</div>
+
+		<div class="side_box">
+			<a href="<?php echo site_url('scoreboard') ?>"><li <?php echo ($selected=='scoreboard'?'class="selected"':'') ?>><i class="splashy-star_boxed_full"></i><span class="sidebar_text">Scoreboard</span></li></a>
+		</div>
+
 	</ul>
 	<div id="sidebar_bottom">
-		<p><a href="http://sharifjudge.ir" target="_blank">&copy; Sharif Judge <?php echo SHJ_VERSION ?></a>  <a href="http://docs.sharifjudge.ir" target="_blank">Help</a></p>
+		<p>
+			<a href="http://sharifjudge.ir" target="_blank">&copy; Sharif Judge <?php echo SHJ_VERSION ?></a>
+			<a href="http://docs.sharifjudge.ir" target="_blank">Help</a>
+		</p>
 		<p class="timer"></p>
-		<div id="shj_collapse"><i id="collapse" class="splashy-pagination_1_previous"></i><span class="sidebar_text">Collapse Menu</span></div>
+		<div id="shj_collapse">
+			<i id="collapse" class="splashy-pagination_1_previous"></i><span class="sidebar_text">Collapse Menu</span>
+		</div>
 	</div>
 </div>
 

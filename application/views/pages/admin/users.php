@@ -9,7 +9,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <?php $this->view('templates/top_bar'); ?>
 <?php $this->view('templates/side_bar',array('selected'=>'users')); ?>
 <div id="main_container">
-	<div id="page_title"><img src="<?php echo base_url('assets/images/icons/users.png') ?>"/> <span><?php echo $title ?></span></div>
+	<div id="page_title">
+		<img src="<?php echo base_url('assets/images/icons/users.png') ?>"/>
+		<span><?php echo $title ?></span>
+		<span class="title_menu_item"><i class="splashy-group_blue_add"></i> <?php echo anchor('users/add','Add Users') ?></span>
+		<span class="title_menu_item"><a href="<?php echo site_url("users/list_excel") ?>"><i class="splashy-document_small_download"></i> Excel</a></span>
+	</div>
 	<div id="main_content">
 		<?php if (isset($deleted_user) && $deleted_user===TRUE): ?>
 			<p class="shj_ok">User deleted successfully.</p>
@@ -17,10 +22,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		<?php if (isset($deleted_submissions) && $deleted_submissions===TRUE): ?>
 			<p class="shj_ok">Submissions of selected user deleted successfully.</p>
 		<?php endif ?>
-		<p>
-			<i class="splashy-group_blue_add"></i> <?php echo anchor('users/add','Add Users') ?>
-			<a href="<?php echo site_url("users/list_excel") ?>"><i class="splashy-document_small_download"></i> Excel</a>
-		</p>
+		<div style="height:15px"></div>
 		<table class="sharif_table">
 			<thead>
 			<tr><th>#</th><th>User ID</th><th>Username</th><th>Display Name</th><th>Email</th><th>Role</th><th>First Login</th><th>Last Login</th><th>Actions</th></tr>

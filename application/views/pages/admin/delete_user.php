@@ -9,7 +9,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <?php $this->view('templates/top_bar'); ?>
 <?php $this->view('templates/side_bar',array('selected'=>'users')); ?>
 <div id="main_container">
-	<div id="page_title"><img src="<?php echo base_url('assets/images/icons/delete_user.png') ?>"/> <span><?php echo $title ?></span></div>
+	<div id="page_title">
+		<img src="<?php echo base_url('assets/images/icons/delete_user.png') ?>"/>
+		<span><?php echo $title ?></span>
+	</div>
 	<div id="main_content">
 		<p>Are you sure you want to delete this user?</p>
 		<p>Username: <?php echo $delete_username ?></p>

@@ -9,16 +9,20 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <?php $this->view('templates/top_bar'); ?>
 <?php $this->view('templates/side_bar',array('selected'=>'assignments')); ?>
 <div id="main_container">
-	<div id="page_title"><img src="<?php echo base_url('assets/images/icons/assignments.png') ?>"/> <span><?php echo $title ?></span>
+	<div id="page_title">
+		<img src="<?php echo base_url('assets/images/icons/assignments.png') ?>"/>
+		<span><?php echo $title ?></span>
 		<?php if ($user_level>=2): ?>
-		<span style="font-size:14px;margin-left:10px;"><a href="<?php echo site_url('add_assignment') ?>"><i class="splashy-add_small"></i> Add</a></span>
+		<span class="title_menu_item"><a href="<?php echo site_url('add_assignment') ?>"><i class="splashy-add_small"></i> Add</a></span>
 		<?php endif ?>
 		<?php if ($user_level>=2): ?>
-		<span style="font-size:14px;margin-left:10px;"><a href="<?php echo site_url('rejudge') ?>"><i title="Rejudge" class="splashy-refresh"></i> Rejudge</a></span>
+		<span class="title_menu_item"><a href="<?php echo site_url('rejudge') ?>"><i title="Rejudge" class="splashy-refresh"></i> Rejudge</a></span>
 		<?php endif ?>
 	</div>
 	<div id="main_content">
-		<!--<p>Selected Assignment: <span class="assignment_name"><?php echo $assignment['name'] ?></span></p>-->
+		<?php if (count($all_assignments)==0): ?>
+			<p style="text-align: center;">Nothing to show...</p>
+		<?php endif ?>
 		<?php foreach($all_assignments as $item): ?>
 			<div class="assignment_block" id="<?php echo $item['id'] ?>">
 				<div class="c1">

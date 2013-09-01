@@ -40,9 +40,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 $finish = strtotime($assignment['finish_time']);
 ?>
 	<div id="main_container">
-		<div id="page_title"><img src="<?php echo base_url("assets/images/icons/{$view}_submissions.png") ?>"/> <span><?php echo $title ?></span></div>
+		<div id="page_title">
+			<img src="<?php echo base_url("assets/images/icons/{$view}_submissions.png") ?>"/>
+			<span><?php echo $title ?></span>
+			<span class="title_menu_item">
+				<a href="<?php echo site_url("submissions/{$view}/excel") ?>"><i class="splashy-document_small_download"></i> Excel</a>
+			</span>
+		</div>
 		<div id="main_content">
-			<p><?php echo ucfirst($view); ?> Submissions of <?php echo $assignment['name']; ?> (<a href="<?php echo site_url("submissions/{$view}/excel") ?>"><i class="splashy-document_small_download"></i> Excel</a>)</p>
+			<p><?php echo ucfirst($view); ?> Submissions of <?php echo $assignment['name']; ?></p>
 			<?php if($view=="all"): ?>
 			<p>You cannot change your final submissions when assignment finishes.</p>
 			<?php endif ?>

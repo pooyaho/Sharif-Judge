@@ -25,7 +25,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	});
 </script>
 <div id="main_container">
-	<div id="page_title"><img src="<?php echo base_url('assets/images/icons/notifications.png') ?>"/> <span><?php echo $title ?></span>
+	<div id="page_title">
+		<img src="<?php echo base_url('assets/images/icons/notifications.png') ?>"/>
+		<span><?php echo $title ?></span>
 	</div>
 	<div id="main_content">
 		<?php echo form_open('notifications/'.($notif_edit===FALSE?'add':'edit/'.$notif_edit['id'])) ?>
