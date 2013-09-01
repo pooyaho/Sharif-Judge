@@ -138,6 +138,7 @@ class Add_assignment extends CI_Controller{
 				$the_id = $this->assignment_model->last_assignment_id()+1;
 
 			$config['upload_path'] = rtrim($this->settings_model->get_setting('assignments_root'),'/');
+			shell_exec('rm '.$config['upload_path'].'/*.zip');
 			$config['allowed_types'] = 'zip';
 			$this->upload->initialize($config);
 			if($this->upload->do_upload('tests')){

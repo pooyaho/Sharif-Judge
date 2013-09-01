@@ -138,7 +138,10 @@ class Assignment_model extends CI_Model{
 			if ($assignment['id']>$max)
 				$max = $assignment['id'];
 		}
-		return $max;
+		while(file_exists(rtrim($this->settings_model->get_setting('assignments_root'),'/').'/assignment_'.$max)){
+			$max++;
+		}
+		return $max-1;
 	}
 
 

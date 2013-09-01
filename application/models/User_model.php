@@ -198,6 +198,9 @@ class User_model extends CI_Model{
 	}
 
 
+	// ------------------------------------------------------------------------
+
+
 	public function update_login_time($username) {
 		$now = date('Y-m-d H:i:s', shj_now());
 
