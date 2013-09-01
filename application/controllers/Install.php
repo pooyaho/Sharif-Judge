@@ -202,7 +202,6 @@ class Install extends CI_Controller {
 				`passchange_time` datetime NOT NULL,
 				`first_login_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
 				`last_login_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-				`timezone` varchar(7) CHARACTER SET utf8 NOT NULL DEFAULT 'UP35',
 				`selected_assignment` smallint(4) NOT NULL DEFAULT '0',
 				`dashboard_widget_positions` varchar(500) NOT NULL,
 				PRIMARY KEY (`id`),
