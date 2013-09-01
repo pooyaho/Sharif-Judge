@@ -129,19 +129,20 @@ class Assignment_model extends CI_Model{
 
 
 	/**
-	 * Returns id of last assignment (the largest assignment id). Used for adding new assignment.
+	 * Returns id of new assignment (the assignment to be added). Used for adding new assignment.
 	 */
-	public function last_assignment_id(){
+	public function new_assignment_id(){
 		$assignments = $this->db->select('id')->get('assignments')->result_array();
 		$max=0;
 		foreach ($assignments as $assignment){
 			if ($assignment['id']>$max)
 				$max = $assignment['id'];
 		}
+		$max++;
 		while(file_exists(rtrim($this->settings_model->get_setting('assignments_root'),'/').'/assignment_'.$max)){
 			$max++;
 		}
-		return $max-1;
+		return $max;
 	}
 
 

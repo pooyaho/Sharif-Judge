@@ -141,7 +141,7 @@ class Add_assignment extends CI_Controller{
 			if ($this->edit)
 				$the_id = $this->edit_assignment;
 			else
-				$the_id = $this->assignment_model->last_assignment_id()+1;
+				$the_id = $this->assignment_model->new_assignment_id();
 
 			$config['upload_path'] = rtrim($this->settings_model->get_setting('assignments_root'),'/');
 			shell_exec('rm '.$config['upload_path'].'/*.zip');
