@@ -12,6 +12,8 @@ If you want to use Sharif Judge for python, USE IT AT YOUR OWN RISK or provide s
 
 The full documentation is at [http://docs.sharifjudge.ir](http://docs.sharifjudge.ir)
 
+Download the latest release from [http://sharifjudge.ir/download](http://sharifjudge.ir/download)
+
 ## Features
   * Multiple user roles (admin, head instructor, instructor, student)
   * Sandboxing _(not yet for python)_
@@ -41,7 +43,7 @@ For running Sharif Judge, a Linux server with following requirements is needed:
 
 ### Installation
 
-  1. Download the latest release from download page and unpack downloaded file in your public html directory.
+  1. Download the latest release from [download page](http://sharifjudge.ir/download) and unpack downloaded file in your public html directory.
   2. Create a MySql database for Sharif Judge.
   3. Set database connection settings in files `application/config/database.php` and `tester/queue_process.php`. Make sure that you have provided correct information in both files.
   4. Open Sharif Judge main page in a web browser and follow the installation process.
