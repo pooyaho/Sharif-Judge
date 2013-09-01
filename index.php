@@ -1,5 +1,16 @@
 <?php
 /**
+ * Sharif Judge
+ *
+ * A free and open source online judge for programming assignments
+ *
+ * The web interface is written in PHP CodeIgniter framework.
+ *
+ */
+
+define('SHJ_VERSION','1.0.3');
+
+/**
  * CodeIgniter
  *
  * An open source application development framework for PHP 5.2.4 or newer

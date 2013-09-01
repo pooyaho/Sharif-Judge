@@ -56,7 +56,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		<div class="side_box"><a href="<?php echo site_url('scoreboard') ?>"><li <?php echo ($selected=='scoreboard'?'class="selected"':'') ?>><i class="splashy-star_boxed_full"></i><span class="sidebar_text">Scoreboard</span></li></a></div>
 	</ul>
 	<div id="sidebar_bottom">
-		<p><a href="http://sharifjudge.ir" target="_blank">&copy; Sharif Judge</a>  <a href="http://docs.sharifjudge.ir" target="_blank">Help</a></p>
+		<p><a href="http://sharifjudge.ir" target="_blank">&copy; Sharif Judge <?php echo SHJ_VERSION ?></a>  <a href="http://docs.sharifjudge.ir" target="_blank">Help</a></p>
 		<p class="timer"></p>
 		<div id="shj_collapse"><i id="collapse" class="splashy-pagination_1_previous"></i><span class="sidebar_text">Collapse Menu</span></div>
 	</div>
