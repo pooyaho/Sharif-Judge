@@ -238,7 +238,7 @@ class Submissions extends CI_Controller{
 	// ------------------------------------------------------------------------
 
 
-	public function select($input){ /* used by ajax request (for selecting final submission) */
+	public function select($input = FALSE){ /* used by ajax request (for selecting final submission) */
 		if ( ! $this->input->is_ajax_request() )
 			show_404();
 		if ($input !== FALSE)
