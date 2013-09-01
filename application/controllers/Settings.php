@@ -107,7 +107,7 @@ class Settings extends CI_Controller{
 		if ($input !== FALSE)
 			show_404();
 		$this->form_validation->set_message('_check_timezone','Wrong Timezone.');
-		$this->form_validation->set_rules('timezones','timezone','callback__check_timezone');
+		$this->form_validation->set_rules('timezone','timezone','required');
 		$this->form_validation->set_rules('file_size_limit','File size limit','integer|greater_than[-1]');
 		$this->form_validation->set_rules('results_per_page','results per page','integer|greater_than[-1]');
 		if($this->form_validation->run()){
@@ -117,16 +117,20 @@ class Settings extends CI_Controller{
 			$defcpp_path = rtrim($this->settings_model->get_setting('tester_path'),'/').'/shield/defcpp.h';
 			$shpy2_path = rtrim($this->settings_model->get_setting('tester_path'),'/').'/shield/shield_py2.py';
 			$shpy3_path = rtrim($this->settings_model->get_setting('tester_path'),'/').'/shield/shield_py3.py';
-			if (file_exists($defc_path) && file_put_contents($defc_path,$this->input->post('def_c'))===FALSE)
-				array_push($this->errors,'File defc.h is not writable. Edit it manually.');
-			if (file_exists($defcpp_path) && file_put_contents($defcpp_path,$this->input->post('def_cpp'))===FALSE)
-				array_push($this->errors,'File defcpp.h is not writable. Edit it manually.');
-			if (file_exists($shpy2_path) && file_put_contents($shpy2_path,$this->input->post('shield_py2'))===FALSE)
-				array_push($this->errors,'File shield_py2.py is not writable. Edit it manually.');
-			if (file_exists($shpy3_path) && file_put_contents($shpy3_path,$this->input->post('shield_py3'))===FALSE)
-				array_push($this->errors,'File shield_py3.py is not writable. Edit it manually.');
+			if ($this->input->post('def_c') !== file_get_contents($defc_path))
+				if (file_exists($defc_path) && file_put_contents($defc_path,$this->input->post('def_c'))===FALSE)
+					array_push($this->errors,'File defc.h is not writable. Edit it manually.');
+			if ($this->input->post('def_cpp') !== file_get_contents($defcpp_path))
+				if (file_exists($defcpp_path) && file_put_contents($defcpp_path,$this->input->post('def_cpp'))===FALSE)
+					array_push($this->errors,'File defcpp.h is not writable. Edit it manually.');
+			if ($this->input->post('shield_py2') !== file_get_contents($shpy2_path))
+				if (file_exists($shpy2_path) && file_put_contents($shpy2_path,$this->input->post('shield_py2'))===FALSE)
+					array_push($this->errors,'File shield_py2.py is not writable. Edit it manually.');
+			if ($this->input->post('shield_py3') !== file_get_contents($shpy3_path))
+				if (file_exists($shpy3_path) && file_put_contents($shpy3_path,$this->input->post('shield_py3'))===FALSE)
+					array_push($this->errors,'File shield_py3.py is not writable. Edit it manually.');
 			ob_end_clean();
-			$this->settings_model->set_setting('timezone',$this->input->post('timezones'));
+			$this->settings_model->set_setting('timezone',$this->input->post('timezone'));
 			$this->settings_model->set_setting('tester_path',$this->input->post('tester_path'));
 			$this->settings_model->set_setting('assignments_root',$this->input->post('assignments_root'));
 			$this->settings_model->set_setting('file_size_limit',$this->input->post('file_size_limit'));

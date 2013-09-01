@@ -92,7 +92,7 @@ class Assignments extends CI_Controller{
 			$this->zip->add_data("by_problem/problem_{$item['problem']}/{$item['username']}.".filetype_to_extension($item['file_type']),$file);
 		}
 
-		$this->zip->download("assignment{$assignment_id}_codes_".mdate('%Y-%m-%d_%H-%i',shj_now()).'.zip');
+		$this->zip->download("assignment{$assignment_id}_codes_".date('Y-m-d_H-i',shj_now()).'.zip');
 	}
 
 

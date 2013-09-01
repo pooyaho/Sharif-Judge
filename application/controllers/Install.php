@@ -165,7 +165,7 @@ class Install extends CI_Controller {
 
 
 			$query = "INSERT INTO `".$this->db->dbprefix('settings')."` (`shj_key`, `shj_value`) VALUES
-				('timezone', 'UP35'),
+				('timezone', 'Asia/Tehran'),
 				('tester_path', '/home/shj/tester'),
 				('file_size_limit', '20'),
 				('assignments_root', '/home/shj/assignments'),

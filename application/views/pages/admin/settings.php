@@ -26,9 +26,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		</p>
 		<?php echo form_open('settings/update') ?>
 			<p class="input_p">
-				<label for="timezones">Timezone:</label>
+				<label for="timezone">
+					Timezone:<br>
+					<a target="_blank" href="http://www.php.net/manual/en/timezones.php">list of timezones</a>
+				</label>
 				<span class="form_comment timer"></span><br>
-				<?php echo timezone_menu($tz,'sharif_input medium') ?>
+				<input type="text" name="timezone" class="sharif_input medium" value="<?php echo $tz ?>"/>
 				<?php echo form_error('timezone','<div class="shj_error">','</div>'); ?>
 			</p>
 			<p class="input_p">
