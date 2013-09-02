@@ -92,6 +92,8 @@ if($q==1)
 
 mysql_query("UPDATE {$prefix}settings SET shj_value=1 WHERE shj_key='queue_is_working'");
 
+$query = mysql_fetch_assoc(mysql_query("SELECT shj_value FROM {$prefix}settings WHERE shj_key='output_size_limit'"));
+$output_size_limit=$query['shj_value']*1024; // multiplied by 1024 to convert to bytes (from kB)
 
 do{
 
@@ -162,7 +164,7 @@ do{
 
 	$time_limit_int = floor($time_limit) +1;
 	
-	$cmd = "cd $tester_path;\n./tester.sh $problemdir $username $main_filename $raw_filename $file_type $time_limit $time_limit_int $memory_limit $diff_cmd $diff_arg $op1 $op2 $op3 $op4";
+	$cmd = "cd $tester_path;\n./tester.sh $problemdir $username $main_filename $raw_filename $file_type $time_limit $time_limit_int $memory_limit $output_size_limit $diff_cmd $diff_arg $op1 $op2 $op3 $op4";
 
 	file_put_contents($userdir.'/log',$cmd);
 

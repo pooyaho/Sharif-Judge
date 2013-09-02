@@ -45,6 +45,7 @@ my $kill_stale = '';
 my $ticklimit = undef;
 my $memlimit = undef;
 my $sandbox = undef; # added by mjnaderi
+my $outlimit = undef; # size limit of output file // added by mjnaderi
 my $strpat = undef;
 # Output for statistic buckets (STDERR if unspecified)
 my $output = undef;
@@ -70,6 +71,7 @@ GetOptions(
 	'allow-hangups!'=>\$kill_stale,
 	'memlimit|m=i'=>\$memlimit,
 	'sandbox!'=>\$sandbox, # added by mjnaderi
+	'outlimit|l=i'=>\$outlimit,
 	'frequency|x=i'=>\$frequency,
 	'pattern|p=s'=>\$strpat,
 	'output|o=s'=>\$output,
@@ -136,6 +138,8 @@ my $timeinfo = { total => 0, finished => 0, current => {} };
 # For this -- update_memory
 my $meminfo = 0;
 my $fulltime = 0;
+# added by mjnaderi:
+my $sizeinfo = 0;
 # We store the "maximum" used memory (the process may free it and we won't get the proper timestamp at the end).
 my $maxmem = -1;
 
@@ -164,6 +168,7 @@ while ($status eq 'wait'){
 			$timeinfo = update_time($blackbox_pid,$timeinfo);
 			$meminfo = update_memory($blackbox_pid,$meminfo);
 			$maxmem = $meminfo if $meminfo > $maxmem;
+			$sizeinfo = -s 'out'; # size of output file // added by mjnaderi
 			update_info_by_ucmd($blackbox_pid,$uinfo);
 			die "Assume waitpid return 0\n";
 		};
@@ -491,12 +496,14 @@ sub get_patterns
 sub limits_exceeded
 {
 	if (defined $timelimit && $timeinfo->{total} > $timelimit){
-		return 'TIME'; # changed by mjnaderi (SHJ is for SHarif Judge)
+		return 'TIME';
 	}elsif (defined $ticklimit && $kill_stale && $timeinfo->{ticks_stale} > $ticklimit) {
 	# Sometimes the controlling process may inherently hang up.  Then we don't interrupt it.
-		return 'HANGUP'; # changed by mjnaderi (SHJ is for SHarif Judge)
+		return 'HANGUP';
 	}elsif (defined $memlimit && $meminfo > $memlimit){
-		return 'MEM'; # changed by mjnaderi (SHJ is for SHarif Judge)
+		return 'MEM';
+	}elsif (defined $outlimit && $sizeinfo > $outlimit){ # added by mjnaderi
+		return 'OUTSIZE';
 	}
 	return undef;
 }

@@ -45,24 +45,25 @@ EXT=${5} # file extension
 TIMELIMIT=${6}
 TIMELIMITINT=${7}
 MEMLIMIT=${8}
-DIFFTOOL=${9}
-DIFFOPTION=${10}
-if [ ${11} = "1" ]; then
+OUTLIMIT=${9}
+DIFFTOOL=${10}
+DIFFOPTION=${11}
+if [ ${12} = "1" ]; then
 	LOG_ON=true
 else
 	LOG_ON=false
 fi
-if [ ${12} = "1" ]; then
+if [ ${13} = "1" ]; then
 	SANDBOX_ON=true
 else
 	SANDBOX_ON=false
 fi
-if [ ${13} = "1" ]; then
+if [ ${14} = "1" ]; then
 	C_SHIELD_ON=true
 else
 	C_SHIELD_ON=false
 fi
-if [ ${14} = "1" ]; then
+if [ ${15} = "1" ]; then
 	JAVA_POLICY="-Djava.security.manager -Djava.security.policy=java.policy"
 else
 	JAVA_POLICY=""
@@ -108,6 +109,7 @@ chmod +x runcode.sh
 judge_log "$(date)"
 judge_log "Time Limit: $TIMELIMIT s"
 judge_log "Memory Limit: $MEMLIMIT kB"
+judge_log "Output size limit: $OUTLIMIT bytes"
 judge_log "SANDBOX_ON: $SANDBOX_ON"
 judge_log "C_SHIELD_ON: $C_SHIELD_ON"
 judge_log "JAVA_POLICY: \"$JAVA_POLICY\""
@@ -267,7 +269,7 @@ for((i=1;i<=TST;i++)); do
 	if [ "$EXT" = "java" ]; then
 		cp ../java.policy java.policy
 		if $PERL_EXISTS; then
-			./runcode.sh $EXT $MEMLIMIT $TIMELIMIT $TIMELIMITINT ./timeout --just-kill -nosandbox -t $TIMELIMIT java $JAVA_POLICY $MAINFILENAME  <$PROBLEMPATH/in/input$i.txt >out 2>err
+			./runcode.sh $EXT $MEMLIMIT $TIMELIMIT $TIMELIMITINT ./timeout --just-kill -nosandbox -l $OUTLIMIT -t $TIMELIMIT java $JAVA_POLICY $MAINFILENAME  <$PROBLEMPATH/in/input$i.txt >out 2>err
 		else
 			./runcode.sh $EXT $MEMLIMIT $TIMELIMIT $TIMELIMITINT java $JAVA_POLICY $MAINFILENAME  <$PROBLEMPATH/in/input$i.txt >out 2>err
 		fi
@@ -277,7 +279,7 @@ for((i=1;i<=TST;i++)); do
 		if $SANDBOX_ON; then
 			#LD_PRELOAD=./EasySandbox.so ./$FILENAME <$PROBLEMPATH/in/input$i.txt >out 2>/dev/null
 			if $PERL_EXISTS; then
-				./runcode.sh $EXT $MEMLIMIT $TIMELIMIT $TIMELIMITINT ./timeout --just-kill --sandbox -t $TIMELIMIT -m $MEMLIMIT ./$FILENAME <$PROBLEMPATH/in/input$i.txt >out 2>err
+				./runcode.sh $EXT $MEMLIMIT $TIMELIMIT $TIMELIMITINT ./timeout --just-kill --sandbox -l $OUTLIMIT -t $TIMELIMIT -m $MEMLIMIT ./$FILENAME <$PROBLEMPATH/in/input$i.txt >out 2>err
 			else
 				./runcode.sh $EXT $MEMLIMIT $TIMELIMIT $TIMELIMITINT LD_PRELOAD=./EasySandbox.so ./$FILENAME <$PROBLEMPATH/in/input$i.txt >out 2>err
 			fi
@@ -287,7 +289,7 @@ for((i=1;i<=TST;i++)); do
 		else
 			#./$FILENAME <$PROBLEMPATH/in/input$i.txt >out 2>/dev/null
 			if $PERL_EXISTS; then
-				./runcode.sh $EXT $MEMLIMIT $TIMELIMIT $TIMELIMITINT ./timeout --just-kill -nosandbox -t $TIMELIMIT -m $MEMLIMIT ./$FILENAME <$PROBLEMPATH/in/input$i.txt >out 2>err
+				./runcode.sh $EXT $MEMLIMIT $TIMELIMIT $TIMELIMITINT ./timeout --just-kill -nosandbox -l $OUTLIMIT -t $TIMELIMIT -m $MEMLIMIT ./$FILENAME <$PROBLEMPATH/in/input$i.txt >out 2>err
 			else
 				./runcode.sh $EXT $MEMLIMIT $TIMELIMIT $TIMELIMITINT ./$FILENAME <$PROBLEMPATH/in/input$i.txt >out 2>err
 			fi
@@ -296,7 +298,7 @@ for((i=1;i<=TST;i++)); do
 
 	elif [ "$EXT" = "py2" ]; then
 		if $PERL_EXISTS; then
-			./runcode.sh $EXT $MEMLIMIT $TIMELIMIT $TIMELIMITINT ./timeout --just-kill -nosandbox -t $TIMELIMIT -m $MEMLIMIT python -O $FILENAME.py <$PROBLEMPATH/in/input$i.txt >out 2>err
+			./runcode.sh $EXT $MEMLIMIT $TIMELIMIT $TIMELIMITINT ./timeout --just-kill -nosandbox -l $OUTLIMIT -t $TIMELIMIT -m $MEMLIMIT python -O $FILENAME.py <$PROBLEMPATH/in/input$i.txt >out 2>err
 		else
 			./runcode.sh $EXT $MEMLIMIT $TIMELIMIT $TIMELIMITINT python -O $FILENAME.py <$PROBLEMPATH/in/input$i.txt >out 2>err
 		fi
@@ -307,7 +309,7 @@ for((i=1;i<=TST;i++)); do
 
 	elif [ "$EXT" = "py3" ]; then
 		if $PERL_EXISTS; then
-			./runcode.sh $EXT $MEMLIMIT $TIMELIMIT $TIMELIMITINT ./timeout --just-kill -nosandbox -t $TIMELIMIT -m $MEMLIMIT python3 -O $FILENAME.py <$PROBLEMPATH/in/input$i.txt >out 2>err
+			./runcode.sh $EXT $MEMLIMIT $TIMELIMIT $TIMELIMITINT ./timeout --just-kill -nosandbox -l $OUTLIMIT -t $TIMELIMIT -m $MEMLIMIT python3 -O $FILENAME.py <$PROBLEMPATH/in/input$i.txt >out 2>err
 		else
 			./runcode.sh $EXT $MEMLIMIT $TIMELIMIT $TIMELIMITINT python3 -O $FILENAME.py <$PROBLEMPATH/in/input$i.txt >out 2>err
 		fi
@@ -343,6 +345,10 @@ for((i=1;i<=TST;i++)); do
 		elif grep -q "SHJ_SIGNAL" err; then
 			judge_log "Killed by a signal"
 			echo "<span class=\"shj_o\">Killed by a signal</span>" >>$PROBLEMPATH/$UN/result.html
+			continue
+		elif grep -q "SHJ_OUTSIZE" err; then
+			judge_log "Output size limit exceeded"
+			echo "<span class=\"shj_o\">Output size limit exceeded</span>" >>$PROBLEMPATH/$UN/result.html
 			continue
 		fi
 	else

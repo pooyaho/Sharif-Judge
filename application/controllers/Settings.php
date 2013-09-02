@@ -37,24 +37,6 @@ class Settings extends CI_Controller{
 	// ------------------------------------------------------------------------
 
 
-	/*
-	 * This function validates input filed 'timezone'
-	 */
-	public function _check_timezone($str){
-		$timezones = array('UM1','UM2','UM3','UM35','UM4','UM45','UM5','UM6','UM7','UM8','UM9','UM95','UM10','UM11','UM12',
-			'UTC',
-			'UP1','UP2','UP3','UP35','UP4','UP45','UP5','UP55','UP575','UP6','UP65','UP7','UP8','UP875','UP9','UP95','UP10',
-			'UP105','UP11','UP115','UP12','UP1275','UP13','UP14'
-		);
-		if (in_array($str,$timezones) )
-			return TRUE;
-		return FALSE;
-	}
-
-
-	// ------------------------------------------------------------------------
-
-
 	public function index($input = FALSE){
 		if ($input !== FALSE)
 			show_404();
@@ -70,6 +52,7 @@ class Settings extends CI_Controller{
 			'tester_path'=>$this->settings_model->get_setting('tester_path'),
 			'assignments_root'=>$this->settings_model->get_setting('assignments_root'),
 			'file_size_limit'=>$this->settings_model->get_setting('file_size_limit'),
+			'output_size_limit'=>$this->settings_model->get_setting('output_size_limit'),
 			'default_late_rule'=>$this->settings_model->get_setting('default_late_rule'),
 			'enable_easysandbox'=>$this->settings_model->get_setting('enable_easysandbox'),
 			'enable_c_shield'=>$this->settings_model->get_setting('enable_c_shield'),
@@ -106,9 +89,9 @@ class Settings extends CI_Controller{
 	public function update($input = FALSE){
 		if ($input !== FALSE)
 			show_404();
-		$this->form_validation->set_message('_check_timezone','Wrong Timezone.');
 		$this->form_validation->set_rules('timezone','timezone','required');
 		$this->form_validation->set_rules('file_size_limit','File size limit','integer|greater_than[-1]');
+		$this->form_validation->set_rules('output_size_limit','Output size limit','integer|greater_than[-1]');
 		$this->form_validation->set_rules('results_per_page','results per page','integer|greater_than[-1]');
 		if($this->form_validation->run()){
 			ob_start();
@@ -134,6 +117,7 @@ class Settings extends CI_Controller{
 			$this->settings_model->set_setting('tester_path',$this->input->post('tester_path'));
 			$this->settings_model->set_setting('assignments_root',$this->input->post('assignments_root'));
 			$this->settings_model->set_setting('file_size_limit',$this->input->post('file_size_limit'));
+			$this->settings_model->set_setting('output_size_limit',$this->input->post('output_size_limit'));
 			$this->settings_model->set_setting('default_late_rule',$this->input->post('default_late_rule'));
 			$this->settings_model->set_setting('enable_easysandbox',$this->input->post('enable_easysandbox')===NULL?0:1);
 			$this->settings_model->set_setting('enable_c_shield',$this->input->post('enable_c_shield')===NULL?0:1);
