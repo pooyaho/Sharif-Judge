@@ -10,7 +10,6 @@ def shj_py2_shield():
     'execfile',
     'compile',
     'reload',
-    'reload',
     'input' # input in python 2 uses eval
     ]
   for func in BLACKLIST:

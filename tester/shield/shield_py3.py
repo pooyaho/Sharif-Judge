@@ -10,7 +10,6 @@ def shj_py3_shield():
     'execfile',
     'compile',
     'reload',
-    'reload',
     #'input'
     ]
   for func in BLACKLIST:
