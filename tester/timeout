@@ -71,7 +71,7 @@ GetOptions(
 	'allow-hangups!'=>\$kill_stale,
 	'memlimit|m=i'=>\$memlimit,
 	'sandbox!'=>\$sandbox, # added by mjnaderi
-	'outlimit|l=i'=>\$outlimit,
+	'outlimit|l=i'=>\$outlimit, # added by mjnaderi
 	'frequency|x=i'=>\$frequency,
 	'pattern|p=s'=>\$strpat,
 	'output|o=s'=>\$output,
@@ -140,6 +140,7 @@ my $meminfo = 0;
 my $fulltime = 0;
 # added by mjnaderi:
 my $sizeinfo = 0;
+my $size_err_info = 0;
 # We store the "maximum" used memory (the process may free it and we won't get the proper timestamp at the end).
 my $maxmem = -1;
 
@@ -169,6 +170,7 @@ while ($status eq 'wait'){
 			$meminfo = update_memory($blackbox_pid,$meminfo);
 			$maxmem = $meminfo if $meminfo > $maxmem;
 			$sizeinfo = -s 'out'; # size of output file // added by mjnaderi
+			$size_err_info = -s 'err'; # size of err file // added by mjnaderi
 			update_info_by_ucmd($blackbox_pid,$uinfo);
 			die "Assume waitpid return 0\n";
 		};
@@ -502,7 +504,7 @@ sub limits_exceeded
 		return 'HANGUP';
 	}elsif (defined $memlimit && $meminfo > $memlimit){
 		return 'MEM';
-	}elsif (defined $outlimit && $sizeinfo > $outlimit){ # added by mjnaderi
+	}elsif (defined $outlimit && ($sizeinfo > $outlimit || $size_err_info > $outlimit) ){ # added by mjnaderi
 		return 'OUTSIZE';
 	}
 	return undef;

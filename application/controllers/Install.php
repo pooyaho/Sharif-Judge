@@ -167,9 +167,9 @@ class Install extends CI_Controller {
 			$query = "INSERT INTO `".$this->db->dbprefix('settings')."` (`shj_key`, `shj_value`) VALUES
 				('timezone', 'Asia/Tehran'),
 				('tester_path', '/home/shj/tester'),
+				('assignments_root', '/home/shj/assignments'),
 				('file_size_limit', '20'),
 				('output_size_limit', '1024'),
-				('assignments_root', '/home/shj/assignments'),
 				('queue_is_working', '0'),
 				('default_late_rule', '".'/* \n * Put coefficient (from 100) in variable $coefficient.\n * You can use variables $extra_time and $delay.\n * $extra_time is the total extra time given to users\n * (in seconds) and $delay is number of seconds passed\n * from finish time (can be negative).\n *  In this example, $extra_time is 172800 (2 days):\n */\n\nif ($delay<=0)\n  // no delay\n  $coefficient = 100;\n\nelse if ($delay<=3600)\n  // delay less than 1 hour\n  $coefficient = ceil(100-((30*$delay)/3600));\n\nelse if ($delay<=86400)\n  // delay more than 1 hour and less than 1 day\n  $coefficient = 70;\n\nelse if (($delay-86400)<=3600)\n  // delay less than 1 hour in second day\n  $coefficient = ceil(70-((20*($delay-86400))/3600));\n\nelse if (($delay-86400)<=86400)\n  // delay more than 1 hour in second day\n  $coefficient = 50;\n\nelse if ($delay > $extra_time)\n  // too late\n  $coefficient = 0;'."'),
 				('enable_easysandbox', '0'),
