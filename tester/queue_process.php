@@ -1,8 +1,12 @@
 <?php
+
 /**
  * Sharif Judge online judge
  * @file queue_process.php
  * @author Mohammad Javad Naderi <mjnaderi@gmail.com>
+ *
+ * This file will be executed by php-cli
+ *
  */
 
 
@@ -16,20 +20,22 @@ $prefix         = 'shj_';      // table prefix
 
 
 // Connecting to database
-$conn = mysql_connect($db_host,$db_user,$db_pass);
-if(!$conn){
-	echo 'dberror';
-	return;
-}
+$conn = mysql_connect($db_host, $db_user, $db_pass);
+if(!$conn)
+	exit('dberror');
 mysql_set_charset('utf8', $conn);
 mysql_select_db($db_database,$conn);
+
 
 // $option can be 'judge' or 'rejudge'
 $option = trim($argv[1]);
 
 
+// ------------------------------------------------------------------------
+
 
 function addJudgeResultToDB($sr){
+
 	global $prefix;
 	global $option;
 	$submit_id=$sr['submit_id'];
@@ -46,60 +52,54 @@ function addJudgeResultToDB($sr){
 
 	$r = mysql_fetch_assoc(mysql_query("SELECT * FROM {$prefix}final_submissions WHERE username='$username' AND assignment='$assignment' AND problem='$problem'"));
 
-	if($r==null){
+	if ($r == NULL) {
 		mysql_query("INSERT INTO {$prefix}final_submissions
 					( submit_id, username, assignment, problem, time, status, pre_score, submit_count, file_name, main_file_name, file_type)
 					VALUES ('$submit_id','$username','$assignment','$problem','$time','$status','$pre_score','$submit_count','$file_name','$main_file_name','$file_type') ");
 	}
 	else{
 		$sid = $r['submit_id'];
-		if ($option==='judge' OR ($option==='rejudge' && $sid===$submit_id)){
+		if ( $option==='judge' OR ($option==='rejudge' && $sid===$submit_id) ){
 			mysql_query("UPDATE {$prefix}final_submissions
 					SET submit_id='$submit_id', time='$time', status='$status', pre_score='$pre_score', submit_count='$submit_count', file_name='$file_name', main_file_name='$main_file_name', file_type='$file_type'
 					WHERE username='$username' AND assignment='$assignment' AND problem='$problem' ");
 		}
 	}
 
-
 	mysql_query("UPDATE {$prefix}all_submissions
 				SET status='$status', pre_score='$pre_score'
 				WHERE submit_id='$submit_id' AND username='$username' AND assignment='$assignment' AND problem='$problem'");
+
 }
 
 
+// ------------------------------------------------------------------------
 
 
 
+$queue_row = mysql_fetch_assoc(mysql_query("SELECT * FROM {$prefix}queue LIMIT 1"));
 
-
-
-
-
-//sleep(rand(0,15)/10); // I think this is not needed
-
-$qr = mysql_fetch_assoc(mysql_query("SELECT * FROM {$prefix}queue LIMIT 1")); // queuerow
-
-if($qr==null){ // if queue is empty
+if($queue_row==null){ // if queue is empty
 	mysql_query("UPDATE {$prefix}settings SET shj_value=0 WHERE shj_key='queue_is_working'");
 	return;
 }
 
 $q = mysql_fetch_assoc(mysql_query("SELECT shj_value FROM {$prefix}settings WHERE shj_key='queue_is_working'"));
 $q=$q['shj_value'];
-//	echo $q;
+
 if($q==1)
 	return;
 
 mysql_query("UPDATE {$prefix}settings SET shj_value=1 WHERE shj_key='queue_is_working'");
 
-//sleep(25.4+rand(0,50)/10);   // DO WE REALLY NEED THIS LINE ?????????????????????? ANSWER: NO :)
 
 do{
 
-	$submit_id = $qr['submit_id'];
-	$username = $qr['username'];
-	$assignment = $qr['assignment'];
-	$problem = $qr['problem'];
+	$submit_id = $queue_row['submit_id'];
+	$username = $queue_row['username'];
+	$assignment = $queue_row['assignment'];
+	$problem = $queue_row['problem'];
+
 
 	$srrr = mysql_fetch_assoc(mysql_query("SELECT c_time_limit,java_time_limit,python_time_limit,memory_limit,diff_cmd,diff_arg FROM {$prefix}problems WHERE assignment='$assignment' AND id='$problem'"));
 
@@ -149,7 +149,7 @@ do{
 	$srrr = mysql_fetch_assoc(mysql_query("SELECT shj_value FROM {$prefix}settings WHERE shj_key='enable_java_policy'"));
 	$op4 = $srrr['shj_value'];
 
-	// compiling and judging the code (with tester.sh) :
+
 	
 	if ($file_type=='c' OR $file_type == 'cpp')
 		$time_limit = $c_time_limit;
@@ -188,13 +188,15 @@ do{
 	if ($file_type=='py3' && $enable_py3_shield==1)
 		file_put_contents($the_file, $source);
 
+
 	// deleting the jail folder, if still exists
 	shell_exec("cd $tester_path; rm -r jail*");
 
 	$output = trim($output);
 
 	// saving judge result
-	$from= $userdir."/result.html"; $to = $userdir."/result-".($submit_id).".html" ;
+	$from= $userdir."/result.html";
+	$to = $userdir."/result-".($submit_id).".html";
 	copy($from, $to);
 
 
@@ -215,8 +217,8 @@ do{
 
 
 	mysql_query("DELETE FROM {$prefix}queue WHERE submit_id='$submit_id' AND username='$username' AND assignment='$assignment' AND problem='$problem'");
-	$qr = mysql_fetch_assoc(mysql_query("SELECT * FROM {$prefix}queue LIMIT 1"));
+	$queue_row = mysql_fetch_assoc(mysql_query("SELECT * FROM {$prefix}queue LIMIT 1"));
 
-}while($qr!=null);
+}while($queue_row!=NULL);
 
 mysql_query("UPDATE {$prefix}settings SET shj_value=0 WHERE shj_key='queue_is_working'");
