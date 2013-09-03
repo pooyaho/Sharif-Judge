@@ -197,9 +197,11 @@ do{
 	$output = trim($output);
 
 	// saving judge result
-	$from= $userdir."/result.html";
-	$to = $userdir."/result-".($submit_id).".html";
-	copy($from, $to);
+	if ( $output != -4 && $output != -5 && $output != -6 ){
+		$from= $userdir."/result.html";
+		$to = $userdir."/result-".($submit_id).".html";
+		copy($from, $to);
+	}
 
 
 	$stat = 'OK';
@@ -209,6 +211,7 @@ do{
 	else if($output==-3) $stat = 'Bad System Call';
 	else if($output==-4) $stat = 'Invalid Special Judge';
 	else if($output==-5) $stat = 'File Format not Supported';
+	else if($output==-6) $stat = 'Judge Error';
 	else if($score==0)  $stat = 'WRONG';
 
 	//$score = ceil($score * $problem_score / 10000) ;

@@ -35,6 +35,7 @@
 #      -3              Bad System Call
 #      -4              Special Judge Script is Invalid
 #      -5              File format not supported
+#      -6              Judge Error
 
 ################### Getting Arguments ###################
 PROBLEMPATH=${1} # problem directory
@@ -83,7 +84,7 @@ LOG="$PROBLEMPATH/$UN/log"; echo "" >>$LOG
 function judge_log {
 	#echo -e "$1"
 	if $LOG_ON; then
-		echo -e "$1" >>$LOG 
+		echo -e "$@" >>$LOG 
 	fi
 }
 
@@ -91,13 +92,16 @@ judge_log "Starting tester..."
 
 
 #################### Initialization #####################
+# detecting existence of perl
 PERL_EXISTS=true
 hash perl 2>/dev/null || PERL_EXISTS=false
 
 TST="$(ls $PROBLEMPATH/in | wc -l)"  # Number of Test Cases
 JAIL=jail-$RANDOM
 if ! mkdir $JAIL; then
-	exit
+	judge_log "Error. Folder 'tester' is not writable! Exiting..."
+	echo -6
+	exit 0
 fi
 cd $JAIL
 cp ../timeout ./timeout
@@ -113,7 +117,6 @@ judge_log "Output size limit: $OUTLIMIT bytes"
 judge_log "SANDBOX_ON: $SANDBOX_ON"
 judge_log "C_SHIELD_ON: $C_SHIELD_ON"
 judge_log "JAVA_POLICY: \"$JAVA_POLICY\""
-#echo -e "\nJAILPATH="$PROBLEMPATH/$UN/jail"\nEXT="$EXT"\nTIME LIMIT="$TIMELIMIT"\nMEM LIMIT="$MEMLIMIT"\nSECURITY HEADER="$HEADER"\nTEST CASES="$TST"\nDIFF PARAM="$DIFFOPTION"\n" >>$LOG
 
 ########################################################################################################
 ############################################ COMPILING JAVA ############################################
@@ -253,7 +256,7 @@ fi
 ################################################ TESTING ###############################################
 ########################################################################################################
 judge_log "\nTesting..."
-judge_log "ulimit -t `echo "$TIMELIMIT/1+1"|bc`"
+judge_log "using ulimit -t $TIMELIMITINT"
 
 echo "" >$PROBLEMPATH/$UN/result.html
 
