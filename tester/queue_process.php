@@ -13,9 +13,9 @@
 
 /* Database Connection Settings */
 $db_host        = 'localhost'; // database host
-$db_user        = 'shj2';          // database username
-$db_pass        = '123';          // database password
-$db_database    = 'shj2';          // database name
+$db_user        = '';          // database username
+$db_pass        = '';          // database password
+$db_database    = '';          // database name
 $prefix         = 'shj_';      // table prefix
 
 
