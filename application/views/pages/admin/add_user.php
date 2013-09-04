@@ -17,7 +17,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				data: {
 					send_mail: ($("#send_mail").is(":checked")?1:0),
 					delay: $("#delay").val(),
-					new_users:$("#new_users").val()
+					new_users:$("#new_users").val(),
+					<?php echo $this->security->get_csrf_token_name(); ?>: '<?php echo $this->security->get_csrf_hash(); ?>'
 				},
 				url: '<?php echo site_url('users/add') ?>',
 				success: function(data) {

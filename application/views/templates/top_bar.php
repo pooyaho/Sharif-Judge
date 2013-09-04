@@ -30,7 +30,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				$.ajax({
 					type: 'POST',
 					url: '<?php echo site_url('assignments/select') ?>',
-					data: {assignment_select:id},
+					data: {
+						assignment_select:id,
+						<?php echo $this->security->get_csrf_token_name(); ?>: '<?php echo $this->security->get_csrf_hash(); ?>'
+					},
 					timeout: 1000,
 					success: function(a) {
 						if (a != "shj_failed"){

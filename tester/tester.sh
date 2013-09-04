@@ -29,7 +29,7 @@
 
 ####################### Output #######################
 #    Output              Meaning
-#     >=0              score form 10000
+#      >=0             score form 10000
 #      -1              Compilation Error
 #      -2              Syntax Error
 #      -3              Bad System Call
@@ -72,9 +72,6 @@ fi
 # DIFFOPTION can be "ignore". In this case, before diff command,
 # all newlines and whitespaces will be removed from both files.
 DIFFARGUMENT=""
-if [ "$DIFFOPTION" = "" ]; then
-	DIFFOPTION="-bB"
-fi
 if [ "$DIFFOPTION" != "ignore" ]; then
 	DIFFARGUMENT=$DIFFOPTION
 fi
@@ -263,8 +260,7 @@ echo "" >$PROBLEMPATH/$UN/result.html
 PASSEDTESTS=0
 
 for((i=1;i<=TST;i++)); do
-	judge_log "TEST$i"
-	#sleep 0.05
+	judge_log "\n=== TEST $i ==="
 	echo "<span class=\"shj_b\">Test $i </span>" >>$PROBLEMPATH/$UN/result.html
 	
 	touch err
@@ -306,9 +302,6 @@ for((i=1;i<=TST;i++)); do
 			./runcode.sh $EXT $MEMLIMIT $TIMELIMIT $TIMELIMITINT python -O $FILENAME.py <$PROBLEMPATH/in/input$i.txt >out 2>err
 		fi
 		EXITCODE=$?
-		#echo "<span>" >>$PROBLEMPATH/$UN/result.html
-		#(cat err | head -5 | sed "s/$FILENAME.$EXT//g" | sed 's/&/\&amp;/g' | sed 's/</\&lt;/g' | sed 's/>/\&gt;/g' | sed 's/"/\&quot;/g') >> $PROBLEMPATH/$UN/result.html
-		#echo "</span>" >>$PROBLEMPATH/$UN/result.html
 
 	elif [ "$EXT" = "py3" ]; then
 		if $PERL_EXISTS; then
@@ -317,9 +310,6 @@ for((i=1;i<=TST;i++)); do
 			./runcode.sh $EXT $MEMLIMIT $TIMELIMIT $TIMELIMITINT python3 -O $FILENAME.py <$PROBLEMPATH/in/input$i.txt >out 2>err
 		fi
 		EXITCODE=$?
-		#echo "<span>" >>$PROBLEMPATH/$UN/result.html
-		#(cat err | head -5 | sed "s/$FILENAME.$EXT//g" | sed 's/&/\&amp;/g' | sed 's/</\&lt;/g' | sed 's/>/\&gt;/g' | sed 's/"/\&quot;/g') >> $PROBLEMPATH/$UN/result.html
-		#echo "</span>" >>$PROBLEMPATH/$UN/result.html
 
 	else
 		judge_log "File format not supported."
@@ -329,7 +319,7 @@ for((i=1;i<=TST;i++)); do
 		exit 0
 	fi
 
-	judge_log "Exit Code=$EXITCODE"
+	judge_log "Exit Code = $EXITCODE"
 
 	if ! grep -q "FINISHED" err; then
 		if grep -q "SHJ_TIME" err; then

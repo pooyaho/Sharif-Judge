@@ -16,7 +16,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	var finish_time; // finish time of assignment
 	var extra_time; // extra time of assignment
 	var sidebar;
-	var time_url = "<?php echo site_url('server_time') ?>";
+
+
+	function sync_server_time() {
+		$.post('<?php echo site_url('server_time') ?>',
+			{<?php echo $this->security->get_csrf_token_name(); ?>: '<?php echo $this->security->get_csrf_hash(); ?>'},
+			function(data) {
+				offset = moment(data).diff(moment());
+			}
+		);
+	}
 
 	$(document).ready(function() {
 		sidebar = $.cookie('shj_sidebar');

@@ -60,7 +60,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					var positions = JSON.stringify(gridster.serialize());
 					$.post(
 						"<?php echo site_url('dashboard/widget_positions') ?>",
-						{positions: positions},
+						{
+							positions: positions,
+							<?php echo $this->security->get_csrf_token_name(); ?>: '<?php echo $this->security->get_csrf_hash(); ?>'
+						},
 						function (data) {
 							//$("#result").html(data);
 						}

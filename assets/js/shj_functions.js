@@ -4,15 +4,6 @@
  * @author Mohammad Javad Naderi <mjnaderi@gmail.com>
  */
 
-function sync_server_time() {
-	$.post(time_url,
-		{},
-		function(data) {
-			offset = moment(data).diff(moment());
-		}
-	);
-}
-
 function update_clock(){
 	if (Math.abs(moment().diff(time))>3500){
 		//console.log('moment: '+moment()+' time: '+time+' diff: '+Math.abs(moment().diff(time)));

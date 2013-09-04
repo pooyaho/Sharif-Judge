@@ -13,9 +13,9 @@
 
 /* Database Connection Settings */
 $db_host        = 'localhost'; // database host
-$db_user        = '';          // database username
-$db_pass        = '';          // database password
-$db_database    = '';          // database name
+$db_user        = 'shj2';          // database username
+$db_pass        = '123';          // database password
+$db_database    = 'shj2';          // database name
 $prefix         = 'shj_';      // table prefix
 
 
@@ -79,7 +79,7 @@ function addJudgeResultToDB($sr){
 
 $queue_row = mysql_fetch_assoc(mysql_query("SELECT * FROM {$prefix}queue LIMIT 1"));
 
-if($queue_row==null){ // if queue is empty
+if($queue_row==NULL){ // if queue is empty
 	mysql_query("UPDATE {$prefix}settings SET shj_value=0 WHERE shj_key='queue_is_working'");
 	return;
 }

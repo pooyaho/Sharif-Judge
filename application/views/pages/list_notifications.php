@@ -14,7 +14,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					var id = $(this).attr('id');
 					$.post(
 						'<?php echo site_url('notifications/delete') ?>',
-						{id: id},
+						{
+							id: id,
+							<?php echo $this->security->get_csrf_token_name(); ?>: '<?php echo $this->security->get_csrf_hash(); ?>'
+						},
 						function (data) {
 							location.reload();
 						}
