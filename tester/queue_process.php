@@ -225,4 +225,6 @@ do{
 
 }while($queue_row!==NULL);
 
+$res->free();
+
 $db->query("UPDATE {$prefix}settings SET shj_value=0 WHERE shj_key='queue_is_working'");
