@@ -40,6 +40,7 @@ For running Sharif Judge, a Linux server with following requirements is needed:
   * MySql database
   * PHP must have permission to run shell commands using [`shell_exec()`](http://www.php.net/manual/en/function.shell-exec.php) php function (specially `shell_exec("php");`)
   * Tools for compiling and running submitted codes (`gcc`, `g++`, `javac`, `java`, `python` and `python3` commands)
+  * It is better to have `perl` installed for more precise time and memory limit and imposing size limit on output of submitted code.
 
 ### Installation
 

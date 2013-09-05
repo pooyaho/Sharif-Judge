@@ -20,12 +20,11 @@ $prefix         = 'shj_';      // table prefix
 
 
 // Connecting to database
-$conn = mysql_connect($db_host, $db_user, $db_pass);
-if(!$conn)
-	exit('dberror');
-mysql_set_charset('utf8', $conn);
-mysql_select_db($db_database,$conn);
 
+$db = new mysqli($db_host, $db_user, $db_pass, $db_database);
+if($db->connect_errno > 0){
+	die('Unable to connect to database [' . $db->connect_error . ']');
+}
 
 // $option can be 'judge' or 'rejudge'
 $option = trim($argv[1]);
@@ -36,8 +35,10 @@ $option = trim($argv[1]);
 
 function addJudgeResultToDB($sr){
 
+	global $db;
 	global $prefix;
 	global $option;
+
 	$submit_id=$sr['submit_id'];
 	$username=$sr['username'];
 	$assignment=$sr['assignment'];
@@ -50,23 +51,24 @@ function addJudgeResultToDB($sr){
 	$main_file_name=$sr['main_file_name'];
 	$file_type=$sr['file_type'];
 
-	$r = mysql_fetch_assoc(mysql_query("SELECT * FROM {$prefix}final_submissions WHERE username='$username' AND assignment='$assignment' AND problem='$problem'"));
+	$res = $db->query("SELECT * FROM {$prefix}final_submissions WHERE username='$username' AND assignment='$assignment' AND problem='$problem'");
+	$r = $res->fetch_assoc();
 
-	if ($r == NULL) {
-		mysql_query("INSERT INTO {$prefix}final_submissions
+	if ($r === NULL) {
+		$db->query("INSERT INTO {$prefix}final_submissions
 					( submit_id, username, assignment, problem, time, status, pre_score, submit_count, file_name, main_file_name, file_type)
 					VALUES ('$submit_id','$username','$assignment','$problem','$time','$status','$pre_score','$submit_count','$file_name','$main_file_name','$file_type') ");
 	}
 	else{
 		$sid = $r['submit_id'];
 		if ( $option==='judge' OR ($option==='rejudge' && $sid===$submit_id) ){
-			mysql_query("UPDATE {$prefix}final_submissions
+			$db->query("UPDATE {$prefix}final_submissions
 					SET submit_id='$submit_id', time='$time', status='$status', pre_score='$pre_score', submit_count='$submit_count', file_name='$file_name', main_file_name='$main_file_name', file_type='$file_type'
 					WHERE username='$username' AND assignment='$assignment' AND problem='$problem' ");
 		}
 	}
 
-	mysql_query("UPDATE {$prefix}all_submissions
+	$db->query("UPDATE {$prefix}all_submissions
 				SET status='$status', pre_score='$pre_score'
 				WHERE submit_id='$submit_id' AND username='$username' AND assignment='$assignment' AND problem='$problem'");
 
@@ -76,24 +78,28 @@ function addJudgeResultToDB($sr){
 // ------------------------------------------------------------------------
 
 
+$res = $db->query("SELECT * FROM {$prefix}queue LIMIT 1");
+$queue_row = $res->fetch_assoc();
 
-$queue_row = mysql_fetch_assoc(mysql_query("SELECT * FROM {$prefix}queue LIMIT 1"));
-
-if($queue_row==NULL){ // if queue is empty
-	mysql_query("UPDATE {$prefix}settings SET shj_value=0 WHERE shj_key='queue_is_working'");
+if($queue_row === NULL){ // if queue is empty
+	$db->query("UPDATE {$prefix}settings SET shj_value=0 WHERE shj_key='queue_is_working'");
 	return;
 }
 
-$q = mysql_fetch_assoc(mysql_query("SELECT shj_value FROM {$prefix}settings WHERE shj_key='queue_is_working'"));
-$q=$q['shj_value'];
+// get ''settings'' table
+$settings_res = $db->query("SELECT * FROM {$prefix}settings");
+$setting = array();
+while($row = $settings_res->fetch_assoc()){
+	$setting[$row['shj_key']] = $row['shj_value'];
+}
+$settings_res->free();
 
-if($q==1)
+if($setting['queue_is_working']==1)
 	return;
 
-mysql_query("UPDATE {$prefix}settings SET shj_value=1 WHERE shj_key='queue_is_working'");
+$db->query("UPDATE {$prefix}settings SET shj_value=1 WHERE shj_key='queue_is_working'");
 
-$query = mysql_fetch_assoc(mysql_query("SELECT shj_value FROM {$prefix}settings WHERE shj_key='output_size_limit'"));
-$output_size_limit=$query['shj_value']*1024; // multiplied by 1024 to convert to bytes (from kB)
+$output_size_limit=$setting['output_size_limit']*1024; // multiplied by 1024 to convert to bytes (from kB)
 
 do{
 
@@ -103,8 +109,8 @@ do{
 	$problem = $queue_row['problem'];
 
 
-	$srrr = mysql_fetch_assoc(mysql_query("SELECT c_time_limit,java_time_limit,python_time_limit,memory_limit,diff_cmd,diff_arg FROM {$prefix}problems WHERE assignment='$assignment' AND id='$problem'"));
-
+	$res = $db->query("SELECT c_time_limit,java_time_limit,python_time_limit,memory_limit,diff_cmd,diff_arg FROM {$prefix}problems WHERE assignment='$assignment' AND id='$problem'");
+	$srrr = $res->fetch_assoc();
 	$c_time_limit = $srrr['c_time_limit']/1000;
 	$java_time_limit = $srrr['java_time_limit']/1000;
 	$python_time_limit = $srrr['python_time_limit']/1000;
@@ -113,7 +119,8 @@ do{
 	$diff_arg = $srrr['diff_arg'];
 
 
-	$sr = mysql_fetch_assoc(mysql_query("SELECT * FROM {$prefix}all_submissions WHERE username='$username' AND assignment='$assignment' AND problem='$problem' AND submit_id='$submit_id'")); // submitrow
+	$res = $db->query("SELECT * FROM {$prefix}all_submissions WHERE username='$username' AND assignment='$assignment' AND problem='$problem' AND submit_id='$submit_id'"); // submitrow
+	$sr = $res->fetch_assoc();
 	$file_type = $sr['file_type'];
 	$file_extension = $file_type;
 	if ($file_extension==='py2' || $file_extension==='py3')
@@ -121,35 +128,25 @@ do{
 	$raw_filename=$sr['file_name'];
 	$main_filename=$sr['main_file_name'];
 
-	$srrr = mysql_fetch_assoc(mysql_query("SELECT shj_value FROM {$prefix}settings WHERE shj_key='assignments_root'"));
-	$assignments_dir = rtrim($srrr['shj_value'],'/');
-	$srrr = mysql_fetch_assoc(mysql_query("SELECT shj_value FROM {$prefix}settings WHERE shj_key='tester_path'"));
-	$tester_path = rtrim($srrr['shj_value'],'/');
+	$assignments_dir = rtrim($setting['assignments_root'],'/');
+	$tester_path = rtrim($setting['tester_path'],'/');
 	$problemdir = $assignments_dir."/assignment_$assignment/p$problem";
 	$userdir = "$problemdir/$username";
 	$the_file = "$userdir/$raw_filename.$file_extension";
 
 	// python shield settings
-	$srrr = mysql_fetch_assoc(mysql_query("SELECT shj_value FROM {$prefix}settings WHERE shj_key='enable_py2_shield'"));
-	$enable_py2_shield = $srrr['shj_value'];
-	$srrr = mysql_fetch_assoc(mysql_query("SELECT shj_value FROM {$prefix}settings WHERE shj_key='enable_py3_shield'"));
-	$enable_py3_shield = $srrr['shj_value'];
+	$enable_py2_shield = $setting['enable_py2_shield'];
+	$enable_py3_shield = $setting['enable_py3_shield'];
 
-	$srrr = mysql_fetch_assoc(mysql_query("SELECT shj_value FROM {$prefix}settings WHERE shj_key='enable_log'"));
-	$op1 = $srrr['shj_value'];
-	$srrr = mysql_fetch_assoc(mysql_query("SELECT shj_value FROM {$prefix}settings WHERE shj_key='enable_easysandbox'"));
-	$op2 = $srrr['shj_value'];
+	$op1 = $setting['enable_log'];
+	$op2 = $setting['enable_easysandbox'];
 	$op3 = 0;
-	if ($file_type==='c'){
-		$srrr = mysql_fetch_assoc(mysql_query("SELECT shj_value FROM {$prefix}settings WHERE shj_key='enable_c_shield'"));
-		$op3 = $srrr['shj_value'];
-	}
-	elseif ($file_type === 'cpp'){
-		$srrr = mysql_fetch_assoc(mysql_query("SELECT shj_value FROM {$prefix}settings WHERE shj_key='enable_cpp_shield'"));
-		$op3 = $srrr['shj_value'];
-	}
-	$srrr = mysql_fetch_assoc(mysql_query("SELECT shj_value FROM {$prefix}settings WHERE shj_key='enable_java_policy'"));
-	$op4 = $srrr['shj_value'];
+	if ($file_type==='c')
+		$op3 = $setting['enable_c_shield'];
+	elseif ($file_type === 'cpp')
+		$op3 = $setting['enable_cpp_shield'];
+
+	$op4 = $setting['enable_java_policy'];
 
 
 	
@@ -221,9 +218,11 @@ do{
 	addJudgeResultToDB($sr);
 
 
-	mysql_query("DELETE FROM {$prefix}queue WHERE submit_id='$submit_id' AND username='$username' AND assignment='$assignment' AND problem='$problem'");
-	$queue_row = mysql_fetch_assoc(mysql_query("SELECT * FROM {$prefix}queue LIMIT 1"));
+	$db->query("DELETE FROM {$prefix}queue WHERE submit_id='$submit_id' AND username='$username' AND assignment='$assignment' AND problem='$problem'");
 
-}while($queue_row!=NULL);
+	$res = $db->query("SELECT * FROM {$prefix}queue LIMIT 1");
+	$queue_row = $res->fetch_assoc();
 
-mysql_query("UPDATE {$prefix}settings SET shj_value=0 WHERE shj_key='queue_is_working'");
+}while($queue_row!==NULL);
+
+$db->query("UPDATE {$prefix}settings SET shj_value=0 WHERE shj_key='queue_is_working'");

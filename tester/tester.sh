@@ -119,9 +119,9 @@ judge_log "JAVA_POLICY: \"$JAVA_POLICY\""
 ############################################ COMPILING JAVA ############################################
 ########################################################################################################
 if [ "$EXT" = "java" ]; then
-	cp $PROBLEMPATH/$UN/$FILENAME.$EXT $MAINFILENAME.$EXT
+	cp $PROBLEMPATH/$UN/$FILENAME.java $MAINFILENAME.java
 	judge_log "Compiling as Java"
-	javac $MAINFILENAME.$EXT >/dev/null 2>cerr
+	javac $MAINFILENAME.java >/dev/null 2>cerr
 	EXITCODE=$?
 	if [ $EXITCODE -ne 0 ]; then
 		judge_log "Compile Error"

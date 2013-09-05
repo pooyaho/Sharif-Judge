@@ -169,7 +169,6 @@ class Login extends CI_Controller{
 		}
 		$this->load->view('pages/authentication/reset_password', $data);
 		$this->load->view('templates/footer');
-		//$user = $this->user_model->get_
 	}
 
 
