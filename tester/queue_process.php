@@ -22,8 +22,8 @@ $prefix         = 'shj_';      // table prefix
 // Connecting to database
 
 $db = new mysqli($db_host, $db_user, $db_pass, $db_database);
-if($db->connect_errno > 0){
-	die('Unable to connect to database [' . $db->connect_error . ']');
+if ($db->connect_errno > 0){
+	exit('Unable to connect to database [' . $db->connect_error . ']');
 }
 
 // $option can be 'judge' or 'rejudge'
@@ -51,26 +51,36 @@ function addJudgeResultToDB($sr){
 	$main_file_name=$sr['main_file_name'];
 	$file_type=$sr['file_type'];
 
-	$res = $db->query("SELECT * FROM {$prefix}final_submissions WHERE username='$username' AND assignment='$assignment' AND problem='$problem'");
+	$res = $db->query(
+		"SELECT *
+		FROM {$prefix}final_submissions
+		WHERE username='$username' AND assignment='$assignment' AND problem='$problem'"
+	);
 	$r = $res->fetch_assoc();
 
 	if ($r === NULL) {
-		$db->query("INSERT INTO {$prefix}final_submissions
-					( submit_id, username, assignment, problem, time, status, pre_score, submit_count, file_name, main_file_name, file_type)
-					VALUES ('$submit_id','$username','$assignment','$problem','$time','$status','$pre_score','$submit_count','$file_name','$main_file_name','$file_type') ");
+		$db->query(
+			"INSERT INTO {$prefix}final_submissions
+			( submit_id, username, assignment, problem, time, status, pre_score, submit_count, file_name, main_file_name, file_type)
+			VALUES ('$submit_id','$username','$assignment','$problem','$time','$status','$pre_score','$submit_count','$file_name','$main_file_name','$file_type') "
+		);
 	}
 	else{
 		$sid = $r['submit_id'];
 		if ( $option==='judge' OR ($option==='rejudge' && $sid===$submit_id) ){
-			$db->query("UPDATE {$prefix}final_submissions
-					SET submit_id='$submit_id', time='$time', status='$status', pre_score='$pre_score', submit_count='$submit_count', file_name='$file_name', main_file_name='$main_file_name', file_type='$file_type'
-					WHERE username='$username' AND assignment='$assignment' AND problem='$problem' ");
+			$db->query(
+				"UPDATE {$prefix}final_submissions
+				SET submit_id='$submit_id', time='$time', status='$status', pre_score='$pre_score', submit_count='$submit_count', file_name='$file_name', main_file_name='$main_file_name', file_type='$file_type'
+				WHERE username='$username' AND assignment='$assignment' AND problem='$problem' "
+			);
 		}
 	}
 
-	$db->query("UPDATE {$prefix}all_submissions
-				SET status='$status', pre_score='$pre_score'
-				WHERE submit_id='$submit_id' AND username='$username' AND assignment='$assignment' AND problem='$problem'");
+	$db->query(
+		"UPDATE {$prefix}all_submissions
+		SET status='$status', pre_score='$pre_score'
+		WHERE submit_id='$submit_id' AND username='$username' AND assignment='$assignment' AND problem='$problem'"
+	);
 
 }
 
@@ -109,7 +119,7 @@ do{
 	$problem = $queue_row['problem'];
 
 
-	$res = $db->query("SELECT c_time_limit,java_time_limit,python_time_limit,memory_limit,diff_cmd,diff_arg FROM {$prefix}problems WHERE assignment='$assignment' AND id='$problem'");
+	$res = $db->query("SELECT * FROM {$prefix}problems WHERE assignment='$assignment' AND id='$problem'");
 	$srrr = $res->fetch_assoc();
 	$c_time_limit = $srrr['c_time_limit']/1000;
 	$java_time_limit = $srrr['java_time_limit']/1000;
@@ -119,7 +129,11 @@ do{
 	$diff_arg = $srrr['diff_arg'];
 
 
-	$res = $db->query("SELECT * FROM {$prefix}all_submissions WHERE username='$username' AND assignment='$assignment' AND problem='$problem' AND submit_id='$submit_id'"); // submitrow
+	$res = $db->query( // submitrow
+		"SELECT *
+		FROM {$prefix}all_submissions
+		WHERE username='$username' AND assignment='$assignment' AND problem='$problem' AND submit_id='$submit_id'"
+	);
 	$sr = $res->fetch_assoc();
 	$file_type = $sr['file_type'];
 	$file_extension = $file_type;
@@ -203,22 +217,27 @@ do{
 
 	$stat = 'OK';
 	$score = ($output<0?0:$output);
-	if($output==-1) $stat = 'Compilation Error';
-	else if($output==-2) $stat = 'Syntax Error';
-	else if($output==-3) $stat = 'Bad System Call';
-	else if($output==-4) $stat = 'Invalid Special Judge';
-	else if($output==-5) $stat = 'File Format not Supported';
-	else if($output==-6) $stat = 'Judge Error';
-	else if($score==0)  $stat = 'WRONG';
+	switch($output){
+		case 0:  $stat = 'WRONG'; break;
+		case -1: $stat = 'Compilation Error'; break;
+		case -2: $stat = 'Syntax Error'; break;
+		case -3: $stat = 'Bad System Call'; break;
+		case -4: $stat = 'Invalid Special Judge'; break;
+		case -5: $stat = 'File Format not Supported'; break;
+		case -6: $stat = 'Judge Error'; break;
+	}
 
-	//$score = ceil($score * $problem_score / 10000) ;
 
 	$sr['status']=$stat;
 	$sr['pre_score']=$score;
+
 	addJudgeResultToDB($sr);
 
 
-	$db->query("DELETE FROM {$prefix}queue WHERE submit_id='$submit_id' AND username='$username' AND assignment='$assignment' AND problem='$problem'");
+	$db->query(
+		"DELETE FROM {$prefix}queue
+		WHERE submit_id='$submit_id' AND username='$username' AND assignment='$assignment' AND problem='$problem'"
+	);
 
 	$res = $db->query("SELECT * FROM {$prefix}queue LIMIT 1");
 	$queue_row = $res->fetch_assoc();

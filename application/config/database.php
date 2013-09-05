@@ -82,11 +82,11 @@ $query_builder = TRUE;
 $db['default'] = array(
 	'dsn'	=> '',
 
-	/* Provide MySql connection information here: */
+	/* Provide database connection settings here: */
 	'hostname' => 'localhost',  // database host
-	'username' => '',           // database username
-	'password' => '',           // database password
-	'database' => '',           // database name
+	'username' => '',       // database username
+	'password' => '',        // database password
+	'database' => '',       // database name
 	'dbprefix' => 'shj_',       // table prefix
 	/**********************************************/
 
