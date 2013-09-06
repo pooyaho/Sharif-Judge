@@ -36,7 +36,7 @@ Sharif Judge doesn't need root privileges to install. It has a simple installati
 
 For running Sharif Judge, a Linux server with following requirements is needed:
 
-  * Webserver running PHP version 5.3 or later
+  * Webserver running PHP version 5.3 or later with ''mysqli'' extension
   * PHP CLI (PHP command line interface, i.e. `php` shell command)
   * MySql database
   * PHP must have permission to run shell commands using [`shell_exec()`](http://www.php.net/manual/en/function.shell-exec.php) php function (specially `shell_exec("php");`)
