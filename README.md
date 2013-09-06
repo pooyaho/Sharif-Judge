@@ -19,6 +19,7 @@ Download the latest release from [http://sharifjudge.ir/download](http://sharifj
   * Sandboxing _(not yet for python)_
   * Cheat detection (similar codes detection) using [Moss](http://theory.stanford.edu/~aiken/moss/)
   * Custom rule for grading late submissions
+  * Submission queue
   * Download results in excel file
   * Download submitted codes in zip file
   * _"input/output compare"_ and _"special script"_ methods for checking output correctness
