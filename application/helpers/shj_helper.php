@@ -45,5 +45,27 @@ if ( ! function_exists('filetype_to_extension'))
 }
 
 
+if ( ! function_exists('filetype_to_language'))
+{
+
+	/*
+	 * Converts code type to language
+	 */
+	function filetype_to_language($filetype)
+	{
+		$filetype = strtolower($filetype);
+		switch ($filetype) {
+			case 'c': return 'C';
+			case 'cpp': return 'C++';
+			case 'py2': return 'Py 2';
+			case 'py3': return 'Py 3';
+			case 'java': return 'Java';
+			case 'zip': return 'Zip';
+			default: return FALSE;
+		}
+	}
+}
+
+
 /* End of file shj.php */
 /* Location: ./application/helpers/shj.php */

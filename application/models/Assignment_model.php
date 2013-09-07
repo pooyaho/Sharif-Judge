@@ -71,6 +71,7 @@ class Assignment_model extends CI_Model{
 			foreach ($items as $item){
 				$item = trim($item);
 				$item2 = strtolower($item);
+				$item = ucfirst($item2);
 				if ($item2==='python2')
 					$item = 'Python 2';
 				if ($item2==='python3')
@@ -79,7 +80,7 @@ class Assignment_model extends CI_Model{
 				if (in_array( $item2 ,array('c','c++','python 2','python 3','java','zip')))
 					$ft[$i-1] .= $item.",";
 			}
-			$ft[$i-1] = substr($ft[$i-1],0,strlen($ft[$i-1])-1);
+			$ft[$i-1] = substr($ft[$i-1],0,strlen($ft[$i-1])-1); // remove last ','
 			$problem = array(
 				'assignment' => $id,
 				'id' => $i,

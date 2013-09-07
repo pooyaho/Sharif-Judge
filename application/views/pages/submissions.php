@@ -12,16 +12,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			function(){
 				var submit_id = $(this).attr('submit_id');
 				var problem = $(this).attr('problem');
-				$.ajax({
-					type: 'POST',
-					url: '<?php echo site_url('submissions/select') ?>',
-					data: {
+				$.post(
+					'<?php echo site_url('submissions/select') ?>',
+					{
 						submit_id:submit_id,
 						problem: problem,
 						<?php echo $this->security->get_csrf_token_name(); ?>: '<?php echo $this->security->get_csrf_hash(); ?>'
 					},
-					timeout: 1000,
-					success: function(a) {
+					function(a) {
 						//if (a != "shj_failed"){
 						if (a == "shj_success"){
 							$(".set_final.p"+problem).removeClass('checked');
@@ -31,7 +29,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 							alert("This assignment is finished. You cannot change your final submissions.");
 						}
 					}
-				});
+				);
 			}
 		);
 	});
@@ -151,21 +149,21 @@ $finish = strtotime($assignment['finish_time']);
 							$extra_time = $assignment['extra_time'];
 							$delay = strtotime($item['time'])-$finish;
 							ob_start();
-							if ( eval($assignment['late_rule']) ===FALSE ){
-								$coefficient = "error";
+							if ( eval($assignment['late_rule']) === FALSE ){
+								$coefficient = 'error';
 								$final_score = 0;
 							}
 							else {
 								$final_score = ceil($pre_score*$coefficient/100);
 							}
 							if (!isset($coefficient))
-								$coefficient = "error";
+								$coefficient = 'error';
 							ob_end_clean();
 							echo $coefficient;
 						?></td>
 						<td style="font-weight: bold;"><?php echo $final_score ?> </td>
 						<td>
-							<?php if (substr($item['status'],0,8)=="Uploaded"): ?>
+							<?php if (substr($item['status'],0,8) == 'Uploaded'): ?>
 								<?php echo $item['status'] ?>
 							<?php else: ?>
 								<?php echo form_open('submissions/view_code') ?>
@@ -209,7 +207,7 @@ $finish = strtotime($assignment['finish_time']);
 							</td>
 						<?php endif ?>
 						<td>
-							<?php echo $item['file_type'] ?>
+							<?php echo filetype_to_language($item['file_type']) ?>
 						</td>
 						<td><?php
 							if ($view=="final")

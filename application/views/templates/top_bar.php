@@ -27,15 +27,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		$(".select_assignment").click(
 			function(){
 				var id = $(this).attr('id');
-				$.ajax({
-					type: 'POST',
-					url: '<?php echo site_url('assignments/select') ?>',
-					data: {
+				$.post(
+					'<?php echo site_url('assignments/select') ?>',
+					{
 						assignment_select:id,
 						<?php echo $this->security->get_csrf_token_name(); ?>: '<?php echo $this->security->get_csrf_hash(); ?>'
 					},
-					timeout: 1000,
-					success: function(a) {
+					function(a) {
 						if (a != "shj_failed"){
 							$(".select_assignment").removeClass('checked');
 							$(".i"+id).addClass('checked');
@@ -44,7 +42,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 							extra_time = moment.duration(parseInt(a.split(',')[1],10), 'seconds');
 						}
 					}
-				});
+				);
 			}
 		);
 	});

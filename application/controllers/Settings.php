@@ -113,26 +113,30 @@ class Settings extends CI_Controller{
 				if (file_exists($shpy3_path) && file_put_contents($shpy3_path,$this->input->post('shield_py3'))===FALSE)
 					array_push($this->errors,'File shield_py3.py is not writable. Edit it manually.');
 			ob_end_clean();
-			$this->settings_model->set_setting('timezone',$this->input->post('timezone'));
-			$this->settings_model->set_setting('tester_path',$this->input->post('tester_path'));
-			$this->settings_model->set_setting('assignments_root',$this->input->post('assignments_root'));
-			$this->settings_model->set_setting('file_size_limit',$this->input->post('file_size_limit'));
-			$this->settings_model->set_setting('output_size_limit',$this->input->post('output_size_limit'));
-			$this->settings_model->set_setting('default_late_rule',$this->input->post('default_late_rule'));
-			$this->settings_model->set_setting('enable_easysandbox',$this->input->post('enable_easysandbox')===NULL?0:1);
-			$this->settings_model->set_setting('enable_c_shield',$this->input->post('enable_c_shield')===NULL?0:1);
-			$this->settings_model->set_setting('enable_cpp_shield',$this->input->post('enable_cpp_shield')===NULL?0:1);
-			$this->settings_model->set_setting('enable_py2_shield',$this->input->post('enable_py2_shield')===NULL?0:1);
-			$this->settings_model->set_setting('enable_py3_shield',$this->input->post('enable_py3_shield')===NULL?0:1);
-			$this->settings_model->set_setting('enable_java_policy',$this->input->post('enable_java_policy')===NULL?0:1);
-			$this->settings_model->set_setting('enable_log',$this->input->post('enable_log')===NULL?0:1);
-			$this->settings_model->set_setting('enable_registration',$this->input->post('enable_registration')===NULL?0:1);
-			$this->settings_model->set_setting('mail_from',$this->input->post('mail_from'));
-			$this->settings_model->set_setting('mail_from_name',$this->input->post('mail_from_name'));
-			$this->settings_model->set_setting('reset_password_mail',$this->input->post('reset_password_mail'));
-			$this->settings_model->set_setting('add_user_mail',$this->input->post('add_user_mail'));
-			$this->settings_model->set_setting('results_per_page',$this->input->post('results_per_page'));
-			$this->settings_model->set_setting('week_start',$this->input->post('week_start'));
+			$timezone = $this->input->post('timezone');
+			// if timezone is invalid, set it to 'Asia/Tehran' :
+			if ( ! in_array($timezone, DateTimeZone::listIdentifiers()) )
+				$timezone='Asia/Tehran';
+			$this->settings_model->set_setting('timezone', $timezone);
+			$this->settings_model->set_setting('tester_path', $this->input->post('tester_path'));
+			$this->settings_model->set_setting('assignments_root', $this->input->post('assignments_root'));
+			$this->settings_model->set_setting('file_size_limit', $this->input->post('file_size_limit'));
+			$this->settings_model->set_setting('output_size_limit', $this->input->post('output_size_limit'));
+			$this->settings_model->set_setting('default_late_rule', $this->input->post('default_late_rule'));
+			$this->settings_model->set_setting('enable_easysandbox', $this->input->post('enable_easysandbox')===NULL?0:1);
+			$this->settings_model->set_setting('enable_c_shield', $this->input->post('enable_c_shield')===NULL?0:1);
+			$this->settings_model->set_setting('enable_cpp_shield', $this->input->post('enable_cpp_shield')===NULL?0:1);
+			$this->settings_model->set_setting('enable_py2_shield', $this->input->post('enable_py2_shield')===NULL?0:1);
+			$this->settings_model->set_setting('enable_py3_shield', $this->input->post('enable_py3_shield')===NULL?0:1);
+			$this->settings_model->set_setting('enable_java_policy', $this->input->post('enable_java_policy')===NULL?0:1);
+			$this->settings_model->set_setting('enable_log', $this->input->post('enable_log')===NULL?0:1);
+			$this->settings_model->set_setting('enable_registration', $this->input->post('enable_registration')===NULL?0:1);
+			$this->settings_model->set_setting('mail_from', $this->input->post('mail_from'));
+			$this->settings_model->set_setting('mail_from_name', $this->input->post('mail_from_name'));
+			$this->settings_model->set_setting('reset_password_mail', $this->input->post('reset_password_mail'));
+			$this->settings_model->set_setting('add_user_mail', $this->input->post('add_user_mail'));
+			$this->settings_model->set_setting('results_per_page', $this->input->post('results_per_page'));
+			$this->settings_model->set_setting('week_start', $this->input->post('week_start'));
 		}
 		else
 			$this->form_status = 'error';
