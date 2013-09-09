@@ -197,14 +197,14 @@ $finish = strtotime($assignment['finish_time']);
 							<?php if (substr($item['status'],0,8) == 'Uploaded'): ?>
 								<?php echo $item['status'] ?>
 							<?php else: ?>
-								<input type="submit" class="btn <?php echo strtolower($item['status']) ?>" value="<?php echo $item['status'] ?>" code="0" username="<?php echo $item['username'] ?>" assignment="<?php echo $item['assignment'] ?>" problem="<?php echo $item['problem'] ?>" submit_id="<?php echo $item['submit_id'] ?>"/>
+								<div class="btn <?php echo strtolower($item['status']) ?>" code="0" username="<?php echo $item['username'] ?>" assignment="<?php echo $item['assignment'] ?>" problem="<?php echo $item['problem'] ?>" submit_id="<?php echo $item['submit_id'] ?>"><?php echo $item['status'] ?></div>
 							<?php endif ?>
 						</td>
 						<td>
 							<?php if ($item['file_type']=="zip"): ?>
 								---
 							<?php else: ?>
-								<input type="submit" class="btn view_code" value="Code" code="1" username="<?php echo $item['username'] ?>" assignment="<?php echo $item['assignment'] ?>" problem="<?php echo $item['problem'] ?>" submit_id="<?php echo $item['submit_id'] ?>"/>
+								<div class="btn view_code" code="1" username="<?php echo $item['username'] ?>" assignment="<?php echo $item['assignment'] ?>" problem="<?php echo $item['problem'] ?>" submit_id="<?php echo $item['submit_id'] ?>">Code</div>
 							<?php endif ?>
 						</td>
 						<?php if($view=="final" && $user_level>0): ?>
@@ -212,7 +212,7 @@ $finish = strtotime($assignment['finish_time']);
 								<?php if ($item['file_type']=="zip"): ?>
 									---
 								<?php else: ?>
-									<input type="submit" class="btn" value="Log" code="2" username="<?php echo $item['username'] ?>" assignment="<?php echo $item['assignment'] ?>" problem="<?php echo $item['problem'] ?>" submit_id="<?php echo $item['submit_id'] ?>"/>
+									<div class="btn" code="2" username="<?php echo $item['username'] ?>" assignment="<?php echo $item['assignment'] ?>" problem="<?php echo $item['problem'] ?>" submit_id="<?php echo $item['submit_id'] ?>">Log</div>
 								<?php endif ?>
 							</td>
 						<?php endif ?>

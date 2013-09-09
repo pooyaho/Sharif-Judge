@@ -463,6 +463,7 @@ select.sharif_time {
 	border-top: 1px solid #AFAFAF;
 	padding: 3px 5px;
 	text-align: center;
+	height: 42px;
 }
 
 .rank td, .rank th {
@@ -526,14 +527,14 @@ select.sharif_time {
 
 /************* Buttons *************************/
 
-input.btn {
+div.btn {
 	outline: 0;
 	border: none;
 	background: none;
 	display: inline-block;
 }
 
-input.btn {
+div.btn {
 	color: #4D4D4D;
 	cursor: pointer;
 	font-size: 13px;
@@ -559,7 +560,7 @@ input.btn {
 	text-shadow: 0px 1px 0px rgba(255, 255, 255, 0.5);
 }
 
-input.btn:hover {
+div.btn:hover {
 	color: #4D4D4D;
 	text-decoration: none;
 	-moz-box-shadow: inset 0px 1px 0px rgba(255, 255, 255, 0.3);
@@ -576,14 +577,14 @@ input.btn:hover {
 	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#E0E0E0', endColorstr='#D4D4D4', GradientType=0);
 }
 
-input.btn:active {
+div.btn:active {
 	text-shadow: 0px 1px 0px rgba(255, 255, 255, 0.5);
 	-moz-box-shadow: inset 0px 2px 5px rgba(000, 000, 000, 0.15), inset 0px 1px 0px rgba(255, 255, 255, 0.3);
 	-webkit-box-shadow: inset 0px 2px 5px rgba(000, 000, 000, 0.15), inset 0px 1px 0px rgba(255, 255, 255, 0.3);
 	box-shadow: inset 0px 2px 5px rgba(000, 000, 000, 0.15), inset 0px 1px 0px rgba(255, 255, 255, 0.3);
 }
 
-input.ok:hover, input.wrong:hover, input.compilation:hover, input.syntax:hover, input.view_code:hover {
+div.btn.ok:hover, div.btn.wrong:hover, div.btn.compilation:hover, div.btn.syntax:hover, div.btn.view_code:hover {
 	color: #FFF;
 	text-decoration: none;
 }
@@ -591,7 +592,7 @@ input.ok:hover, input.wrong:hover, input.compilation:hover, input.syntax:hover, 
 /*#####################
 ##       compilation      ##
 #####################*/
-input.compilation, input.syntax {
+div.btn.compilation, div.btn.syntax {
 	color: #FFF;
 	/*border: 1px solid #5269C7;*/
 	background: -moz-linear-gradient(center top, #303CFF 0%, #0019AB) repeat scroll 0% 0% transparent;
@@ -605,7 +606,7 @@ input.compilation, input.syntax {
 	text-shadow: 0px -1px 0px rgba(0, 0, 0, 0.3);
 }
 
-input.compilation:hover, input.syntax:hover {
+div.btn.compilation:hover, div.btn.syntax:hover {
 	-moz-box-shadow: inset 0px 1px 0px rgba(255, 255, 255, 0.3);
 	-webkit-box-shadow: inset 0px 1px 0px rgba(255, 255, 255, 0.3);
 	box-shadow: inset 0px 1px 0px rgba(255, 255, 255, 0.3);
@@ -614,7 +615,7 @@ input.compilation:hover, input.syntax:hover {
 	background: -webkit-gradient(linear, left top, left bottom, from(#303CFF), to(#001bd0));
 }
 
-input.compilation:active, input.syntax:active {
+div.btn.compilation:active, div.btn.syntax:active {
 	text-shadow: 0px -1px 0px rgba(0, 0, 0, 0.3);
 	-moz-box-shadow: inset 0px 2px 5px rgba(000, 000, 000, 0.15);
 	-webkit-box-shadow: inset 0px 2px 5px rgba(000, 000, 000, 0.15);
@@ -624,7 +625,7 @@ input.compilation:active, input.syntax:active {
 /*#####################
 ##        OK         ##
 #####################*/
-input.ok {
+div.btn.ok {
 	color: #FFF;
 	/*border: 1px solid #5eb700;*/
 	background: #50FF19;
@@ -641,7 +642,7 @@ input.ok {
 	text-shadow: 0px -1px 0px rgba(0, 0, 0, 0.3);
 }
 
-input.ok:hover {
+div.btn.ok:hover {
 	-moz-box-shadow: inset 0px 1px 0px rgba(255, 255, 255, 0.3);
 	-webkit-box-shadow: inset 0px 1px 0px rgba(255, 255, 255, 0.3);
 	box-shadow: inset 0px 1px 0px rgba(255, 255, 255, 0.3);
@@ -650,7 +651,7 @@ input.ok:hover {
 	background: -webkit-gradient(linear, left top, left bottom, from(#50FF19), to(#15d000));
 }
 
-input.ok:active {
+div.btn.ok:active {
 	text-shadow: 0px -1px 0px rgba(0, 0, 0, 0.3);
 	-moz-box-shadow: inset 0px 2px 5px rgba(000, 000, 000, 0.15);
 	-webkit-box-shadow: inset 0px 2px 5px rgba(000, 000, 000, 0.15);
@@ -660,7 +661,7 @@ input.ok:active {
 /*#####################
 ##       wrong       ##
 #####################*/
-input.wrong {
+div.btn.wrong {
 	color: #FFF;
 	/*border: 1px solid #B70000;*/
 	background: #ff2819;
@@ -677,7 +678,7 @@ input.wrong {
 	text-shadow: 0px -1px 0px rgba(0, 0, 0, 0.3);
 }
 
-input.wrong:hover {
+div.btn.wrong:hover {
 	-moz-box-shadow: inset 0px 1px 0px rgba(255, 255, 255, 0.3);
 	-webkit-box-shadow: inset 0px 1px 0px rgba(255, 255, 255, 0.3);
 	box-shadow: inset 0px 1px 0px rgba(255, 255, 255, 0.3);
@@ -686,7 +687,7 @@ input.wrong:hover {
 	background: -webkit-gradient(linear, left top, left bottom, from(#ff2819), to(#d00000));
 }
 
-input.wrong:active {
+div.btn.wrong:active {
 	text-shadow: 0px -1px 0px rgba(0, 0, 0, 0.3);
 	-moz-box-shadow: inset 0px 2px 5px rgba(000, 000, 000, 0.25);
 	-webkit-box-shadow: inset 0px 2px 5px rgba(000, 000, 000, 0.25);
@@ -696,7 +697,7 @@ input.wrong:active {
 /*#####################
 ##      view_code      ##
 #####################*/
-input.view_code {
+div.btn.view_code {
 	color: #FFF;
 	/*border: 1px solid #FF9D00;*/
 	background: #FFA300;
@@ -713,7 +714,7 @@ input.view_code {
 	text-shadow: 0px -1px 0px rgba(0, 0, 0, 0.3);
 }
 
-input.view_code:hover {
+div.btn.view_code:hover {
 	-moz-box-shadow: inset 0px 1px 0px rgba(255, 255, 255, 0.3);
 	-webkit-box-shadow: inset 0px 1px 0px rgba(255, 255, 255, 0.3);
 	box-shadow: inset 0px 1px 0px rgba(255, 255, 255, 0.3);
@@ -722,7 +723,7 @@ input.view_code:hover {
 	background: -webkit-gradient(linear, left top, left bottom, from(#FFA300), to(#ff7100));
 }
 
-input.view_code:active {
+div.btn.view_code:active {
 	text-shadow: 0px -1px 0px rgba(0, 0, 0, 0.3);
 	-moz-box-shadow: inset 0px 2px 5px rgba(000, 000, 000, 0.15);
 	-webkit-box-shadow: inset 0px 2px 5px rgba(000, 000, 000, 0.15);
