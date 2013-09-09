@@ -34,7 +34,8 @@
 	    	animation: 'fadeAndPop', //fade, fadeAndPop, none
 		    animationspeed: 300, //how fast animtions are
 		    closeonbackgroundclick: true, //if you click background will modal close?
-		    dismissmodalclass: 'close-reveal-modal' //the class of a button or element that will close an open modal
+		    dismissmodalclass: 'close-reveal-modal', //the class of a button or element that will close an open modal
+	        on_close_modal: function(){}
     	}; 
     	
         //Extend dem' options
@@ -117,7 +118,8 @@
 					if(options.animation == "none") {
 						modal.css({'visibility' : 'hidden', 'top' : topMeasure});
 						modalBG.css({'display' : 'none'});	
-					}		
+					}
+				  options.on_close_modal();
 				}
 				modal.unbind('reveal:close');
 			});     

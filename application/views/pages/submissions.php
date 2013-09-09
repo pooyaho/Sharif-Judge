@@ -15,16 +15,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <script>
 	$(document).ready(function(){
 		$(".btn").click(function(){
-			$button = $(this);
-			$('#shj_modal').reveal();
-			$.post(
+			button = $(this);
+			var view_code_request = $.post(
 				'<?php echo site_url('submissions/view_code') ?>',
 				{
-					code: $button.attr('code'),
-					username: $button.attr('username'),
-					assignment: $button.attr('assignment'),
-					problem: $button.attr('problem'),
-					submit_id: $button.attr('submit_id'),
+					code: button.attr('code'),
+					username: button.attr('username'),
+					assignment: button.attr('assignment'),
+					problem: button.attr('problem'),
+					submit_id: button.attr('submit_id'),
 					<?php echo $this->security->get_csrf_token_name(); ?>: '<?php echo $this->security->get_csrf_hash(); ?>'
 				},
 				function(data){
@@ -35,6 +34,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					});
 				}
 			);
+			$('#shj_modal').reveal(
+				{
+					on_close_modal: function(){
+						$(".modal_inside").html('<div style="text-align: center;">Loading<br><img src="<?php echo base_url('assets/images/loading.gif') ?>"/></div>');
+						view_code_request.abort();
+					}
+				}
+			);
+
 		});
 		$(".set_final").click(
 			function(){
@@ -234,10 +242,7 @@ $finish = strtotime($assignment['finish_time']);
 
 <div id="shj_modal" class="reveal-modal xlarge">
 	<div class="modal_inside">
-		<div style="text-align: center;">
-			Loading<br>
-			<img src="<?php echo base_url('assets/images/loading.gif') ?>"/>
-		</div>
+		<div style="text-align: center;">Loading<br><img src="<?php echo base_url('assets/images/loading.gif') ?>"/></div>
 	</div>
 	<a class="close-reveal-modal">&#215;</a>
 </div>
