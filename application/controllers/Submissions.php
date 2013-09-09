@@ -37,10 +37,10 @@ class Submissions extends CI_Controller{
 		$now=date('Y-m-d H:i:s',shj_now());
 		$this->load->library('excel');
 		$this->excel->set_file_name('judge_'.$view.'_submissions.xls');
-		$this->excel->addHeader($this->assignment['name']);
-		$this->excel->addHeader(array('Time',$now));
+		$this->excel->addHeader(array('Assignment:',$this->assignment['name']));
+		$this->excel->addHeader(array('Time:',$now));
 		$this->excel->addHeader(NULL); //newline
-		$row=array('Final','Submit ID','Username','Display Name','Problem','Submit Time','Score','Coefficient','Final Score','Status','Type','#');
+		$row=array('Final','Submit ID','Username','Display Name','Problem','Submit Time','Score','Coefficient','Final Score','Language','Status','#');
 		if ($view=='final'){
 			array_unshift($row,"#2");
 			array_unshift($row,"#1");
@@ -95,8 +95,8 @@ class Submissions extends CI_Controller{
 				$pre_score,
 				$coefficient,
 				$final_score,
+				filetype_to_language($item['file_type']),
 				$item['status'],
-				$item['file_type'],
 				($view=='final'?$item['submit_count']:$item['submit_number'])
 			);
 			if ($view=='final'){
@@ -260,6 +260,8 @@ class Submissions extends CI_Controller{
 
 
 	public function view_code($input = FALSE){ /* for "view code" or "view result" or "view log" */
+		if ( ! $this->input->is_ajax_request() )
+			show_404();
 		if ($input !== FALSE)
 			show_404();
 		$this->form_validation->set_rules('code','integer|greater_than[-1]|less_than[2]');
@@ -283,47 +285,36 @@ class Submissions extends CI_Controller{
 			if ($this->user_level==0 && $this->username != $submission['username'])
 				exit('Don\'t try to see other users\' codes. :)');
 
-			$data=array(
-				'username'=>$this->username,
-				'user_level'=>$this->user_level,
-				'all_assignments'=>$this->assignment_model->all_assignments(),
-				'assignment' => $this->assignment,
-				'title'=>'View Code',
-				'style'=>'main.css',
-				'code' => $this->input->post('code')
-			);
+			$data=array();
 
-			if($data['code']==0)
-				$data['title']='View Result';
-			else if($data['code']==2)
-				$data['title']='View Log';
+			$code = $this->input->post('code');
 
-			if ($data['code']==0)
+			if ($code==0)
 				$file_path = rtrim($this->settings_model->get_setting('assignments_root'),'/').
 					"/assignment_{$submission['assignment']}/p{$submission['problem']}/{$submission['username']}/result-{$submission['submit_id']}.html";
-			else if ($data['code']==1)
+			else if ($code==1)
 				$file_path = rtrim($this->settings_model->get_setting('assignments_root'),'/').
 					"/assignment_{$submission['assignment']}/p{$submission['problem']}/{$submission['username']}/{$submission['file_name']}.".filetype_to_extension($submission['file_type']);
-			else if ($data['code']==2)
+			else if ($code==2)
 				$file_path = rtrim($this->settings_model->get_setting('assignments_root'),'/').
 					"/assignment_{$submission['assignment']}/p{$submission['problem']}/{$submission['username']}/log";
 
-			$data2 = array(
+			$data = array(
 				'file_path'=>$file_path,
 				'file_type'=>$submission['file_type'],
 				'file_name'=>$submission['main_file_name'].'.'.filetype_to_extension($submission['file_type']),
 				'view_username'=>$submission['username'],
 				'view_assignment'=>$this->assignment_model->assignment_info($submission['assignment']),
-				'view_problem'=>$this->assignment_model->problem_info($submission['assignment'], $submission['problem'])
+				'view_problem'=>$this->assignment_model->problem_info($submission['assignment'], $submission['problem']),
+				'code'=>$code
 			);
 
-			$data2['log']=FALSE;
-			if($data['code']==2)
-				$data2['log'] = TRUE;
 
-			$this->load->view('templates/header',$data);
-			$this->load->view('pages/view_code',$data2);
-			$this->load->view('templates/footer');
+			$data['log']=FALSE;
+			if($this->input->post('code')==2)
+				$data['log'] = TRUE;
+
+			$this->load->view('pages/view_code',$data);
 		}
 		else{
 			exit('Are you trying to see other users\' codes? :)');

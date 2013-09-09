@@ -6,8 +6,36 @@
  */
 defined('BASEPATH') OR exit('No direct script access allowed');
 ?>
+
+<script type="text/javascript" src="<?php echo base_url("assets/jquery-syntax/jquery.syntax.min.js") ?>"></script>
+
+<link rel='stylesheet' type='text/css' href='<?php echo base_url("assets/reveal/reveal.css") ?>'/>
+<script type='text/javascript' src="<?php echo base_url("assets/reveal/jquery.reveal.js") ?>"></script>
+
 <script>
 	$(document).ready(function(){
+		$(".btn").click(function(){
+			$button = $(this);
+			$('#shj_modal').reveal();
+			$.post(
+				'<?php echo site_url('submissions/view_code') ?>',
+				{
+					code: $button.attr('code'),
+					username: $button.attr('username'),
+					assignment: $button.attr('assignment'),
+					problem: $button.attr('problem'),
+					submit_id: $button.attr('submit_id'),
+					<?php echo $this->security->get_csrf_token_name(); ?>: '<?php echo $this->security->get_csrf_hash(); ?>'
+				},
+				function(data){
+					$(".modal_inside").html(data);
+					$.syntax({
+						blockLayout: 'fixed',
+						theme: 'paper'
+					});
+				}
+			);
+		});
 		$(".set_final").click(
 			function(){
 				var submit_id = $(this).attr('submit_id');
@@ -70,12 +98,12 @@ $finish = strtotime($assignment['finish_time']);
 							<th width="10%" rowspan="2">Problem</th>
 							<th width="14%" rowspan="2">Submit Time</th>
 							<th colspan="3">Score</th>
+							<th width="1%" rowspan="2">Language</th>
 							<th width="6%" rowspan="2">Status</th>
 							<th width="6%" rowspan="2">Code</th>
 							<?php if ($view=="final"): ?>
 							<th width="6%" rowspan="2">Log</th>
 							<?php endif ?>
-							<th width="1%" rowspan="2">Type</th>
 							<th width="1%" rowspan="2">#</th>
 						</tr>
 						<tr>
@@ -87,9 +115,9 @@ $finish = strtotime($assignment['finish_time']);
 							<th width="10%" rowspan="2">Problem</th>
 							<th width="30%" rowspan="2">Submit Time</th>
 							<th width="7%" colspan="3">Score</th>
+							<th width="1%" rowspan="2">Language</th>
 							<th width="30%" rowspan="2">Status</th>
 							<th width="15%" rowspan="2">Code</th>
-							<th width="1%" rowspan="2">Type</th>
 							<th width="5%" rowspan="2">#</th>
 						</tr>
 						<tr>
@@ -163,31 +191,20 @@ $finish = strtotime($assignment['finish_time']);
 						?></td>
 						<td style="font-weight: bold;"><?php echo $final_score ?> </td>
 						<td>
+							<?php echo filetype_to_language($item['file_type']) ?>
+						</td>
+						<td>
 							<?php if (substr($item['status'],0,8) == 'Uploaded'): ?>
 								<?php echo $item['status'] ?>
 							<?php else: ?>
-								<?php echo form_open('submissions/view_code') ?>
-								<input type="hidden" name="code" value="0"/>
-								<input type="hidden" name="username" value="<?php echo $item['username'] ?>"/>
-								<input type="hidden" name="assignment" value="<?php echo $item['assignment'] ?>"/>
-								<input type="hidden" name="problem" value="<?php echo $item['problem'] ?>"/>
-								<input type="hidden" name="submit_id" value="<?php echo $item['submit_id'] ?>"/>
-								<input type="submit" class="btn <?php echo strtolower($item['status']) ?>" value="<?php echo $item['status'] ?>"/>
-								</form>
+								<input type="submit" class="btn <?php echo strtolower($item['status']) ?>" value="<?php echo $item['status'] ?>" code="0" username="<?php echo $item['username'] ?>" assignment="<?php echo $item['assignment'] ?>" problem="<?php echo $item['problem'] ?>" submit_id="<?php echo $item['submit_id'] ?>"/>
 							<?php endif ?>
 						</td>
 						<td>
 							<?php if ($item['file_type']=="zip"): ?>
 								---
 							<?php else: ?>
-								<?php echo form_open('submissions/view_code') ?>
-									<input type="hidden" name="code" value="1"/>
-									<input type="hidden" name="username" value="<?php echo $item['username'] ?>"/>
-									<input type="hidden" name="assignment" value="<?php echo $item['assignment'] ?>"/>
-									<input type="hidden" name="problem" value="<?php echo $item['problem'] ?>"/>
-									<input type="hidden" name="submit_id" value="<?php echo $item['submit_id'] ?>"/>
-									<input type="submit" class="btn view_code" value="View Code"/>
-								</form>
+								<input type="submit" class="btn view_code" value="Code" code="1" username="<?php echo $item['username'] ?>" assignment="<?php echo $item['assignment'] ?>" problem="<?php echo $item['problem'] ?>" submit_id="<?php echo $item['submit_id'] ?>"/>
 							<?php endif ?>
 						</td>
 						<?php if($view=="final" && $user_level>0): ?>
@@ -195,20 +212,10 @@ $finish = strtotime($assignment['finish_time']);
 								<?php if ($item['file_type']=="zip"): ?>
 									---
 								<?php else: ?>
-									<?php echo form_open('submissions/view_code') ?>
-									<input type="hidden" name="code" value="2"/>
-									<input type="hidden" name="username" value="<?php echo $item['username'] ?>"/>
-									<input type="hidden" name="assignment" value="<?php echo $item['assignment'] ?>"/>
-									<input type="hidden" name="problem" value="<?php echo $item['problem'] ?>"/>
-									<input type="hidden" name="submit_id" value="<?php echo $item['submit_id'] ?>"/>
-									<input type="submit" class="btn" value="View Log"/>
-									</form>
+									<input type="submit" class="btn" value="Log" code="2" username="<?php echo $item['username'] ?>" assignment="<?php echo $item['assignment'] ?>" problem="<?php echo $item['problem'] ?>" submit_id="<?php echo $item['submit_id'] ?>"/>
 								<?php endif ?>
 							</td>
 						<?php endif ?>
-						<td>
-							<?php echo filetype_to_language($item['file_type']) ?>
-						</td>
 						<td><?php
 							if ($view=="final")
 								echo $item['submit_count'];
@@ -224,3 +231,13 @@ $finish = strtotime($assignment['finish_time']);
 			</p>
 		</div>
 	</div>
+
+<div id="shj_modal" class="reveal-modal xlarge">
+	<div class="modal_inside">
+		<div style="text-align: center;">
+			Loading<br>
+			<img src="<?php echo base_url('assets/images/loading.gif') ?>"/>
+		</div>
+	</div>
+	<a class="close-reveal-modal">&#215;</a>
+</div>

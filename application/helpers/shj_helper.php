@@ -29,10 +29,10 @@ if ( ! function_exists('filetype_to_extension'))
 	/*
 	 * Converts code type to file extension
 	 */
-	function filetype_to_extension($filetype)
+	function filetype_to_extension($file_type)
 	{
-		$filetype = strtolower($filetype);
-		switch ($filetype) {
+		$file_type = strtolower($file_type);
+		switch ($file_type) {
 			case 'c': return 'c';
 			case 'cpp': return 'cpp';
 			case 'py2': return 'py';
@@ -51,10 +51,10 @@ if ( ! function_exists('filetype_to_language'))
 	/*
 	 * Converts code type to language
 	 */
-	function filetype_to_language($filetype)
+	function filetype_to_language($file_type)
 	{
-		$filetype = strtolower($filetype);
-		switch ($filetype) {
+		$file_type = strtolower($file_type);
+		switch ($file_type) {
 			case 'c': return 'C';
 			case 'cpp': return 'C++';
 			case 'py2': return 'Py 2';

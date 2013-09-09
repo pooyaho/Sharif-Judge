@@ -6,29 +6,8 @@
  */
 defined('BASEPATH') OR exit('No direct script access allowed');
 ?>
-<script type="text/javascript" src="<?php echo base_url("assets/jquery-syntax/jquery.syntax.min.js") ?>"></script>
-<script type="text/javascript">
-	jQuery(function($) {
-		// This function highlights (by default) pre and code tags which are annotated correctly.
-		$.syntax({
-			blockLayout: 'fixed',
-			theme: 'paper'
-		});
-	});
-</script>
-<?php $this->view('templates/top_bar'); ?>
-<?php $this->view('templates/side_bar',array('selected'=>"")); ?>
-<div id="main_container">
-	<div id="page_title">
-		<img src="<?php echo base_url('assets/images/icons/code.png') ?>"/>
-		<span><?php echo $title ?></span>
-	</div>
-	<div id="main_content">
 		<pre><?php
-			echo "Username: $view_username\n";
-			echo "Assignment {$view_assignment['id']} ({$assignment['name']})\n";
-			echo "Problem {$view_problem['id']} ({$view_problem['name']})\n";
-			echo "File: $file_name";
+			echo "$file_name  |  User: $view_username  |  Assignment {$view_assignment['id']} ({$view_assignment['name']})  |  Problem {$view_problem['id']} ({$view_problem['name']})";
 			if($file_type==='py2' || $file_type==='py3')
 				$file_type='python';
 		?></pre>
@@ -52,5 +31,3 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					echo "File not found";
 			?></pre>
 		<?php endif ?>
-	</div>
-</div>
