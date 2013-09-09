@@ -3,8 +3,8 @@
 	-------------------------------------------------- */
 
 
-.modal_inside { // added by mjnaderi
-	max-height: 520px;
+.modal_inside { /* added by mjnaderi */
+	max-height: 550px;
 	overflow-y: auto;
 }
 
