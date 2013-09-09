@@ -144,7 +144,7 @@ div#extra_time {
 div#side_bar {
 	left: 0;
 	top: 37px;
-	width: 170px;
+	width: 180px;
 	bottom: 0;
 	z-index: 1;
 	position: fixed;
@@ -180,7 +180,7 @@ div#side_bar ul li.selected {
 
 .sidebar_text {
 	margin-left: 5px;
-	width: 130px;
+	width: 145px;
 	position: absolute;
 }
 
@@ -217,7 +217,7 @@ div#main_container {
 	z-index: -1;
 	color: #414141;
 	margin-top: 37px;
-	margin-left: 170px;
+	margin-left: 180px;
 	background-color: white;
 }
 

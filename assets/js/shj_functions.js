@@ -54,12 +54,12 @@ function sidebar_open(time){
 	if (time==0){
 		$(".sidebar_text").css('display','inline-block');
 		$("#sidebar_bottom p").css('display','block');
-		$("#side_bar").css('width', '170px');
-		$("#main_container").css('margin-left','170px');
+		$("#side_bar").css('width', '180px');
+		$("#main_container").css('margin-left','180px');
 	}
 	else{
-		$("#side_bar").animate({width: '170px'},time,function(){$(".sidebar_text").css('display','inline-block');$("#sidebar_bottom p").css('display','block');});
-		$("#main_container").animate({'margin-left':'170px'},time*1.7);
+		$("#side_bar").animate({width: '180px'},time,function(){$(".sidebar_text").css('display','inline-block');$("#sidebar_bottom p").css('display','block');});
+		$("#main_container").animate({'margin-left':'180px'},time*1.7);
 	}
 	$("i#collapse").removeClass("splashy-pagination_1_next");
 	$("i#collapse").addClass("splashy-pagination_1_previous");
