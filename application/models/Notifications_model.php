@@ -54,8 +54,7 @@ class Notifications_model extends CI_Model {
 	 * Update (edit) a notification
 	 */
 	public function update_notification($id,$title, $text){
-		$now=date('Y-m-d H:i:s',shj_now());
-		$this->db->where('id',$id)->update('notifications',array('title'=>$title, 'text'=>$text, 'time'=> $now));
+		$this->db->where('id',$id)->update('notifications',array('title'=>$title, 'text'=>$text));
 	}
 
 
