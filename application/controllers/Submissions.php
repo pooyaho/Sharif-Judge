@@ -264,11 +264,11 @@ class Submissions extends CI_Controller{
 			show_404();
 		if ($input !== FALSE)
 			show_404();
-		$this->form_validation->set_rules('code','integer|greater_than[-1]|less_than[2]');
-		$this->form_validation->set_rules('username','required|min_length[3]|max_length[20]|alpha_numeric|xss_clean');
-		$this->form_validation->set_rules('assignment','integer|greater_than[0]');
-		$this->form_validation->set_rules('problem','integer|greater_than[0]');
-		$this->form_validation->set_rules('submit_id','integer|greater_than[0]');
+		$this->form_validation->set_rules('code','code','integer|greater_than_equal_to[0]|less_than_equal_to[2]');
+		$this->form_validation->set_rules('username','username','required|min_length[3]|max_length[20]|alpha_numeric|xss_clean');
+		$this->form_validation->set_rules('assignment','assignment','integer|greater_than[0]');
+		$this->form_validation->set_rules('problem','problem','integer|greater_than[0]');
+		$this->form_validation->set_rules('submit_id','submit_id','integer|greater_than[0]');
 		if($this->form_validation->run()){
 			$submission = $this->submit_model->get_submission(
 				$this->input->post('username'),
@@ -284,8 +284,6 @@ class Submissions extends CI_Controller{
 
 			if ($this->user_level==0 && $this->username != $submission['username'])
 				exit('Don\'t try to see other users\' codes. :)');
-
-			$data=array();
 
 			$code = $this->input->post('code');
 

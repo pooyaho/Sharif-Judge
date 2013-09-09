@@ -90,9 +90,9 @@ class Settings extends CI_Controller{
 		if ($input !== FALSE)
 			show_404();
 		$this->form_validation->set_rules('timezone','timezone','required');
-		$this->form_validation->set_rules('file_size_limit','File size limit','integer|greater_than[-1]');
-		$this->form_validation->set_rules('output_size_limit','Output size limit','integer|greater_than[-1]');
-		$this->form_validation->set_rules('results_per_page','results per page','integer|greater_than[-1]');
+		$this->form_validation->set_rules('file_size_limit','File size limit','integer|greater_than_equal_to[0]');
+		$this->form_validation->set_rules('output_size_limit','Output size limit','integer|greater_than_equal_to[0]');
+		$this->form_validation->set_rules('results_per_page','results per page','integer|greater_than_equal_to[0]');
 		if($this->form_validation->run()){
 			ob_start();
 			$this->form_status = 'ok';
