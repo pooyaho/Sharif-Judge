@@ -107,23 +107,22 @@ class Queue_model extends CI_Model {
 		))->update('all_submissions',array('pre_score'=>0,'status'=>'PENDING'));
 
 		// Adding submission to queue:
-		$query = $this->db->select('submit_id,username,assignment,problem')
+		$submissions = $this->db->select('submit_id,username,assignment,problem')
 			->get_where('all_submissions',array(
 				'submit_id'=>$submission['submit_id'],
 				'username'=>$submission['username'],
 				'assignment'=>$submission['assignment'],
 				'problem'=>$submission['problem'],
+			))->result_array();
+		foreach($submissions as $submission){
+			$this->db->insert('queue',array(
+				'submit_id'=>$submission['submit_id'],
+				'username'=>$submission['username'],
+				'assignment'=>$submission['assignment'],
+				'problem'=>$submission['problem'],
+				'type'=>'rejudge'
 			));
-		if ($query->num_rows() < 1)
-			return;
-		$submission = $query->row_array();
-		$this->db->insert('queue',array(
-			'submit_id'=>$submission['submit_id'],
-			'username'=>$submission['username'],
-			'assignment'=>$submission['assignment'],
-			'problem'=>$submission['problem'],
-			'type'=>'rejudge'
-		));
+		}
 		// Now ready for rejudge
 	}
 }
