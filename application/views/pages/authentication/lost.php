@@ -7,7 +7,6 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 ?>
 <?php echo form_open('login/lost') ?>
-<form method="post" action="">
 	<div class="box login">
 		<div class="judge_logo">
 			<a href="<?php echo site_url() ?>"><img src="<?php echo base_url("assets/images/banner.png") ?>"/></a>

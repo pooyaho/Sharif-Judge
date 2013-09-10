@@ -13,7 +13,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		<img src="<?php echo base_url('assets/images/icons/notifications.png') ?>"/>
 		<span><?php echo $title ?></span>
 		<?php if ($user_level>=2): ?>
-			<span class="title_menu_item"><a href="<?php echo site_url('notifications/add') ?>"><i class="splashy-add_small"></i> Add</a></span>
+		<span class="title_menu_item"><a href="<?php echo site_url('notifications/add') ?>"><i class="splashy-add_small"></i> Add</a></span>
 		<?php endif ?>
 	</div>
 	<div id="main_content">

@@ -29,7 +29,7 @@
 	background: #eee url(modal-gloss.png) no-repeat -200px -80px;
 	position: fixed; /* changed by mjnaderi from absolute to fixed */
 	z-index: 101;
-	padding: 15px 20px 17px;
+	padding: 5px 20px 10px;
 	-moz-border-radius: 5px;
 	-webkit-border-radius: 5px;
 	border-radius: 5px;

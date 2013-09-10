@@ -41,7 +41,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						echo ',';
 				}
 			?>]
-		})
+		});
 
 		var gridster = $(".gridster ul").gridster({
 			widget_margins: [10, 10],
@@ -65,7 +65,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 							<?php echo $this->security->get_csrf_token_name(); ?>: '<?php echo $this->security->get_csrf_hash(); ?>'
 						},
 						function (data) {
-							//$("#result").html(data);
 						}
 					);
 				}

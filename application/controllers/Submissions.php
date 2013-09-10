@@ -40,10 +40,14 @@ class Submissions extends CI_Controller{
 		$this->excel->addHeader(array('Assignment:',$this->assignment['name']));
 		$this->excel->addHeader(array('Time:',$now));
 		$this->excel->addHeader(NULL); //newline
-		$row=array('Final','Submit ID','Username','Display Name','Problem','Submit Time','Score','Coefficient','Final Score','Language','Status','#');
-		if ($view=='final'){
-			array_unshift($row,"#2");
-			array_unshift($row,"#1");
+		if ($this->user_level===0)
+			$row=array('Final','Problem','Submit Time','Score','Coefficient','Final Score','Language','Status','#');
+		else{
+			$row=array('Final','Submit ID','Username','Display Name','Problem','Submit Time','Score','Coefficient','Final Score','Language','Status','#');
+			if ($view=='final'){
+				array_unshift($row,"#2");
+				array_unshift($row,"#1");
+			}
 		}
 		$this->excel->addRow($row);
 		if ($view=='final')
@@ -84,24 +88,37 @@ class Submissions extends CI_Controller{
 				$final_score = ceil($pre_score*$coefficient/100);
 			}
 			ob_end_clean();
-
-			$row=array(
-				$checked,
-				$item['submit_id'],
-				$item['username'],
-				$name[$item['username']],
-				$item['problem'].' ('.$pi['name'].')',
-				$item['time'],
-				$pre_score,
-				$coefficient,
-				$final_score,
-				filetype_to_language($item['file_type']),
-				$item['status'],
-				($view=='final'?$item['submit_count']:$item['submit_number'])
-			);
-			if ($view=='final'){
-				array_unshift($row,$j);
-				array_unshift($row,$i);
+			if ($this->user_level===0)
+				$row=array(
+					$checked,
+					$item['problem'].' ('.$pi['name'].')',
+					$item['time'],
+					$pre_score,
+					$coefficient,
+					$final_score,
+					filetype_to_language($item['file_type']),
+					$item['status'],
+					($view=='final'?$item['submit_count']:$item['submit_number'])
+				);
+			else{
+				$row=array(
+					$checked,
+					$item['submit_id'],
+					$item['username'],
+					$name[$item['username']],
+					$item['problem'].' ('.$pi['name'].')',
+					$item['time'],
+					$pre_score,
+					$coefficient,
+					$final_score,
+					filetype_to_language($item['file_type']),
+					$item['status'],
+					($view=='final'?$item['submit_count']:$item['submit_number'])
+				);
+				if ($view=='final'){
+					array_unshift($row,$j);
+					array_unshift($row,$i);
+				}
 			}
 			$this->excel->addRow($row);
 		}
