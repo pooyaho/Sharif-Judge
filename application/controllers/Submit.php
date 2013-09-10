@@ -178,7 +178,7 @@ class Submit extends CI_Controller{
 			);
 			if($this->problem['is_upload_only']==0){
 				$this->queue_model->add_to_queue($submit_info);
-				shell_exec('php '.rtrim($this->settings_model->get_setting('tester_path'),'/').'/queue_process.php judge >/dev/null 2>/dev/null &');
+				shell_exec('php '.rtrim($this->settings_model->get_setting('tester_path'),'/').'/queue_process.php >/dev/null 2>/dev/null &');
 			}else{
 				$this->submit_model->add_upload_only($submit_info);
 			}

@@ -54,7 +54,8 @@ class Queue_model extends CI_Model {
 			'submit_id'=>$submit_info['submit_id'],
 			'username'=>$submit_info['username'],
 			'assignment'=>$submit_info['assignment'],
-			'problem'=>$submit_info['problem']
+			'problem'=>$submit_info['problem'],
+			'type'=>'judge'
 		));
 	}
 
@@ -66,6 +67,9 @@ class Queue_model extends CI_Model {
 	 * Adds submissions of a problem to queue for rejudge
 	 */
 	public function rejudge($assignment_id, $problem_id){
+		$problem = $this->assignment_model->problem_info($assignment_id, $problem_id);
+		if ($problem['is_upload_only'])
+			return;
 		// Bringing all submissions of selected problem into PENDING state:
 		$this->db->where(array('assignment'=>$assignment_id,'problem'=>$problem_id))->update('all_submissions',array('pre_score'=>0,'status'=>'PENDING'));
 
@@ -76,9 +80,50 @@ class Queue_model extends CI_Model {
 				'submit_id'=>$submission['submit_id'],
 				'username'=>$submission['username'],
 				'assignment'=>$submission['assignment'],
-				'problem'=>$submission['problem']
+				'problem'=>$submission['problem'],
+				'type'=>'rejudge'
 			));
 		}
+		// Now ready for rejudge
+	}
+
+
+	// ------------------------------------------------------------------------
+
+
+	/*
+	 * Adds a single submission to queue for rejudge
+	 */
+	public function rejudge_one($submission){
+		$problem = $this->assignment_model->problem_info($submission['assignment'], $submission['problem']);
+		if ($problem['is_upload_only'])
+			return;
+		// Bringing the submissions into PENDING state:
+		$this->db->where(array(
+			'submit_id'=>$submission['submit_id'],
+			'username'=>$submission['username'],
+			'assignment'=>$submission['assignment'],
+			'problem'=>$submission['problem']
+		))->update('all_submissions',array('pre_score'=>0,'status'=>'PENDING'));
+
+		// Adding submission to queue:
+		$query = $this->db->select('submit_id,username,assignment,problem')
+			->get_where('all_submissions',array(
+				'submit_id'=>$submission['submit_id'],
+				'username'=>$submission['username'],
+				'assignment'=>$submission['assignment'],
+				'problem'=>$submission['problem'],
+			));
+		if ($query->num_rows() < 1)
+			return;
+		$submission = $query->row_array();
+		$this->db->insert('queue',array(
+			'submit_id'=>$submission['submit_id'],
+			'username'=>$submission['username'],
+			'assignment'=>$submission['assignment'],
+			'problem'=>$submission['problem'],
+			'type'=>'rejudge'
+		));
 		// Now ready for rejudge
 	}
 }

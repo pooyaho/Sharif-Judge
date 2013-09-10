@@ -45,6 +45,23 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			);
 
 		});
+		$(".shj_rejudge").click(function(){
+			row = $(this).parents('tr');
+			$.post(
+				'<?php echo site_url('rejudge/rejudge_one') ?>',
+				{
+					username: row.attr('u'),
+					assignment: row.attr('a'),
+					problem: row.attr('p'),
+					submit_id: row.attr('s'),
+					<?php echo $this->security->get_csrf_token_name(); ?>: '<?php echo $this->security->get_csrf_hash(); ?>'
+				},
+				function (data) {
+					if (data == 'success')
+						location.reload();
+				}
+			);
+		});
 		$(".set_final").click(
 			function(){
 				var submit_id = $(this).attr('submit_id');
@@ -112,6 +129,9 @@ $finish = strtotime($assignment['finish_time']);
 						<th width="6%" rowspan="2">Code</th>
 						<?php if ($view=="final"): ?>
 						<th width="6%" rowspan="2">Log</th>
+						<?php endif ?>
+						<?php if ($user_level>=2): ?>
+						<th width="1%" rowspan="2">Rejudge</th>
 						<?php endif ?>
 						<th width="1%" rowspan="2">#</th>
 					</tr>
@@ -223,6 +243,11 @@ $finish = strtotime($assignment['finish_time']);
 							<?php else: ?>
 								<div class="btn" code="2" >Log</div>
 							<?php endif ?>
+						</td>
+					<?php endif ?>
+					<?php if ($user_level>=2): ?>
+						<td>
+							<a href="#" class="shj_rejudge"><i class="splashy-refresh"></i></a>
 						</td>
 					<?php endif ?>
 					<td><?php

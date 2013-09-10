@@ -149,7 +149,8 @@ class Install extends CI_Controller {
 				`submit_id` int(11) NOT NULL,
 				`username` varchar(20) CHARACTER SET utf8 NOT NULL,
 				`assignment` smallint(4) NOT NULL,
-				`problem` smallint(4) NOT NULL
+				`problem` smallint(4) NOT NULL,
+				`type` varchar(8) NOT NULL DEFAULT 'judge'
 				);";
 			if (!$this->db->simple_query($query))
 				show_error("Error creating database table");

@@ -463,6 +463,9 @@ select.sharif_time {
 	border-top: 1px solid #AFAFAF;
 	padding: 3px 5px;
 	text-align: center;
+}
+
+.sharif_table td {
 	height: 42px;
 }
 

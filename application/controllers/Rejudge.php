@@ -54,7 +54,7 @@ class Rejudge extends CI_Controller {
 			$problem_id = $this->input->post('problem_id');
 			$this->load->model('queue_model');
 			$this->queue_model->rejudge($this->assignment['id'], $problem_id);
-			shell_exec('php '.rtrim($this->settings_model->get_setting('tester_path'),'/').'/queue_process.php rejudge >/dev/null 2>/dev/null &');
+			shell_exec('php '.rtrim($this->settings_model->get_setting('tester_path'),'/').'/queue_process.php >/dev/null 2>/dev/null &');
 			$data['msg'] = array('Rejudge in progress');
 		}
 
@@ -63,5 +63,32 @@ class Rejudge extends CI_Controller {
 		$this->load->view('templates/footer');
 	}
 
+
+	// ------------------------------------------------------------------------
+
+
+	public function rejudge_one($input = FALSE){
+		if ( ! $this->input->is_ajax_request() )
+			show_404();
+		if ($input !== FALSE)
+			show_404();
+		$this->form_validation->set_rules('submit_id','submit id','required|integer');
+		$this->form_validation->set_rules('username','username','required|alpha_numeric');
+		$this->form_validation->set_rules('assignment','assignment','required|integer');
+		$this->form_validation->set_rules('problem','problem','required|integer');
+		if ($this->form_validation->run()){
+			$this->load->model('queue_model');
+			$this->queue_model->rejudge_one(array(
+				'submit_id' => $this->input->post('submit_id'),
+				'username' => $this->input->post('username'),
+				'assignment' => $this->input->post('assignment'),
+				'problem' => $this->input->post('problem'),
+			));
+			shell_exec('php '.rtrim($this->settings_model->get_setting('tester_path'),'/').'/queue_process.php >/dev/null 2>/dev/null &');
+			echo 'success';
+		}
+		else
+			echo 'failed';
+	}
 
 }

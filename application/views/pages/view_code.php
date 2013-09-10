@@ -21,7 +21,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <?php else: ?>
 	<?php if ($log): ?>
 		<span class="shj_error">Please note:</span><br>
-		This is the log file for the last submission of user "<?php echo $view_username ?>" for problem <?php echo "{$view_problem['id']} ({$view_problem['name']})" ?>.<br>
+		This is the log file for the <b>last judged submission</b> of user "<?php echo $view_username ?>" for problem <?php echo "{$view_problem['id']} ({$view_problem['name']})" ?>.<br>
 		This may be different from the final submission selected by "<?php echo $view_username ?>".
 	<?php endif ?>
 	<pre class="shj_code"><?php
