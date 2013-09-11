@@ -15,9 +15,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		<?php if ($user_level>=2): ?>
 		<span class="title_menu_item"><a href="<?php echo site_url('add_assignment') ?>"><i class="splashy-add_small"></i> Add</a></span>
 		<?php endif ?>
-		<?php if ($user_level>=2): ?>
-		<span class="title_menu_item"><a href="<?php echo site_url('rejudge') ?>"><i title="Rejudge" class="splashy-refresh"></i> Rejudge</a></span>
-		<?php endif ?>
 	</div>
 	<div id="main_content">
 		<?php if (count($all_assignments)==0): ?>
