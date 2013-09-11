@@ -59,6 +59,10 @@ div#top_bar a {
 	text-decoration: none;
 }
 
+div#top_bar>div>a {
+	color: white;
+}
+
 div#shj_logo {
 	float: left;
 	padding-right: 10px;
@@ -70,10 +74,6 @@ div#shj_logo {
 
 div#shj_logo img {
 	height: 37px;
-}
-
-#profile_link, #select_assignment_top .assignment_name {
-	color: #f0f0f0;
 }
 
 div.top_object {
@@ -88,6 +88,15 @@ div.top_object {
 div.top_object.top_left {
 	float: left;
 	border-right: 1px solid #5d5b69;
+}
+
+div.top_object.shj_menu {
+	cursor: pointer;
+}
+
+div.top_object.shj_white, div.top_object.shj_white>a {
+	background-color: #f4f4f4;
+	color: black!important;
 }
 
 div.countdown {
@@ -105,10 +114,6 @@ span.time_label {
 	font-size: 70%;
 }
 
-#user_top, #select_assignment_top, #admin_tools_top {
-	cursor: pointer;
-}
-
 .top_menu {
 	right: 0;
 	top: 100%;
@@ -123,6 +128,10 @@ span.time_label {
 	box-shadow: rgba(0, 0, 0, 0.27) 0 0 7px 3px;
 	-moz-box-shadow: rgba(0, 0, 0, 0.27) 0 0 7px 3px;
 	-webkit-box-shadow: rgba(0, 0, 0, 0.27) 0 0 7px 3px;
+}
+
+div.top_object.top_left .top_menu{
+	left: 0;
 }
 
 #user_menu, #admin_tools_menu {

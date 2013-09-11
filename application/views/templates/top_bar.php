@@ -8,30 +8,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 ?>
 <script>
 	$(document).ready(function(){
-		$("#select_assignment_top").hoverIntent (
-			function(){
-				$('#select_assignment_menu').show();
+		$("#top_bar").hoverIntent({
+			over:function(){
+				$(this).children(".top_menu").show();
+				$(this).addClass('shj_white');
 			},
-			function(){
-				$('#select_assignment_menu').hide();
-			}
-		);
-		$("#user_top").hoverIntent (
-			function(){
-				$('#user_menu').show();
+			out:function(){
+				$(this).children(".top_menu").hide();
+				$(this).removeClass('shj_white');
 			},
-			function(){
-				$('#user_menu').hide();
-			}
-		);
-		$("#admin_tools_top").hoverIntent (
-			function(){
-				$('#admin_tools_menu').show();
-			},
-			function(){
-				$('#admin_tools_menu').hide();
-			}
-		);
+			selector:'.top_object.shj_menu'
+		});
 		$(".select_assignment").click(
 			function(){
 				var id = $(this).attr('id');
@@ -56,14 +43,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	});
 </script>
 <div id="top_bar">
-	<div class="top_object" id="user_top">
+	<div class="top_object shj_menu" id="user_top">
 		<?php echo anchor('profile',$username,'id="profile_link"') ?>
 		<div class="top_menu" id="user_menu">
 			<a href="<?php echo site_url('profile') ?>"><div>Profile</div></a>
 			<a href="<?php echo site_url('logout') ?>"><div>Logout</div></a>
 		</div>
 	</div>
-	<div class="top_object" id="select_assignment_top">
+	<div class="top_object shj_menu" id="select_assignment_top">
 		<a href="<?php echo site_url('assignments') ?>"><span class="assignment_name"><?php echo $assignment['name'] ?></span></a>
 		<div class="top_menu" id="select_assignment_menu">
 			<?php foreach($all_assignments as $item): ?>
@@ -106,7 +93,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		</a>
 	</div>
 	<?php if ($user_level >= 2): ?>
-	<div class="top_object top_left" id="admin_tools_top">
+	<div class="top_object shj_menu top_left" id="admin_tools_top">
 		Tools
 		<div class="top_menu" id="admin_tools_menu">
 			<a href="<?php echo site_url('rejudge') ?>"><div>Rejudge</div></a>
