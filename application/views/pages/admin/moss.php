@@ -55,7 +55,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 		<h3>Moss results for assignment "<?php echo $moss_assignment['name'] ?>":</h3>
 		<p>
-			Link will expire after some time. (last update: <?php echo $update_time; ?>) <br>
+			Links will expire after some time. (last update: <?php echo $update_time; ?>) <br>
 			<ul>
 			<?php for ($i=1;$i<=$moss_assignment['problems'];$i++): ?>
 				<li>Problem <?php echo $i ?>:
