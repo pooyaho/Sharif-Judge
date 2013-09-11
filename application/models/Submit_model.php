@@ -1,9 +1,10 @@
 <?php
 /**
  * Sharif Judge online judge
- * @file submit_model.php
+ * @file Submit_model.php
  * @author Mohammad Javad Naderi <mjnaderi@gmail.com>
  */
+defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Submit_model extends CI_Model {
 

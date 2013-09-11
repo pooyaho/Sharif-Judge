@@ -1,9 +1,10 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 /**
  * Sharif Judge online judge
- * @file settings_model.php
+ * @file Settings_model.php
  * @author Mohammad Javad Naderi <mjnaderi@gmail.com>
  */
+defined('BASEPATH') OR exit('No direct script access allowed');
 
 /**
  * This model deals with global settings

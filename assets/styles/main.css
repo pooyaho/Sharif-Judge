@@ -60,6 +60,8 @@ div#top_bar a {
 }
 
 div#shj_logo {
+	float: left;
+	padding-right: 10px;
 	top: 0;
 	left: 5px;
 	position: relative;
@@ -83,6 +85,11 @@ div.top_object {
 	border-left: 1px solid #5d5b69;
 }
 
+div.top_object.top_left {
+	float: left;
+	border-right: 1px solid #5d5b69;
+}
+
 div.countdown {
 	padding: 0;
 }
@@ -98,7 +105,7 @@ span.time_label {
 	font-size: 70%;
 }
 
-#user_top, #select_assignment_top {
+#user_top, #select_assignment_top, #admin_tools_top {
 	cursor: pointer;
 }
 
@@ -118,21 +125,21 @@ span.time_label {
 	-webkit-box-shadow: rgba(0, 0, 0, 0.27) 0 0 7px 3px;
 }
 
-#user_menu {
+#user_menu, #admin_tools_menu {
 	padding: 0;
 	margin: 0;
 }
 
-#user_menu div {
+#user_menu div, #admin_tools_menu div {
 	padding: 10px 10px 0 10px;
 }
 
-#user_menu div:last-child {
+#user_menu div:last-child, #admin_tools_menu div:last-child {
 	padding-bottom: 10px;
 	border-top: 1px solid #c6c6c6;
 }
 
-#user_menu div:hover {
+#user_menu div:hover, #admin_tools_menu div:hover {
 	background-color: #efefef;
 }
 
@@ -240,7 +247,7 @@ div#page_title img {
 }
 
 div#main_container div#main_content {
-	padding: 0 20px;
+	padding: 0 20px 20px 20px;
 }
 
 /***********************************************/

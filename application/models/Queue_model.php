@@ -1,9 +1,10 @@
 <?php
 /**
  * Sharif Judge online judge
- * @file queue_model.php
+ * @file Queue_model.php
  * @author Mohammad Javad Naderi <mjnaderi@gmail.com>
  */
+defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Queue_model extends CI_Model {
 
@@ -25,6 +26,28 @@ class Queue_model extends CI_Model {
 		if ($query->num_rows() > 0)
 			return TRUE;
 		return FALSE;
+	}
+
+
+	// ------------------------------------------------------------------------
+
+
+	/**
+	 * Returns all the submission queue
+	 */
+	public function get_queue (){
+		return $this->db->get('queue')->result_array();
+	}
+
+
+	// ------------------------------------------------------------------------
+
+
+	/**
+	 * Returns all the submission queue
+	 */
+	public function empty_queue (){
+		return $this->db->empty_table('queue');
 	}
 
 

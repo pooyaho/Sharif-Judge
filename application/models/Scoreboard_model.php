@@ -1,9 +1,10 @@
 <?php
 /**
  * Sharif Judge online judge
- * @file scoreboard_model.php
+ * @file Scoreboard_model.php
  * @author Mohammad Javad Naderi <mjnaderi@gmail.com>
  */
+defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Scoreboard_model extends CI_Model {
 

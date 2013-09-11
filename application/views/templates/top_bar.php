@@ -24,6 +24,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				$('#user_menu').hide();
 			}
 		);
+		$("#admin_tools_top").hoverIntent (
+			function(){
+				$('#admin_tools_menu').show();
+			},
+			function(){
+				$('#admin_tools_menu').hide();
+			}
+		);
 		$(".select_assignment").click(
 			function(){
 				var id = $(this).attr('id');
@@ -97,4 +105,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			<img src="<?php echo base_url('assets/images/banner_small.png'); ?>"/>
 		</a>
 	</div>
+	<?php if ($user_level >= 2): ?>
+	<div class="top_object top_left" id="admin_tools_top">
+		Tools
+		<div class="top_menu" id="admin_tools_menu">
+			<a href="<?php echo site_url('rejudge') ?>"><div>Rejudge</div></a>
+			<a href="<?php echo site_url('queue') ?>"><div>Submission Queue</div></a>
+			<a href="<?php echo site_url('moss/'.$assignment['id']) ?>"><div>Cheat Detection</div></a>
+		</div>
+	</div>
+	<?php endif ?>
 </div>

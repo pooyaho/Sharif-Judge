@@ -1,9 +1,10 @@
 <?php
 /**
  * Sharif Judge online judge
- * @file notifications_model.php
+ * @file Notifications_model.php
  * @author Mohammad Javad Naderi <mjnaderi@gmail.com>
  */
+defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Notifications_model extends CI_Model {
 

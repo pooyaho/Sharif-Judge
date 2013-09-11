@@ -24,6 +24,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			By clicking on rejudge, all submissions of selected problem will go in 'PENDING' state. Then
 			Sharif Judge rejudges them one by one.
 		</p>
+		<p>
+			If you want to rejudge a single submission, you can click on rejudge button in "All Submissions" or "Final Submissions" page.
+		</p>
 		<?php foreach ($problems as $problem): ?>
 			<?php echo form_open('rejudge') ?>
 				<input type="hidden" name="problem_id" value="<?php echo $problem['id'] ?>"/>
