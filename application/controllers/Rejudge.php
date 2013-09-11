@@ -18,13 +18,12 @@ class Rejudge extends CI_Controller {
 	public function __construct(){
 		parent::__construct();
 		$this->load->driver('session');
-		if ( ! $this->session->userdata('logged_in')){ // if not logged in
+		if ( ! $this->session->userdata('logged_in')) // if not logged in
 			redirect('login');
-		}
 		$this->username = $this->session->userdata('username');
 		$this->assignment = $this->assignment_model->assignment_info($this->user_model->selected_assignment($this->username));
 		$this->user_level = $this->user_model->get_user_level($this->username);
-		if ( $this->user_level <=1)
+		if ( $this->user_level <= 1)
 			show_error('You have not enough permission to access this page.');
 		$this->problems = $this->assignment_model->all_problems($this->assignment['id']);
 	}
@@ -34,20 +33,20 @@ class Rejudge extends CI_Controller {
 
 
 	public function index($input = FALSE) {
-		if ($input!==FALSE)
+		if ($input !== FALSE)
 			show_404();
 
-		$this->form_validation->set_rules('problem_id','problem id','required|integer');
+		$this->form_validation->set_rules('problem_id', 'problem id', 'required|integer');
 
 		$data = array(
-			'username'=>$this->username,
+			'username' => $this->username,
 			'user_level' => $this->user_level,
-			'all_assignments'=>$this->assignment_model->all_assignments(),
+			'all_assignments' => $this->assignment_model->all_assignments(),
 			'assignment' => $this->assignment,
-			'title'=>'Rejudge',
-			'style'=>'main.css',
-			'problems'=>$this->problems,
-			'msg'=>array()
+			'title' => 'Rejudge',
+			'style' => 'main.css',
+			'problems' => $this->problems,
+			'msg' => array()
 		);
 
 		if ($this->form_validation->run()){
@@ -58,8 +57,8 @@ class Rejudge extends CI_Controller {
 			$data['msg'] = array('Rejudge in progress');
 		}
 
-		$this->load->view('templates/header',$data);
-		$this->load->view('pages/admin/rejudge',$data);
+		$this->load->view('templates/header', $data);
+		$this->load->view('pages/admin/rejudge', $data);
 		$this->load->view('templates/footer');
 	}
 
@@ -72,10 +71,10 @@ class Rejudge extends CI_Controller {
 			show_404();
 		if ($input !== FALSE)
 			show_404();
-		$this->form_validation->set_rules('submit_id','submit id','required|integer');
-		$this->form_validation->set_rules('username','username','required|alpha_numeric');
-		$this->form_validation->set_rules('assignment','assignment','required|integer');
-		$this->form_validation->set_rules('problem','problem','required|integer');
+		$this->form_validation->set_rules('submit_id', 'submit id', 'required|integer');
+		$this->form_validation->set_rules('username', 'username', 'required|alpha_numeric');
+		$this->form_validation->set_rules('assignment', 'assignment', 'required|integer');
+		$this->form_validation->set_rules('problem', 'problem', 'required|integer');
 		if ($this->form_validation->run()){
 			$this->load->model('queue_model');
 			$this->queue_model->rejudge_one(array(

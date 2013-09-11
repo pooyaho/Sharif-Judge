@@ -128,24 +128,36 @@ class Submit_model extends CI_Model {
 	public function add_upload_only($submit_info){
 		$now = shj_now();
 
-		$submit_query = $this->db->get_where('final_submissions',array('username'=>$submit_info['username'],'assignment'=>$submit_info['assignment'],'problem'=>$submit_info['problem']));
+		$submit_query = $this->db->get_where('final_submissions',
+			array(
+				'username'=>$submit_info['username'],
+				'assignment'=>$submit_info['assignment'],
+				'problem'=>$submit_info['problem']
+			)
+		);
 
-		$submit_info['time']=date('Y-m-d H:i:s',$now);
-		$submit_info['status']='Uploaded';
-		$submit_info['pre_score']=0;
+		$submit_info['time'] = date('Y-m-d H:i:s', $now);
+		$submit_info['status'] = 'Uploaded';
+		$submit_info['pre_score'] = 0;
 
-		if ($submit_query->num_rows()==0){
+		if ($submit_query->num_rows() == 0){
 			$submit_info['submit_count'] = 1;
-			$this->db->insert('final_submissions',$submit_info);
+			$this->db->insert('final_submissions', $submit_info);
 		}
-		else{
+		else {
 			$submit_info['submit_count'] = $submit_query->row()->submit_count + 1;
-			$this->db->where(array('username'=>$submit_info['username'],'assignment'=>$submit_info['assignment'],'problem'=>$submit_info['problem']))->update('final_submissions',$submit_info);
+			$this->db->where(
+				array(
+					'username' => $submit_info['username'],
+					'assignment' => $submit_info['assignment'],
+					'problem' => $submit_info['problem']
+				)
+			)->update('final_submissions',$submit_info);
 		}
 
 		$submit_info['submit_number'] = $submit_info['submit_count'];
 		unset ($submit_info['submit_count']);
-		$this->db->insert('all_submissions',$submit_info);
+		$this->db->insert('all_submissions', $submit_info);
 
 	}
 

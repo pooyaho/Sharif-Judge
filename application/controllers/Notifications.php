@@ -20,9 +20,8 @@ class Notifications extends CI_Controller {
 	public function __construct(){
 		parent::__construct();
 		$this->load->driver('session');
-		if ( ! $this->session->userdata('logged_in')){ // if not logged in
+		if ( ! $this->session->userdata('logged_in')) // if not logged in
 			redirect('login');
-		}
 		$this->username = $this->session->userdata('username');
 		$this->assignment = $this->assignment_model->assignment_info($this->user_model->selected_assignment($this->username));
 		$this->user_level = $this->user_model->get_user_level($this->username);
@@ -38,17 +37,17 @@ class Notifications extends CI_Controller {
 		if ($input !== FALSE)
 			show_404();
 		$data = array(
-			'username'=>$this->username,
+			'username' => $this->username,
 			'user_level' => $this->user_level,
-			'all_assignments'=>$this->assignment_model->all_assignments(),
+			'all_assignments' => $this->assignment_model->all_assignments(),
 			'assignment' => $this->assignment,
-			'title'=>'Notifications',
-			'style'=>'main.css',
+			'title' => 'Notifications',
+			'style' => 'main.css',
 			'notifications' => $this->notifications_model->get_all_notifications()
 		);
 
-		$this->load->view('templates/header',$data);
-		$this->load->view('pages/notifications',$data);
+		$this->load->view('templates/header', $data);
+		$this->load->view('pages/notifications', $data);
 		$this->load->view('templates/footer');
 	}
 
@@ -62,33 +61,33 @@ class Notifications extends CI_Controller {
 		if ( $this->user_level <=1)
 			show_error('You have not enough permission to access this page.');
 
-		$this->form_validation->set_rules('title','title','trim');
-		$this->form_validation->set_rules('text','text','');
+		$this->form_validation->set_rules('title', 'title', 'trim');
+		$this->form_validation->set_rules('text', 'text', '');
 
 		if($this->form_validation->run()){
-			if ($this->input->post('id')===NULL)
-				$this->notifications_model->add_notification($this->input->post('title'),$this->input->post('text'));
+			if ($this->input->post('id') === NULL)
+				$this->notifications_model->add_notification($this->input->post('title'), $this->input->post('text'));
 			else
-				$this->notifications_model->update_notification($this->input->post('id'),$this->input->post('title'),$this->input->post('text'));
+				$this->notifications_model->update_notification($this->input->post('id'), $this->input->post('title'), $this->input->post('text'));
 			redirect('notifications');
 		}
 
 		$data = array(
-			'username'=>$this->username,
+			'username' => $this->username,
 			'user_level' => $this->user_level,
-			'all_assignments'=>$this->assignment_model->all_assignments(),
+			'all_assignments' => $this->assignment_model->all_assignments(),
 			'assignment' => $this->assignment,
-			'title'=>'Add Notification',
-			'style'=>'main.css',
+			'title' => 'Add Notification',
+			'style' => 'main.css',
 			'notif_edit' => $this->notif_edit
 		);
 
-		if ($this->notif_edit!==FALSE)
+		if ($this->notif_edit !== FALSE)
 			$data['title'] = 'Edit Notification';
 
 
-		$this->load->view('templates/header',$data);
-		$this->load->view('pages/admin/add_notification',$data);
+		$this->load->view('templates/header', $data);
+		$this->load->view('pages/admin/add_notification', $data);
 		$this->load->view('templates/footer');
 
 	}
@@ -98,11 +97,11 @@ class Notifications extends CI_Controller {
 
 
 	public function edit($notif_id = FALSE) {
-		if ( $this->user_level <=1)
+		if ($this->user_level <= 1)
 			show_error('You have not enough permission to access this page.');
 		if ($notif_id === FALSE)
 			show_404();
-		if (!is_numeric($notif_id))
+		if ( ! is_numeric($notif_id))
 			show_error('Wrong ID');
 		$this->notif_edit = $this->notifications_model->get_notification($notif_id);
 		$this->add();
@@ -117,9 +116,9 @@ class Notifications extends CI_Controller {
 			show_404();
 		if ($input !== FALSE)
 			exit('error');
-		if ( $this->user_level <=1)
+		if ($this->user_level <= 1)
 			exit('You have not enough permission to access this page.');
-		if ($this->input->post('id')===NULL)
+		if ($this->input->post('id') === NULL)
 			exit('error');
 		$this->notifications_model->delete_notification($this->input->post('id'));
 	}

@@ -18,8 +18,8 @@ class Install extends CI_Controller {
 	// ------------------------------------------------------------------------
 
 
-	public function _lowercase ($string) {
-		if (strtolower($string)===$string)
+	public function _lowercase($string) {
+		if (strtolower($string) === $string)
 			return TRUE;
 		return FALSE;
 	}
@@ -34,13 +34,14 @@ class Install extends CI_Controller {
 		if ($this->db->table_exists('sessions'))
 			show_error('It seems that Sharif Judge has been installed already.');
 
-		$this->form_validation->set_message('_lowercase','%s must be lowercase.');
-		$this->form_validation->set_rules('username','username','required|min_length[3]|max_length[20]|alpha_numeric|callback__lowercase');
-		$this->form_validation->set_rules('email','email','required|max_length[40]|valid_email|callback__lowercase');
-		$this->form_validation->set_rules('password','password','required|min_length[6]|max_length[30]|alpha_numeric');
-		$this->form_validation->set_rules('password_again','password confirmation','required|matches[password]');
+		$this->form_validation->set_message('_lowercase', '%s must be lowercase.');
+		$this->form_validation->set_rules('username', 'username', 'required|min_length[3]|max_length[20]|alpha_numeric|callback__lowercase');
+		$this->form_validation->set_rules('email', 'email', 'required|max_length[40]|valid_email|callback__lowercase');
+		$this->form_validation->set_rules('password', 'password', 'required|min_length[6]|max_length[30]|alpha_numeric');
+		$this->form_validation->set_rules('password_again', 'password confirmation', 'required|matches[password]');
 
-		$data['status']='';
+		$data['status'] = '';
+
 		if ($this->form_validation->run()){
 
 			$query = "CREATE TABLE IF NOT EXISTS  `".$this->db->dbprefix('sessions')."` (
@@ -52,7 +53,7 @@ class Install extends CI_Controller {
 				PRIMARY KEY (session_id),
 				KEY `last_activity_idx` (`last_activity`)
 				);";
-			if (!$this->db->simple_query($query))
+			if ( ! $this->db->simple_query($query))
 				show_error("Error creating database table");
 
 
@@ -71,7 +72,7 @@ class Install extends CI_Controller {
 				KEY `submit_id` (`submit_id`),
 				KEY `assignment` (`assignment`)
 				);";
-			if (!$this->db->simple_query($query))
+			if ( ! $this->db->simple_query($query))
 				show_error("Error creating database table");
 
 
@@ -91,7 +92,7 @@ class Install extends CI_Controller {
 				`moss_update` varchar(30) CHARACTER SET utf8 NOT NULL DEFAULT 'Never',
 				PRIMARY KEY (`id`)
 				);";
-			if (!$this->db->simple_query($query))
+			if ( ! $this->db->simple_query($query))
 				show_error("Error creating database table");
 
 
@@ -110,7 +111,7 @@ class Install extends CI_Controller {
 				KEY `assignment` (`assignment`),
 				KEY `username` (`username`)
 				);";
-			if (!$this->db->simple_query($query))
+			if ( ! $this->db->simple_query($query))
 				show_error("Error creating database table");
 
 
@@ -121,7 +122,7 @@ class Install extends CI_Controller {
 				`time` datetime NOT NULL,
 				PRIMARY KEY (`id`)
 				);";
-			if (!$this->db->simple_query($query))
+			if ( ! $this->db->simple_query($query))
 				show_error("Error creating database table");
 
 
@@ -141,7 +142,7 @@ class Install extends CI_Controller {
 				KEY `assignment` (`assignment`),
 				KEY `id` (`id`)
 				);";
-			if (!$this->db->simple_query($query))
+			if ( ! $this->db->simple_query($query))
 				show_error("Error creating database table");
 
 
@@ -152,7 +153,7 @@ class Install extends CI_Controller {
 				`problem` smallint(4) NOT NULL,
 				`type` varchar(8) NOT NULL DEFAULT 'judge'
 				);";
-			if (!$this->db->simple_query($query))
+			if ( ! $this->db->simple_query($query))
 				show_error("Error creating database table");
 
 
@@ -161,7 +162,7 @@ class Install extends CI_Controller {
 				`shj_value` text CHARACTER SET utf8 NOT NULL,
 				KEY `shj_key` (`shj_key`)
 				);";
-			if (!$this->db->simple_query($query))
+			if ( ! $this->db->simple_query($query))
 				show_error("Error creating database table");
 
 
@@ -172,7 +173,7 @@ class Install extends CI_Controller {
 				('file_size_limit', '20'),
 				('output_size_limit', '1024'),
 				('queue_is_working', '0'),
-				('default_late_rule', '".'/* \n * Put coefficient (from 100) in variable $coefficient.\n * You can use variables $extra_time and $delay.\n * $extra_time is the total extra time given to users\n * (in seconds) and $delay is number of seconds passed\n * from finish time (can be negative).\n *  In this example, $extra_time is 172800 (2 days):\n */\n\nif ($delay<=0)\n  // no delay\n  $coefficient = 100;\n\nelse if ($delay<=3600)\n  // delay less than 1 hour\n  $coefficient = ceil(100-((30*$delay)/3600));\n\nelse if ($delay<=86400)\n  // delay more than 1 hour and less than 1 day\n  $coefficient = 70;\n\nelse if (($delay-86400)<=3600)\n  // delay less than 1 hour in second day\n  $coefficient = ceil(70-((20*($delay-86400))/3600));\n\nelse if (($delay-86400)<=86400)\n  // delay more than 1 hour in second day\n  $coefficient = 50;\n\nelse if ($delay > $extra_time)\n  // too late\n  $coefficient = 0;'."'),
+				('default_late_rule', '".'/* \n * Put coefficient (from 100) in variable $coefficient.\n * You can use variables $extra_time and $delay.\n * $extra_time is the total extra time given to users\n * (in seconds) and $delay is number of seconds passed\n * from finish time (can be negative).\n *  In this example, $extra_time is 172800 (2 days):\n */\n\nif ($delay<=0)\n  // no delay\n  $coefficient = 100;\n\nelseif ($delay<=3600)\n  // delay less than 1 hour\n  $coefficient = ceil(100-((30*$delay)/3600));\n\nelseif ($delay<=86400)\n  // delay more than 1 hour and less than 1 day\n  $coefficient = 70;\n\nelseif (($delay-86400)<=3600)\n  // delay less than 1 hour in second day\n  $coefficient = ceil(70-((20*($delay-86400))/3600));\n\nelseif (($delay-86400)<=86400)\n  // delay more than 1 hour in second day\n  $coefficient = 50;\n\nelseif ($delay > $extra_time)\n  // too late\n  $coefficient = 0;'."'),
 				('enable_easysandbox', '0'),
 				('enable_c_shield', '1'),
 				('enable_cpp_shield', '1'),
@@ -189,7 +190,7 @@ class Install extends CI_Controller {
 				('moss_userid', ''),
 				('results_per_page', '40'),
 				('week_start', '0');";
-			if (!$this->db->simple_query($query))
+			if ( ! $this->db->simple_query($query))
 				show_error("Error adding data to table 'settings'");
 
 
@@ -209,33 +210,34 @@ class Install extends CI_Controller {
 				PRIMARY KEY (`id`),
 				UNIQUE KEY `username` (`username`)
 				);";
-			if (!$this->db->simple_query($query))
+			if ( ! $this->db->simple_query($query))
 				show_error("Error creating database table");
 
 			$this->user_model->add_user(
 				$this->input->post('username'),
 				$this->input->post('email'),
 				$this->input->post('password'),
-				'admin');
+				'admin'
+			);
 
 			// Using a random string as encryption key
 			$config_path = rtrim(APPPATH,'/').'/config/config.php';
-			$config_content = file_get_contents( $config_path );
-			$random_key = random_string('alnum',32);
-			$res = file_put_contents( $config_path , str_replace('919RgokTjymS34AhPzF76tcLjTVYMV8T',$random_key,$config_content) );
-			if ($res===FALSE)
-				$data['key_changed']=FALSE;
+			$config_content = file_get_contents($config_path);
+			$random_key = random_string('alnum', 32);
+			$res = file_put_contents($config_path, str_replace('919RgokTjymS34AhPzF76tcLjTVYMV8T', $random_key, $config_content));
+			if ($res === FALSE)
+				$data['key_changed'] = FALSE;
 			else
-				$data['key_changed']=TRUE;
+				$data['key_changed'] = TRUE;
 
-			$data['status']='Installed';
+			$data['status'] = 'Installed';
 		}
 
-		$data['title']='Installation';
-		$data['style']='main.css';
+		$data['title'] = 'Installation';
+		$data['style'] = 'main.css';
 
-		$this->load->view('templates/header',$data);
-		$this->load->view('pages/admin/install',$data);
+		$this->load->view('templates/header', $data);
+		$this->load->view('pages/admin/install', $data);
 		$this->load->view('templates/footer');
 
 	}

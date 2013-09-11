@@ -26,9 +26,8 @@ class Submit extends CI_Controller{
 	public function __construct(){
 		parent::__construct();
 		$this->load->driver('session');
-		if ( ! $this->session->userdata('logged_in')){ // if not logged in
+		if ( ! $this->session->userdata('logged_in')) // if not logged in
 			redirect('login');
-		}
 		$this->load->library('upload');
 		$this->load->model('queue_model');
 		$this->username = $this->session->userdata('username');
@@ -77,7 +76,7 @@ class Submit extends CI_Controller{
 	public function _check_language($str){
 		if ($str=='0')
 			return FALSE;
-		if (in_array( strtolower($str),array('c','c++','python 2','python 3','java','zip')))
+		if (in_array( strtolower($str),array('c', 'c++', 'python 2', 'python 3', 'java', 'zip')))
 			return TRUE;
 		return FALSE;
 	}
@@ -90,27 +89,27 @@ class Submit extends CI_Controller{
 		if ($input !== FALSE)
 			show_404();
 		$this->data = array(
-			'username'=>$this->username,
+			'username' => $this->username,
 			'user_level' => $this->user_level,
-			'all_assignments'=>$this->assignment_model->all_assignments(),
+			'all_assignments' => $this->assignment_model->all_assignments(),
 			'assignment' => $this->assignment,
 			'problems' => $this->problems,
-			'title'=>'Submit',
-			'style'=>'main.css',
-			'in_queue'=>FALSE,
-			'upload_state'=>''
+			'title' => 'Submit',
+			'style' => 'main.css',
+			'in_queue' => FALSE,
+			'upload_state' => ''
 		);
-		$this->form_validation->set_message('greater_than','Select a %s.');
-		$this->form_validation->set_message('_check_language','Select a valid %s.');
-		$this->form_validation->set_rules('problem','problem','required|integer|greater_than[0]');
-		$this->form_validation->set_rules('language','language','required|callback__check_language');
+		$this->form_validation->set_message('greater_than', 'Select a %s.');
+		$this->form_validation->set_message('_check_language', 'Select a valid %s.');
+		$this->form_validation->set_rules('problem', 'problem', 'required|integer|greater_than[0]');
+		$this->form_validation->set_rules('language', 'language', 'required|callback__check_language');
 
 		if ($this->form_validation->run()){
 			$this->_upload();
 		}
 
-		$this->load->view('templates/header',$this->data);
-		$this->load->view('pages/submit',$this->data);
+		$this->load->view('templates/header', $this->data);
+		$this->load->view('pages/submit', $this->data);
 		$this->load->view('templates/footer');
 	}
 
@@ -121,14 +120,14 @@ class Submit extends CI_Controller{
 	private function _upload(){
 		$now = shj_now();
 		foreach($this->problems as $item)
-			if ($item['id']==$this->input->post('problem')){
+			if ($item['id'] == $this->input->post('problem')){
 				$this->problem = $item;
 				break;
 			}
 		$this->filetype = $this->_language_to_type(strtolower(trim($this->input->post('language'))));
 		$this->ext = substr(strrchr($_FILES['userfile']['name'],'.'),1); // uploaded file extension
 		$this->file_name = basename($_FILES['userfile']['name'], ".{$this->ext}"); // uploaded file name without extension
-		if ( $this->queue_model->in_queue($this->username,$this->assignment['id'],$this->problem['id']) )
+		if ( $this->queue_model->in_queue($this->username,$this->assignment['id'], $this->problem['id']) )
 			show_error('You have already submitted for this problem. Your last submission is still in queue.');
 		if ($this->user_model->get_user_level($this->username)==0 && !$this->assignment['open'])
 			show_error('Selected assignment has been closed.');
@@ -136,31 +135,31 @@ class Submit extends CI_Controller{
 			show_error('Selected assignment has not started.');
 		if ($now > strtotime($this->assignment['finish_time'])+$this->assignment['extra_time'])
 			show_error('Selected assignment has finished.');
-		if ( !$this->assignment_model->is_participant($this->assignment['participants'],$this->username) )
+		if ( ! $this->assignment_model->is_participant($this->assignment['participants'],$this->username) )
 			show_error('You are not registered for submitting.');
 		$filetypes = explode(",",$this->problem['allowed_languages']);
 		foreach ($filetypes as &$filetype){
 			$filetype = $this->_language_to_type(strtolower(trim($filetype)));
 		}
-		if ($_FILES['userfile']['error']==4)
+		if ($_FILES['userfile']['error'] == 4)
 			show_error('No file chosen.');
-		if (!in_array($this->filetype,$filetypes))
+		if ( ! in_array($this->filetype, $filetypes))
 			show_error('This file type is not allowed for this problem.');
-		if ( !$this->_match($this->filetype, $this->ext) )
+		if ( ! $this->_match($this->filetype, $this->ext) )
 			show_error('This file type does not match your selected language.');
 		if ( preg_match('/[^\x20-\x7f]/', $_FILES['userfile']['name']))
 			show_error('Invalid characters in file name.');
 
-		$user_dir=rtrim($this->assignment_root,'/').'/assignment_'.$this->assignment['id'].'/p'.$this->problem['id'].'/'.$this->username;
-		if(!file_exists($user_dir))
-			mkdir($user_dir,0700);
+		$user_dir = rtrim($this->assignment_root, '/').'/assignment_'.$this->assignment['id'].'/p'.$this->problem['id'].'/'.$this->username;
+		if( ! file_exists($user_dir))
+			mkdir($user_dir, 0700);
 
 		$config['upload_path'] = $user_dir;
 		$config['allowed_types'] = '*';
 		$config['max_size']	= $this->settings_model->get_setting('file_size_limit');
 		$config['file_name'] = $this->file_name."-".($this->assignment['total_submits']+1).".".$this->ext;
-		$config['max_file_name']=20;
-		$config['remove_spaces']=TRUE;
+		$config['max_file_name'] = 20;
+		$config['remove_spaces'] = TRUE;
 		$this->upload->initialize($config);
 
 		if($this->upload->do_upload('userfile')){
@@ -173,20 +172,20 @@ class Submit extends CI_Controller{
 				'assignment' => $this->assignment['id'],
 				'problem' => $this->problem['id'],
 				'file_name' => $result['raw_name'],
-				'main_file_name' =>$this->file_name,
+				'main_file_name' => $this->file_name,
 				'file_type' => $this->filetype
 			);
-			if($this->problem['is_upload_only']==0){
+			if($this->problem['is_upload_only'] == 0){
 				$this->queue_model->add_to_queue($submit_info);
-				shell_exec('php '.rtrim($this->settings_model->get_setting('tester_path'),'/').'/queue_process.php >/dev/null 2>/dev/null &');
+				shell_exec('php '.rtrim($this->settings_model->get_setting('tester_path'), '/').'/queue_process.php >/dev/null 2>/dev/null &');
 			}else{
 				$this->submit_model->add_upload_only($submit_info);
 			}
 
-			$this->data['upload_state']='ok';
+			$this->data['upload_state'] = 'ok';
 		}
 		else
-			$this->data['upload_state']='error';
+			$this->data['upload_state'] = 'error';
 	}
 
 

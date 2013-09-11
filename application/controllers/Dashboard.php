@@ -21,9 +21,8 @@ class Dashboard extends CI_Controller{
 		if (!$this->db->table_exists('sessions'))
 			redirect('install');
 		$this->load->driver('session');
-		if ( ! $this->session->userdata('logged_in')){ // if not logged in
+		if ( ! $this->session->userdata('logged_in')) // if not logged in
 			redirect('login');
-		}
 		$this->username = $this->session->userdata('username');
 		$this->assignment = $this->assignment_model->assignment_info($this->user_model->selected_assignment($this->username));
 		$this->user_level = $this->user_model->get_user_level($this->username);
@@ -50,22 +49,22 @@ class Dashboard extends CI_Controller{
 
 		// detecting errors:
 		$data['errors'] = array();
-		if($this->user_level===3){
+		if($this->user_level === 3){
 			$path = $this->settings_model->get_setting('assignments_root');
-			if (!file_exists($path))
-				array_push($data['errors'],'The path to folder "assignments" is not set correctly. Move this folder somewhere not publicly accessible, and set its full path in Settings.');
-			elseif (!is_writable($path))
-				array_push($data['errors'],'The folder <code>"'.$path.'"</code> is not writable by PHP. Make it writable. But make sure that this folder is only accessible by you. Codes will be saved in this folder!');
+			if ( ! file_exists($path))
+				array_push($data['errors'], 'The path to folder "assignments" is not set correctly. Move this folder somewhere not publicly accessible, and set its full path in Settings.');
+			elseif ( ! is_writable($path))
+				array_push($data['errors'], 'The folder <code>"'.$path.'"</code> is not writable by PHP. Make it writable. But make sure that this folder is only accessible by you. Codes will be saved in this folder!');
 
 			$path = $this->settings_model->get_setting('tester_path');
-			if (!file_exists($path))
-				array_push($data['errors'],'The path to folder "tester" is not set correctly. Move this folder somewhere not publicly accessible, and set its full path in Settings.');
-			elseif (!is_writable($path))
-				array_push($data['errors'],'The folder <code>"'.$path.'"</code> is not writable by PHP. Make it writable. But make sure that this folder is only accessible by you.');
+			if ( ! file_exists($path))
+				array_push($data['errors'], 'The path to folder "tester" is not set correctly. Move this folder somewhere not publicly accessible, and set its full path in Settings.');
+			elseif ( ! is_writable($path))
+				array_push($data['errors'], 'The folder <code>"'.$path.'"</code> is not writable by PHP. Make it writable. But make sure that this folder is only accessible by you.');
 		}
 
-		$this->load->view('templates/header',$data);
-		$this->load->view('pages/dashboard',$data);
+		$this->load->view('templates/header', $data);
+		$this->load->view('pages/dashboard', $data);
 		$this->load->view('templates/footer');
 	}
 
@@ -76,7 +75,7 @@ class Dashboard extends CI_Controller{
 	public function widget_positions(){
 		if ( ! $this->input->is_ajax_request() )
 			show_404();
-		if ($this->input->post('positions')!==NULL)
+		if ($this->input->post('positions') !== NULL)
 			$this->user_model->save_widget_positions($this->username, $this->input->post('positions'));
 	}
 

@@ -22,7 +22,7 @@ class Settings_model extends CI_Model {
 
 
 	public function get_setting($key){
-		return $this->db->get_where('settings',array('shj_key'=>$key))->row()->shj_value;
+		return $this->db->get_where('settings', array('shj_key'=>$key))->row()->shj_value;
 	}
 
 
@@ -30,7 +30,7 @@ class Settings_model extends CI_Model {
 
 
 	public function set_setting($key,$value){
-		$this->db->where('shj_key',$key)->update('settings',array('shj_value'=>$value));
+		$this->db->where('shj_key', $key)->update('settings', array('shj_value'=>$value));
 	}
 
 

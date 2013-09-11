@@ -19,9 +19,8 @@ class Users extends CI_Controller {
 	public function __construct(){
 		parent::__construct();
 		$this->load->driver('session');
-		if ( ! $this->session->userdata('logged_in')){ // if not logged in
+		if ( ! $this->session->userdata('logged_in')) // if not logged in
 			redirect('login');
-		}
 		$this->username = $this->session->userdata('username');
 		$this->assignment = $this->assignment_model->assignment_info($this->user_model->selected_assignment($this->username));
 		$this->user_level = $this->user_model->get_user_level($this->username);
@@ -37,17 +36,17 @@ class Users extends CI_Controller {
 		if ($input !== FALSE)
 			show_404();
 		$data = array(
-			'username'=>$this->username,
+			'username' => $this->username,
 			'user_level' => $this->user_level,
-			'all_assignments'=>$this->assignment_model->all_assignments(),
+			'all_assignments' => $this->assignment_model->all_assignments(),
 			'assignment' => $this->assignment,
-			'title'=>'Users',
-			'style'=>'main.css',
-			'users'=>$this->user_model->get_all_users()
+			'title' => 'Users',
+			'style' => 'main.css',
+			'users' => $this->user_model->get_all_users()
 		);
 
-		$this->load->view('templates/header',$data);
-		$this->load->view('pages/admin/users',$data);
+		$this->load->view('templates/header', $data);
+		$this->load->view('pages/admin/users', $data);
 		$this->load->view('templates/footer');
 	}
 
@@ -59,18 +58,18 @@ class Users extends CI_Controller {
 		if ($input !== FALSE)
 			show_404();
 		$data = array(
-			'username'=>$this->username,
+			'username' => $this->username,
 			'user_level' => $this->user_level,
-			'all_assignments'=>$this->assignment_model->all_assignments(),
+			'all_assignments' => $this->assignment_model->all_assignments(),
 			'assignment' => $this->assignment,
-			'title'=>'Add Users',
-			'style'=>'main.css',
+			'title' => 'Add Users',
+			'style' => 'main.css',
 		);
-		$this->form_validation->set_rules('new_users','New Users','required');
+		$this->form_validation->set_rules('new_users', 'New Users', 'required');
 		if ($this->form_validation->run()) {
-			list( $ok , $error) = $this->user_model->add_users($this->input->post('new_users'),$this->input->post('send_mail'),$this->input->post('delay'));
+			list($ok , $error) = $this->user_model->add_users($this->input->post('new_users'), $this->input->post('send_mail'), $this->input->post('delay'));
 			echo '<p class="shj_ok">These users added successfully:</p>';
-			if (count($ok)>0){
+			if (count($ok) > 0){
 				echo '<ol>';
 				foreach ($ok as $item){
 					echo '<li>Usename: '.$item[0].' Email: '.$item[1].' Password: '.$item[2].' Role: '.$item[3].'</li>';
@@ -80,7 +79,7 @@ class Users extends CI_Controller {
 			else
 				echo 'No users.';
 			echo '<p class="shj_error">Error adding these users:</p>';
-			if (count($error)>0){
+			if (count($error) > 0){
 				echo '<ol>';
 				foreach ($error as $item){
 					echo '<li>Usename: '.$item[0].' Email: '.$item[1].' Password: '.$item[2].' Role: '.$item[3].' ('.$item[4].')</li>';
@@ -92,8 +91,8 @@ class Users extends CI_Controller {
 			exit;
 		}
 
-		$this->load->view('templates/header',$data);
-		$this->load->view('pages/admin/add_user',$data);
+		$this->load->view('templates/header', $data);
+		$this->load->view('pages/admin/add_user', $data);
 		$this->load->view('templates/footer');
 	}
 
@@ -101,34 +100,34 @@ class Users extends CI_Controller {
 	// ------------------------------------------------------------------------
 
 
-	public function delete($user_id=FALSE) {
-		if ($user_id===FALSE || !is_numeric($user_id))
+	public function delete($user_id = FALSE) {
+		if ($user_id === FALSE OR ! is_numeric($user_id))
 			show_error('Incorrect user id');
 		$username = $this->user_model->user_id_to_username($user_id);
 		if ($username === FALSE)
 			show_error('This user does not exist.');
 		$data = array(
-			'username'=>$this->username,
+			'username' => $this->username,
 			'user_level' => $this->user_level,
-			'all_assignments'=>$this->assignment_model->all_assignments(),
+			'all_assignments' => $this->assignment_model->all_assignments(),
 			'assignment' => $this->assignment,
-			'title'=>'Delete User',
-			'style'=>'main.css',
-			'id'=>$user_id,
-			'delete_username'=>$username
+			'title' => 'Delete User',
+			'style' => 'main.css',
+			'id' => $user_id,
+			'delete_username' => $username
 		);
-		if ($this->input->post('delete')==='delete'){
+		if ($this->input->post('delete') === 'delete'){
 			$this->user_model->delete_user($username, $this->input->post('delete_submissions')===NULL?FALSE:TRUE);
 			$data['deleted_user'] = TRUE;
-			$data['title']='Users';
-			$data['users']=$this->user_model->get_all_users();
-			$this->load->view('templates/header',$data);
-			$this->load->view('pages/admin/users',$data);
+			$data['title'] = 'Users';
+			$data['users'] = $this->user_model->get_all_users();
+			$this->load->view('templates/header', $data);
+			$this->load->view('pages/admin/users', $data);
 			$this->load->view('templates/footer');
 		}
-		else{
-			$this->load->view('templates/header',$data);
-			$this->load->view('pages/admin/delete_user',$data);
+		else {
+			$this->load->view('templates/header', $data);
+			$this->load->view('pages/admin/delete_user', $data);
 			$this->load->view('templates/footer');
 		}
 	}
@@ -137,39 +136,39 @@ class Users extends CI_Controller {
 	// ------------------------------------------------------------------------
 
 
-	public function delete_submissions($user_id=FALSE) {
-		if ($user_id===FALSE || !is_numeric($user_id))
+	public function delete_submissions($user_id = FALSE) {
+		if ($user_id === FALSE OR ! is_numeric($user_id))
 			show_error('Incorrect user id');
 		$username = $this->user_model->user_id_to_username($user_id);
 		if ($username === FALSE)
 			show_error('This user does not exist.');
 		$data = array(
-			'username'=>$this->username,
+			'username' => $this->username,
 			'user_level' => $this->user_level,
-			'all_assignments'=>$this->assignment_model->all_assignments(),
+			'all_assignments' => $this->assignment_model->all_assignments(),
 			'assignment' => $this->assignment,
-			'title'=>'Delete Submissions',
-			'style'=>'main.css',
-			'id'=>$user_id,
-			'delete_username'=>$username
+			'title' => 'Delete Submissions',
+			'style' => 'main.css',
+			'id' => $user_id,
+			'delete_username' => $username
 		);
-		if ($this->input->post('delete')==='delete'){
+		if ($this->input->post('delete') === 'delete'){
 			shell_exec("cd {$this->settings_model->get_setting('assignments_root')}; rm -r */*/{$username};");
-			if ($this->input->post('delete_from_database')!==NULL){// also delete all submissions from database
-				$this->db->delete('final_submissions',array('username'=>$username));
-				$this->db->delete('all_submissions',array('username'=>$username));
+			if ($this->input->post('delete_from_database') !== NULL){// also delete all submissions from database
+				$this->db->delete('final_submissions', array('username'=>$username));
+				$this->db->delete('all_submissions', array('username'=>$username));
 			}
 
 			$data['deleted_submissions'] = TRUE;
-			$data['title']='Users';
-			$data['users']=$this->user_model->get_all_users();
-			$this->load->view('templates/header',$data);
-			$this->load->view('pages/admin/users',$data);
+			$data['title'] = 'Users';
+			$data['users'] = $this->user_model->get_all_users();
+			$this->load->view('templates/header', $data);
+			$this->load->view('pages/admin/users', $data);
 			$this->load->view('templates/footer');
 		}
 		else{
-			$this->load->view('templates/header',$data);
-			$this->load->view('pages/admin/delete_submissions',$data);
+			$this->load->view('templates/header', $data);
+			$this->load->view('pages/admin/delete_submissions', $data);
 			$this->load->view('templates/footer');
 		}
 	}
@@ -181,10 +180,10 @@ class Users extends CI_Controller {
 	public function list_excel($input = FALSE) {
 		if ($input !== FALSE)
 			show_404();
-		$now=date('Y-m-d H:i:s',shj_now());
+		$now=date('Y-m-d H:i:s', shj_now());
 		$this->load->library('excel');
 		$this->excel->set_file_name('sharifjudge_users.xls');
-		$this->excel->addHeader("Time: $now");
+		$this->excel->addHeader(array('Time:', $now));
 		$this->excel->addHeader(NULL); //newline
 		$row=array('#','User ID','Username','Display Name','Email','Role','First Login','Last Login');
 		$this->excel->addRow($row);
