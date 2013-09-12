@@ -84,9 +84,9 @@ $db['default'] = array(
 
 	/* Provide database connection settings here: */
 	'hostname' => 'localhost',  // database host
-	'username' => 'shj2',           // database username
-	'password' => '123',           // database password
-	'database' => 'shj2',           // database name
+	'username' => '',           // database username
+	'password' => '',           // database password
+	'database' => '',           // database name
 	'dbprefix' => 'shj_',       // table prefix
 	/**********************************************/
 
