@@ -21,11 +21,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			Selected Assignment: <?php echo $assignment['name'] ?>
 		</p>
 		<p>
-			By clicking on rejudge, all submissions of selected problem will go in 'PENDING' state. Then
+			By clicking on rejudge, all submissions of selected problem will go in <code>PENDING</code> state. Then
 			Sharif Judge rejudges them one by one.
 		</p>
 		<p>
-			If you want to rejudge a single submission, you can click on rejudge button in "All Submissions" or "Final Submissions" page.
+			If you want to rejudge a single submission, you can click on rejudge button in <?php echo anchor('submissions/all', 'All Submissions') ?> or <?php echo anchor('submissions/final', 'Final Submissions') ?> page.
 		</p>
 		<?php foreach ($problems as $problem): ?>
 			<?php echo form_open('rejudge') ?>

@@ -102,7 +102,7 @@ class User_model extends CI_Model{
 	 */
 	public function add_users($text, $send_mail, $delay){
 
-		$lines = preg_split('/((\r?\n)|(\n?\r))/', $text);
+		$lines = preg_split('/\r?\n|\n?\r/', $text);
 		$users_ok = array();
 		$users_error = array();
 

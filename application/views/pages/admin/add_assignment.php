@@ -49,7 +49,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<div id="page_title">
 		<img src="<?php echo base_url('assets/images/icons/add.png') ?>"/>
 		<span><?php echo $title ?></span>
-		<span class="title_menu_item"><a href="http://docs.sharifjudge.ir/add_assignment" target="_blank"><i class="splashy-help"></i> Help</a></span>
+		<span class="title_menu_item">
+			<a href="http://docs.sharifjudge.ir/add_assignment" target="_blank"><i class="splashy-help"></i> Help</a>
+		</span>
 	</div>
 	<div id="main_content">
 		<?php if ($form_status=='ok'||$form_status=='tests_updated'): ?>

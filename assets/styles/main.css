@@ -30,6 +30,13 @@ a {
 	color: #2d2d2d;
 }
 
+code {
+	border-radius: 3px;
+	padding: 0 3px;
+	border: 1px solid #C7C7C7;
+	background-color: #ECECEC;
+}
+
 .clear {
 	clear: both !important;
 }

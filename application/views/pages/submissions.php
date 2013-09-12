@@ -98,8 +98,18 @@ $finish = strtotime($assignment['finish_time']);
 		<img src="<?php echo base_url("assets/images/icons/{$view}_submissions.png") ?>"/>
 		<span><?php echo $title ?></span>
 		<span class="title_menu_item">
-			<a href="<?php echo site_url("submissions/{$view}/excel") ?>"><i class="splashy-document_small_download"></i> Excel</a>
+			<a href="<?php echo $excel_link ?>"><i class="splashy-document_small_download"></i> Excel</a>
 		</span>
+		<?php if ($filter_user): ?>
+		<span class="title_menu_item">
+			<a href="<?php echo site_url('submissions/'.$view.($filter_problem?'/problem/'.$filter_problem:'')) ?>"><i class="splashy-tag_remove"></i> Remove Username Filter</a>
+		</span>
+		<?php endif ?>
+		<?php if ($filter_problem): ?>
+		<span class="title_menu_item">
+			<a href="<?php echo site_url('submissions/'.$view.($filter_user?'/user/'.$filter_user:'')) ?>"><i class="splashy-tag_remove"></i> Remove Problem Filter</a>
+		</span>
+		<?php endif ?>
 	</div>
 	<div id="main_content">
 		<p><?php echo ucfirst($view); ?> Submissions of <?php echo $assignment['name']; ?></p>
@@ -186,7 +196,7 @@ $finish = strtotime($assignment['finish_time']);
 						<td><?php echo $j; ?></td>
 					<?php endif ?>
 
-					<td><?php echo $item['username'] ?></td>
+					<td><a title="Filter Submissions by This Username" href="<?php echo site_url('submissions/'.$view.'/user/'.$item['username'].($filter_problem?'/problem/'.$filter_problem:'')) ?>"><?php echo $item['username'] ?></a></td>
 					<td><?php
 						if(!isset($name[$item['username']]))
 							$name[$item['username']]=$this->user_model->get_user($item['username'])->display_name;
@@ -195,7 +205,7 @@ $finish = strtotime($assignment['finish_time']);
 				<?php endif ?>
 					<td><?php
 						$pi = $this->assignment_model->problem_info($assignment['id'],$item['problem']);
-						echo '<span dir>'.$pi['name'].'</span> <span>('.$item['problem'].')</span>';
+						echo '<a title="Filter Submissions by This Problem" href="'.site_url('submissions/'.$view.($filter_user?'/user/'.$filter_user:'').'/problem/'.$item['problem']).'"><span dir>'.$pi['name'].'</span> <span>('.$item['problem'].')</span></a>';
 					?></td>
 					<td><?php echo $item['time'] ?></td>
 					<td><?php

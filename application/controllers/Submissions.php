@@ -13,6 +13,9 @@ class Submissions extends CI_Controller{
 	var $user_level;
 	var $final_items;
 
+	var $filter_user;
+	var $filter_problem;
+	var $page_number;
 
 	// ------------------------------------------------------------------------
 
@@ -26,6 +29,18 @@ class Submissions extends CI_Controller{
 		$this->username = $this->session->userdata('username');
 		$this->assignment = $this->assignment_model->assignment_info($this->user_model->selected_assignment($this->username));
 		$this->user_level = $this->user_model->get_user_level($this->username);
+
+		$input = $this->uri->uri_to_assoc();
+		$this->filter_user = $this->filter_problem = NULL;
+		$this->page_number = 1;
+		if (array_key_exists('user', $input) && $input['user'])
+			if ($this->user_level > 0) // students are not able to filter submissions by user
+				$this->filter_user = $this->form_validation->alpha_numeric($input['user'])?$input['user']:NULL;
+		if (array_key_exists('problem', $input) && $input['problem'])
+			$this->filter_problem = is_numeric($input['problem'])?$input['problem']:NULL;
+		if (array_key_exists('page', $input) && $input['page'])
+			$this->page_number = is_numeric($input['page'])?$input['page']:1;
+
 	}
 
 
@@ -33,6 +48,7 @@ class Submissions extends CI_Controller{
 
 
 	private function _download_excel($view){
+
 		$now=date('Y-m-d H:i:s', shj_now());
 		$this->load->library('excel');
 		$this->excel->set_file_name('judge_'.$view.'_submissions.xls');
@@ -50,9 +66,9 @@ class Submissions extends CI_Controller{
 		}
 		$this->excel->addRow($row);
 		if ($view === 'final')
-			$items = $this->submit_model->get_final_submissions($this->assignment['id'], $this->user_level, $this->username);
+			$items = $this->submit_model->get_final_submissions($this->assignment['id'], $this->user_level, $this->username, NULL, $this->filter_user, $this->filter_problem);
 		else
-			$items = $this->submit_model->get_all_submissions($this->assignment['id'], $this->user_level, $this->username);
+			$items = $this->submit_model->get_all_submissions($this->assignment['id'], $this->user_level, $this->username, NULL, $this->filter_user, $this->filter_problem);
 		$finish = strtotime($this->assignment['finish_time']);
 		$i=0; $j=0; $un='';
 		foreach ($items as $item){
@@ -127,26 +143,33 @@ class Submissions extends CI_Controller{
 	// ------------------------------------------------------------------------
 
 
-	public function the_final($page_number=FALSE){
+	public function final_excel(){
+		$this->_download_excel('final');
+	}
 
-		if ($page_number === 'excel'){
-			$this->_download_excel('final');
-			exit;
+	public function all_excel(){
+		$final = $this->submit_model->get_final_submissions($this->assignment['id'], $this->user_level, $this->username, NULL, $this->filter_user, $this->filter_problem);
+		$this->final_items = array();
+		foreach ($final as $item){
+			$this->final_items[$item['username']][$item['problem']] = $item;
 		}
+		$this->_download_excel('all');
+	}
 
-		if ($page_number === FALSE)
-			$page_number = 1;
+	// ------------------------------------------------------------------------
 
-		if ( ! is_numeric($page_number))
+	public function the_final(){
+
+		if ( ! is_numeric($this->page_number))
 			show_404();
 
-		if ($page_number<1)
+		if ($this->page_number<1)
 			show_404();
 
 		$this->load->library('pagination');
 		$pagination_config = array(
-			'base_url' => site_url('submissions/final/'),
-			'total_rows' => $this->submit_model->count_final_submissions($this->assignment['id'], $this->user_level, $this->username),
+			'base_url' => site_url('submissions/final'.($this->filter_user?'/user/'.$this->filter_user:'').($this->filter_problem?'/problem/'.$this->filter_problem:'').'/page'),
+			'total_rows' => $this->submit_model->count_final_submissions($this->assignment['id'], $this->user_level, $this->username, $this->filter_user, $this->filter_problem),
 			'per_page' => $this->settings_model->get_setting('results_per_page'),
 			'use_page_numbers' => TRUE,
 			'num_links' => 3,
@@ -175,7 +198,10 @@ class Submissions extends CI_Controller{
 			'assignment' => $this->assignment,
 			'title' => 'Final Submissions',
 			'style' => 'main.css',
-			'items' => $this->submit_model->get_final_submissions($this->assignment['id'], $this->user_level, $this->username, $page_number)
+			'items' => $this->submit_model->get_final_submissions($this->assignment['id'], $this->user_level, $this->username, $this->page_number, $this->filter_user, $this->filter_problem),
+			'excel_link' => site_url('submissions/final_excel'.($this->filter_user?'/user/'.$this->filter_user:'').($this->filter_problem?'/problem/'.$this->filter_problem:'')),
+			'filter_user' => $this->filter_user,
+			'filter_problem' => $this->filter_problem
 		);
 
 		$this->load->view('templates/header', $data);
@@ -186,33 +212,24 @@ class Submissions extends CI_Controller{
 
 	// ------------------------------------------------------------------------
 
+	public function all(){
 
-	public function all($page_number = FALSE){
-
-		$final = $this->submit_model->get_final_submissions($this->assignment['id'], $this->user_level, $this->username);
+		$final = $this->submit_model->get_final_submissions($this->assignment['id'], $this->user_level, $this->username, NULL, $this->filter_user, $this->filter_problem);
 		$this->final_items = array();
 		foreach ($final as $item){
 			$this->final_items[$item['username']][$item['problem']] = $item;
 		}
 
-		if ($page_number === 'excel'){
-			$this->_download_excel('all');
-			exit;
-		}
-
-		if ($page_number === FALSE)
-			$page_number = 1;
-
-		if ( ! is_numeric($page_number))
+		if ( ! is_numeric($this->page_number))
 			show_404();
 
-		if ($page_number < 1)
+		if ($this->page_number < 1)
 			show_404();
 
 		$this->load->library('pagination');
 		$pagination_config = array(
-			'base_url' => site_url('submissions/all/'),
-			'total_rows' => $this->submit_model->count_all_submissions($this->assignment['id'], $this->user_level, $this->username),
+			'base_url' => site_url('submissions/all'.($this->filter_user?'/user/'.$this->filter_user:'').($this->filter_problem?'/problem/'.$this->filter_problem:'').'/page'),
+			'total_rows' => $this->submit_model->count_all_submissions($this->assignment['id'], $this->user_level, $this->username, $this->filter_user, $this->filter_problem),
 			'per_page' => $this->settings_model->get_setting('results_per_page'),
 			'use_page_numbers' => TRUE,
 			'num_links' => 3,
@@ -241,8 +258,11 @@ class Submissions extends CI_Controller{
 			'assignment' => $this->assignment,
 			'title' => 'All Submissions',
 			'style' => 'main.css',
-			'items' => $this->submit_model->get_all_submissions($this->assignment['id'], $this->user_level, $this->username, $page_number),
-			'final_items' => $this->final_items
+			'items' => $this->submit_model->get_all_submissions($this->assignment['id'], $this->user_level, $this->username, $this->page_number, $this->filter_user, $this->filter_problem),
+			'final_items' => $this->final_items,
+			'excel_link' => site_url('submissions/all_excel'.($this->filter_user?'/user/'.$this->filter_user:'').($this->filter_problem?'/problem/'.$this->filter_problem:'')),
+			'filter_user' => $this->filter_user,
+			'filter_problem' => $this->filter_problem
 		);
 		$this->load->view('templates/header', $data);
 		$this->load->view('pages/submissions', $data);

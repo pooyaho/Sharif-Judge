@@ -26,18 +26,14 @@ if ($db->connect_errno > 0){
 	exit('Unable to connect to database [' . $db->connect_error . ']');
 }
 
-// $option can be 'judge' or 'rejudge'
-$option = trim($argv[1]);
-
 
 // ------------------------------------------------------------------------
 
 
-function addJudgeResultToDB($sr){
+function addJudgeResultToDB($sr, $type){
 
 	global $db;
 	global $prefix;
-	global $option;
 
 	$submit_id=$sr['submit_id'];
 	$username=$sr['username'];
@@ -67,7 +63,7 @@ function addJudgeResultToDB($sr){
 	}
 	else{
 		$sid = $r['submit_id'];
-		if ( $option==='judge' OR ($option==='rejudge' && $sid===$submit_id) ){
+		if ( $type==='judge' OR ($type==='rejudge' && $sid===$submit_id) ){
 			$db->query(
 				"UPDATE {$prefix}final_submissions
 				SET submit_id='$submit_id', time='$time', status='$status', pre_score='$pre_score', submit_count='$submit_count', file_name='$file_name', main_file_name='$main_file_name', file_type='$file_type'
@@ -113,10 +109,15 @@ $output_size_limit=$setting['output_size_limit']*1024; // multiplied by 1024 to 
 
 do{
 
+	$qw = $db->query("SELECT shj_value FROM {$prefix}settings WHERE shj_key='queue_is_working'")->fetch_assoc();
+	if ($qw['shj_value'] == 0)
+		exit;
+
 	$submit_id = $queue_row['submit_id'];
 	$username = $queue_row['username'];
 	$assignment = $queue_row['assignment'];
 	$problem = $queue_row['problem'];
+	$type = $queue_row['type'];  // $type can be 'judge' or 'rejudge'
 
 
 	$res = $db->query("SELECT * FROM {$prefix}problems WHERE assignment='$assignment' AND id='$problem'");
@@ -231,7 +232,7 @@ do{
 	$sr['status']=$stat;
 	$sr['pre_score']=$score;
 
-	addJudgeResultToDB($sr);
+	addJudgeResultToDB($sr, $type);
 
 
 	$db->query(
