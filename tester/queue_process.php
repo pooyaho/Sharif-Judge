@@ -35,17 +35,17 @@ function addJudgeResultToDB($sr, $type){
 	global $db;
 	global $prefix;
 
-	$submit_id=$sr['submit_id'];
-	$username=$sr['username'];
-	$assignment=$sr['assignment'];
-	$problem=$sr['problem'];
-	$time=$sr['time'];
-	$status=$sr['status'];
-	$pre_score=$sr['pre_score'];
-	$submit_count=$sr['submit_number'];
-	$file_name=$sr['file_name'];
-	$main_file_name=$sr['main_file_name'];
-	$file_type=$sr['file_type'];
+	$submit_id = $sr['submit_id'];
+	$username = $sr['username'];
+	$assignment = $sr['assignment'];
+	$problem = $sr['problem'];
+	$time = $sr['time'];
+	$status = $sr['status'];
+	$pre_score = $sr['pre_score'];
+	$submit_count = $sr['submit_number'];
+	$file_name = $sr['file_name'];
+	$main_file_name = $sr['main_file_name'];
+	$file_type = $sr['file_type'];
 
 	$res = $db->query(
 		"SELECT *
@@ -54,16 +54,18 @@ function addJudgeResultToDB($sr, $type){
 	);
 	$r = $res->fetch_assoc();
 
-	if ($r === NULL) {
+	if ($r === NULL)
+	{
 		$db->query(
 			"INSERT INTO {$prefix}final_submissions
 			( submit_id, username, assignment, problem, time, status, pre_score, submit_count, file_name, main_file_name, file_type)
 			VALUES ('$submit_id','$username','$assignment','$problem','$time','$status','$pre_score','$submit_count','$file_name','$main_file_name','$file_type') "
 		);
 	}
-	else{
+	else
+	{
 		$sid = $r['submit_id'];
-		if ( $type==='judge' OR ($type==='rejudge' && $sid===$submit_id) ){
+		if ( $type === 'judge' OR ($type === 'rejudge' && $sid === $submit_id) ){
 			$db->query(
 				"UPDATE {$prefix}final_submissions
 				SET submit_id='$submit_id', time='$time', status='$status', pre_score='$pre_score', submit_count='$submit_count', file_name='$file_name', main_file_name='$main_file_name', file_type='$file_type'
@@ -87,30 +89,31 @@ function addJudgeResultToDB($sr, $type){
 $res = $db->query("SELECT * FROM {$prefix}queue LIMIT 1");
 $queue_row = $res->fetch_assoc();
 
-if($queue_row === NULL){ // if queue is empty
+if ($queue_row === NULL){ // if queue is empty
 	$db->query("UPDATE {$prefix}settings SET shj_value=0 WHERE shj_key='queue_is_working'");
-	return;
+	exit;
 }
 
 // get ''settings'' table
 $settings_res = $db->query("SELECT * FROM {$prefix}settings");
 $setting = array();
-while($row = $settings_res->fetch_assoc()){
+while ($row = $settings_res->fetch_assoc()){
 	$setting[$row['shj_key']] = $row['shj_value'];
 }
 $settings_res->free();
 
-if($setting['queue_is_working']==1)
-	return;
+if ($setting['queue_is_working'])
+	exit;
 
 $db->query("UPDATE {$prefix}settings SET shj_value=1 WHERE shj_key='queue_is_working'");
 
-$output_size_limit=$setting['output_size_limit']*1024; // multiplied by 1024 to convert to bytes (from kB)
+// multiplied by 1024 to convert to bytes (from kB)
+$output_size_limit = $setting['output_size_limit'] * 1024;
 
-do{
+do {
 
 	$qw = $db->query("SELECT shj_value FROM {$prefix}settings WHERE shj_key='queue_is_working'")->fetch_assoc();
-	if ($qw['shj_value'] == 0)
+	if ( ! $qw['shj_value'])
 		exit;
 
 	$submit_id = $queue_row['submit_id'];
@@ -138,13 +141,13 @@ do{
 	$sr = $res->fetch_assoc();
 	$file_type = $sr['file_type'];
 	$file_extension = $file_type;
-	if ($file_extension==='py2' || $file_extension==='py3')
+	if ($file_extension === 'py2' OR $file_extension === 'py3')
 		$file_extension = 'py';
-	$raw_filename=$sr['file_name'];
-	$main_filename=$sr['main_file_name'];
+	$raw_filename = $sr['file_name'];
+	$main_filename = $sr['main_file_name'];
 
-	$assignments_dir = rtrim($setting['assignments_root'],'/');
-	$tester_path = rtrim($setting['tester_path'],'/');
+	$assignments_dir = rtrim($setting['assignments_root'], '/');
+	$tester_path = rtrim($setting['tester_path'], '/');
 	$problemdir = $assignments_dir."/assignment_$assignment/p$problem";
 	$userdir = "$problemdir/$username";
 	$the_file = "$userdir/$raw_filename.$file_extension";
@@ -156,7 +159,7 @@ do{
 	$op1 = $setting['enable_log'];
 	$op2 = $setting['enable_easysandbox'];
 	$op3 = 0;
-	if ($file_type==='c')
+	if ($file_type === 'c')
 		$op3 = $setting['enable_c_shield'];
 	elseif ($file_type === 'cpp')
 		$op3 = $setting['enable_cpp_shield'];
@@ -165,11 +168,11 @@ do{
 
 
 	
-	if ($file_type=='c' OR $file_type == 'cpp')
+	if ($file_type === 'c' OR $file_type === 'cpp')
 		$time_limit = $c_time_limit;
-	else if ($file_type=='java')
+	else if ($file_type === 'java')
 		$time_limit = $java_time_limit;
-	else if ($file_type=='py2' OR $file_type=='py3')
+	else if ($file_type === 'py2' OR $file_type === 'py3')
 		$time_limit = $python_time_limit;
 	
 	$time_limit = round($time_limit, 3);
@@ -178,15 +181,15 @@ do{
 	
 	$cmd = "cd $tester_path;\n./tester.sh $problemdir $username $main_filename $raw_filename $file_type $time_limit $time_limit_int $memory_limit $output_size_limit $diff_cmd $diff_arg $op1 $op2 $op3 $op4";
 
-	file_put_contents($userdir.'/log',$cmd);
+	file_put_contents($userdir.'/log', $cmd);
 
 
 	// adding shield to python source if shield is on for python
-	if ($file_type=='py2' && $enable_py2_shield==1){
+	if ($file_type === 'py2' && $enable_py2_shield){
 		$source = file_get_contents($the_file);
 		file_put_contents($the_file, file_get_contents($tester_path.'/shield/shield_py2.py').$source);
 	}
-	if ($file_type=='py3' && $enable_py3_shield==1){
+	if ($file_type === 'py3' && $enable_py3_shield){
 		$source = file_get_contents($the_file);
 		file_put_contents($the_file, file_get_contents($tester_path.'/shield/shield_py3.py').$source);
 	}
@@ -197,9 +200,9 @@ do{
 
 
 	// removing shield from python source if shield is on for python
-	if ($file_type=='py2' && $enable_py2_shield==1)
+	if ($file_type === 'py2' && $enable_py2_shield)
 		file_put_contents($the_file, $source);
-	if ($file_type=='py3' && $enable_py3_shield==1)
+	if ($file_type === 'py3' && $enable_py3_shield)
 		file_put_contents($the_file, $source);
 
 
@@ -210,7 +213,7 @@ do{
 
 	// saving judge result
 	if ( $output != -4 && $output != -5 && $output != -6 ){
-		$from= $userdir."/result.html";
+		$from = $userdir."/result.html";
 		$to = $userdir."/result-".($submit_id).".html";
 		copy($from, $to);
 	}
@@ -229,8 +232,8 @@ do{
 	}
 
 
-	$sr['status']=$stat;
-	$sr['pre_score']=$score;
+	$sr['status'] = $stat;
+	$sr['pre_score'] = $score;
 
 	addJudgeResultToDB($sr, $type);
 
@@ -243,7 +246,7 @@ do{
 	$res = $db->query("SELECT * FROM {$prefix}queue LIMIT 1");
 	$queue_row = $res->fetch_assoc();
 
-}while($queue_row!==NULL);
+}while($queue_row !== NULL);
 
 $res->free();
 
