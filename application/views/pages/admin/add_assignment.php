@@ -118,7 +118,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			</p>
 			<p class="input_p">
 				<label for="participants">Participants<br>
-					<span class="form_comment medium">Enter username of participants here (comma separated).
+					<span class="form_comment">Enter username of participants here (comma separated).
 						Only these users are able to submit. You can use keyword "ALL".</span>
 				</label>
 				<textarea name="participants" rows="5" class="sharif_input medium"><?php
@@ -130,7 +130,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			</p>
 			<p class="input_p">
 				<label for="tests">Tests (zip file)<br>
-					<span class="form_comment medium">
+					<span class="form_comment">
 						<a href="http://docs.sharifjudge.ir/tests_structure" target="_blank">Use this structure</a>
 					</span>
 				</label>
@@ -145,17 +145,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		<div class="panel_right">
 			<p class="input_p">
 				<input type="checkbox" name="open" value="1" <?php if ($edit) echo $edit_assignment['open']?'checked':''; else echo set_checkbox('open','1') ?> /> Open<br>
-				<p class="form_comment">Open or close this assignment.</p>
+				<span class="form_comment">Open or close this assignment.</span>
 				<?php echo form_error('open','<div class="shj_error">','</div>'); ?>
 			</p>
 			<p class="input_p">
 				<input type="checkbox" name="scoreboard" value="1" <?php if ($edit) echo $edit_assignment['scoreboard']?'checked':''; else echo set_checkbox('scoreboard','1') ?> /> Scoreboard<br>
-				<p class="form_comment">Check this to enable scoreboard.</p>
+				<span class="form_comment">Check this to enable scoreboard.</span>
 				<?php echo form_error('scoreboard','<div class="shj_error">','</div>'); ?>
 			</p>
 			<p class="input_p">
-				<label for="late_rule">Coefficient rule (<a target="_blank" href="http://docs.sharifjudge.ir/add_assignment#coefficient_rule">?</a>)</label>
-				<p class="form_comment medium clear">PHP script without <?php echo htmlspecialchars('<?php ?>') ?> tags</p>
+				<label for="late_rule">Coefficient rule (<a target="_blank" href="http://docs.sharifjudge.ir/add_assignment#coefficient_rule">?</a>)</label><br>
+				<span class="form_comment medium clear" style="display: block;">PHP script without <?php echo htmlspecialchars('<?php ?>') ?> tags</span>
 				<textarea name="late_rule" rows="14" class="sharif_input add_text"><?php
 						if ($edit)
 							echo $edit_assignment['late_rule'];

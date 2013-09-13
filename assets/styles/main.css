@@ -319,6 +319,7 @@ input.sharif_input:disabled {
 }
 
 .form_comment {
+	display: inline-block;
 	color: #828282;
 	font-size: 11px;
 	padding: 0;
@@ -343,7 +344,7 @@ p.input_p label {
 }
 
 p.input_p textarea {
-	display: block;
+	/*display: block;*/
 }
 
 .shj_error {
@@ -773,6 +774,7 @@ div.btn.view_code:active {
 }
 
 textarea.add_text {
+	display: inline-block;
 	font-size: 10px;
 	width: 410px;
 }

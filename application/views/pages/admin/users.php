@@ -13,7 +13,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		<img src="<?php echo base_url('assets/images/icons/users.png') ?>"/>
 		<span><?php echo $title ?></span>
 		<span class="title_menu_item"><a href="http://docs.sharifjudge.ir/users" target="_blank"><i class="splashy-help"></i> Help</a></span>
-		<span class="title_menu_item"><a href="<?php echo site_url('users/add') ?>" target="_blank"><i class="splashy-group_blue_add"></i> Add Users</a></span>
+		<span class="title_menu_item"><a href="<?php echo site_url('users/add') ?>"><i class="splashy-group_blue_add"></i> Add Users</a></span>
 		<span class="title_menu_item"><a href="<?php echo site_url("users/list_excel") ?>"><i class="splashy-document_small_download"></i> Excel</a></span>
 	</div>
 	<div id="main_content">
