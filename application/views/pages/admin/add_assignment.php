@@ -69,7 +69,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		<div class="panel_left">
 			<input type="hidden" name="number_of_problems" id="nop" value="<?php echo $edit?$edit_assignment['problems']:1; ?>"/>
 			<p class="input_p">
-				<label for="assignment_name">Assignment Name:</label>
+				<label for="assignment_name">Assignment Name</label>
 				<input type="text" name="assignment_name" class="sharif_input medium" value="<?php
 					if ($edit)
 						echo $edit_assignment['name'];
@@ -79,7 +79,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				<?php echo form_error('assignment_name','<div class="shj_error">','</div>'); ?>
 			</p>
 			<p class="input_p">
-				<label for="start_time">Start Time:</label>
+				<label for="start_time">Start Time</label>
 				<input type="text" name="start_time" id="start_time" class="sharif_input medium" value="<?php
 					if ($edit)
 						echo date('m/d/Y H:i',strtotime($edit_assignment['start_time']));
@@ -89,7 +89,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				<?php echo form_error('start_time','<div class="shj_error">','</div>'); ?>
 			</p>
 			<p class="input_p">
-				<label for="finish_time">Finish Time:</label>
+				<label for="finish_time">Finish Time</label>
 				<input type="text" name="finish_time" id="finish_time" class="sharif_input medium" value="<?php
 					if ($edit)
 						echo date('m/d/Y H:i',strtotime($edit_assignment['finish_time']));
@@ -100,7 +100,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			</p>
 			<p class="input_p">
 				<label for="extra_time">
-					Extra Time (minutes):<br>
+					Extra Time (minutes)<br>
 					<span class="form_comment">Extra time for late submissions.</span>
 				</label>
 				<input type="text" name="extra_time" id="extra_time" class="sharif_input medium" value="<?php
@@ -117,7 +117,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				<?php echo form_error('extra_time','<div class="shj_error">','</div>'); ?>
 			</p>
 			<p class="input_p">
-				<label for="participants">Participants:<br>
+				<label for="participants">Participants<br>
 					<span class="form_comment medium">Enter username of participants here (comma separated).
 						Only these users are able to submit. You can use keyword "ALL".</span>
 				</label>
@@ -129,7 +129,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					?></textarea>
 			</p>
 			<p class="input_p">
-				<label for="tests">Tests (zip file):<br>
+				<label for="tests">Tests (zip file)<br>
 					<span class="form_comment medium">
 						<a href="http://docs.sharifjudge.ir/tests_structure" target="_blank">Use this structure</a>
 					</span>
@@ -154,7 +154,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				<?php echo form_error('scoreboard','<div class="shj_error">','</div>'); ?>
 			</p>
 			<p class="input_p">
-				<label for="late_rule">Coefficient rule:</label>
+				<label for="late_rule">Coefficient rule (<a target="_blank" href="http://docs.sharifjudge.ir/add_assignment#coefficient_rule">?</a>)</label>
 				<p class="form_comment medium clear">PHP script without <?php echo htmlspecialchars('<?php ?>') ?> tags</p>
 				<textarea name="late_rule" rows="14" class="sharif_input add_text"><?php
 						if ($edit)
@@ -177,7 +177,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				<th rowspan="2">Allowed<br>Languages (<a target="_blank" href="http://docs.sharifjudge.ir/add_assignment#allowed_languages">?</a>)</th>
 				<th rowspan="2">Diff<br>Command (<a target="_blank" href="http://docs.sharifjudge.ir/add_assignment#diff_command">?</a>)</th>
 				<th rowspan="2">Diff<br>Argument (<a target="_blank" href="http://docs.sharifjudge.ir/add_assignment#diff_arguments">?</a>)</th>
-				<th rowspan="2">Upload<br>Only</th>
+				<th rowspan="2">Upload<br>Only (<a target="_blank" href="http://docs.sharifjudge.ir/add_assignment#upload_only">?</a>)</th>
 			</tr>
 			<tr>
 				<th>C/C++</th><th>Python</th><th>Java</th>
