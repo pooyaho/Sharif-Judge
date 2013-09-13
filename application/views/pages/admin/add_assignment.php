@@ -98,7 +98,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				?>" />
 				<?php echo form_error('finish_time','<div class="shj_error">','</div>'); ?>
 			</p>
-			<p class="input_p">
+			<p class="input_p clear">
 				<label for="extra_time">
 					Extra Time (minutes)<br>
 					<span class="form_comment">Extra time for late submissions.</span>
@@ -116,7 +116,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				?>" />
 				<?php echo form_error('extra_time','<div class="shj_error">','</div>'); ?>
 			</p>
-			<p class="input_p">
+			<p class="input_p clear">
 				<label for="participants">Participants<br>
 					<span class="form_comment">Enter username of participants here (comma separated).
 						Only these users are able to submit. You can use keyword "ALL".</span>
@@ -128,7 +128,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						echo set_value('participants','ALL');
 					?></textarea>
 			</p>
-			<p class="input_p">
+			<p class="input_p clear">
 				<label for="tests">Tests (zip file)<br>
 					<span class="form_comment">
 						<a href="http://docs.sharifjudge.ir/tests_structure" target="_blank">Use this structure</a>
