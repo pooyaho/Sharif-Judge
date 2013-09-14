@@ -53,19 +53,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			<a href="http://docs.sharifjudge.ir/add_assignment" target="_blank"><i class="splashy-help"></i> Help</a>
 		</span>
 	</div>
-	<div id="main_content">
-		<?php if ($form_status=='ok'||$form_status=='tests_updated'): ?>
-			<div class="shj_ok">Assignment <?php echo $edit?'updated':'added' ?> successfully.</div>
-		<?php elseif ($form_status=='error'): ?>
-			<div class="shj_error">Error <?php echo $edit?'updating':'adding' ?> assignment.</div>
-		<?php elseif ($form_status=='corrupted'): ?>
-			<div class="shj_error">Error <?php echo $edit?'updating':'adding' ?> assignment. Unable to unzip uploaded file.</div>
-		<?php endif ?>
-		<?php if ($form_status=='tests_updated'): ?>
-			<div class="shj_ok">Tests <?php echo $edit?'updated':'added' ?> successfully.</div>
-		<?php endif ?>
 
-		<?php echo form_open_multipart($edit?'assignments/edit/'.$edit_assignment['id']:'add_assignment/add') ?>
+	<div id="main_content">
+
+		<?php foreach ($success_messages as $success_message): ?>
+			<p class="shj_ok"><?php echo $success_message ?></p>
+		<?php endforeach ?>
+		<?php foreach ($error_messages as $error_message): ?>
+			<p class="shj_error"><?php echo $error_message ?></p>
+		<?php endforeach ?>
+
+		<?php echo form_open_multipart($edit?'assignments/edit/'.$edit_assignment['id']:'assignments/add') ?>
 		<div class="panel_left">
 			<input type="hidden" name="number_of_problems" id="nop" value="<?php echo $edit?$edit_assignment['problems']:1; ?>"/>
 			<p class="input_p">

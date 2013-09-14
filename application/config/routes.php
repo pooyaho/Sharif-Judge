@@ -78,7 +78,6 @@ $route['register'] = "login/register";
 $route['logout'] = "login/logout";
 $route['submissions/final']="submissions/the_final";
 $route['submissions/final/(.*)']="submissions/the_final/$1";
-$route['assignments/edit/(:num)']="add_assignment/edit/$1";
 $route['profile/(:num)'] = "profile/index/$1";
 $route['moss/(:num)'] = "moss/index/$1";
 $route['rejudge/(:num)'] = "rejudge/index/$1";

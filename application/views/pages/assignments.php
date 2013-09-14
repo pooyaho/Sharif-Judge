@@ -13,10 +13,18 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		<img src="<?php echo base_url('assets/images/icons/assignments.png') ?>"/>
 		<span><?php echo $title ?></span>
 		<?php if ($user_level>=2): ?>
-		<span class="title_menu_item"><a href="<?php echo site_url('add_assignment') ?>"><i class="splashy-add_small"></i> Add</a></span>
+		<span class="title_menu_item"><a href="<?php echo site_url('assignments/add') ?>"><i class="splashy-add_small"></i> Add</a></span>
 		<?php endif ?>
 	</div>
 	<div id="main_content">
+
+		<?php foreach ($success_messages as $success_message): ?>
+			<p class="shj_ok"><?php echo $success_message ?></p>
+		<?php endforeach ?>
+		<?php foreach ($error_messages as $error_message): ?>
+			<p class="shj_error"><?php echo $error_message ?></p>
+		<?php endforeach ?>
+
 		<?php if (count($all_assignments)==0): ?>
 			<p style="text-align: center;">Nothing to show...</p>
 		<?php endif ?>

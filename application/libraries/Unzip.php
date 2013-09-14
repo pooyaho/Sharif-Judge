@@ -186,6 +186,20 @@ class Unzip {
 	// --------------------------------------------------------------------
 
 	/**
+	 * Return array of error messages
+	 *
+	 * @access    public
+	 * @param    string
+	 * @return    string
+	 */
+	public function errors_array()
+	{
+		return $this->error;
+	}
+
+	// --------------------------------------------------------------------
+
+	/**
 	 * Show debug messages
 	 *
 	 * @access    public

@@ -385,7 +385,9 @@ select.sharif_time {
 
 #main_content .assignment_block {
 	padding: 30px 0;
+	border-top: 1px solid #c6c6c6;
 	border-bottom: 1px solid #c6c6c6;
+	margin-top: -1px;
 }
 
 #main_content .assignment_item {
