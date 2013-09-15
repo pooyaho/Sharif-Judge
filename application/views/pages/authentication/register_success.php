@@ -6,6 +6,7 @@
  */
 defined('BASEPATH') OR exit('No direct script access allowed');
 ?>
+
 <div class="box success">
 	<div class="judge_logo">
 		<a href="<?php echo site_url() ?>"><img src="<?php echo base_url("assets/images/banner.png") ?>"/></a>

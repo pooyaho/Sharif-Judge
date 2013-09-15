@@ -6,6 +6,7 @@
  */
 defined('BASEPATH') OR exit('No direct script access allowed');
 ?>
+
 <script>
 	$(document).ready(function () {
 		$(".delete_notif").click(function () {
@@ -26,9 +27,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		});
 	});
 </script>
+
 <?php if (count($notifications)==0): ?>
 <p style="text-align: center;">Nothing yet...</p>
 <?php endif ?>
+
 <?php foreach ($notifications as $notification): ?>
 <div class="notif">
 	<div class="notif_title" dir="auto">

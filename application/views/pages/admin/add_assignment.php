@@ -6,9 +6,11 @@
  */
 defined('BASEPATH') OR exit('No direct script access allowed');
 ?>
+
 <script type="text/javascript" src="<?php echo base_url("assets/js/jquery-ui-1.10.3.custom.min.js") ?>"></script>
 <script type="text/javascript" src="<?php echo base_url("assets/js/jquery-ui-timepicker-addon.js") ?>"></script>
 <link rel="stylesheet" href="<?php echo base_url("assets/styles/flick/jquery-ui-1.10.3.custom.min.css") ?>"/>
+
 <script>
 	var numOfProblems=<?php echo count($problems); ?>;
 	var row1='<tr>\
@@ -41,11 +43,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		$('#start_time').datetimepicker();
 		$('#finish_time').datetimepicker();
 	});
-
 </script>
+
 <?php $this->view('templates/top_bar'); ?>
 <?php $this->view('templates/side_bar',array('selected'=>'assignments')); ?>
+
 <div id="main_container">
+
 	<div id="page_title">
 		<img src="<?php echo base_url('assets/images/icons/add.png') ?>"/>
 		<span><?php echo $title ?></span>
@@ -211,5 +215,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			<input type="submit" value="<?php echo $edit?'Edit':'Add' ?> Assignment" class="sharif_input"/>
 		</p>
 		</form>
-	</div>
-</div>
+
+	</div> <!-- main_content -->
+
+</div> <!-- main_container -->

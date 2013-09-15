@@ -6,7 +6,8 @@
  */
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Queue extends CI_Controller {
+class Queue extends CI_Controller
+{
 
 	var $username;
 	var $assignment;
@@ -15,7 +16,8 @@ class Queue extends CI_Controller {
 	// ------------------------------------------------------------------------
 
 
-	public function __construct(){
+	public function __construct()
+	{
 		parent::__construct();
 		$this->load->driver('session');
 		if ( ! $this->session->userdata('logged_in')) // if not logged in
@@ -32,7 +34,8 @@ class Queue extends CI_Controller {
 	// ------------------------------------------------------------------------
 
 
-	public function index($input = FALSE) {
+	public function index($input = FALSE)
+	{
 
 		if ($input !== FALSE)
 			show_404();
@@ -57,7 +60,8 @@ class Queue extends CI_Controller {
 	// ------------------------------------------------------------------------
 
 
-	public function pause($input = FALSE){
+	public function pause($input = FALSE)
+	{
 		if ( ! $this->input->is_ajax_request() )
 			show_404();
 		if ($input !== FALSE)
@@ -70,11 +74,13 @@ class Queue extends CI_Controller {
 	// ------------------------------------------------------------------------
 
 
-	public function resume($input = FALSE){
+	public function resume($input = FALSE)
+	{
 		if ( ! $this->input->is_ajax_request() )
 			show_404();
 		if ($input !== FALSE)
 			show_404();
+		// Run queue_process.php
 		shell_exec('php '.rtrim($this->settings_model->get_setting('tester_path'), '/').'/queue_process.php >/dev/null 2>/dev/null &');
 		echo 'success';
 	}
@@ -83,7 +89,8 @@ class Queue extends CI_Controller {
 	// ------------------------------------------------------------------------
 
 
-	public function empty_queue($input = FALSE){
+	public function empty_queue($input = FALSE)
+	{
 		if ( ! $this->input->is_ajax_request() )
 			show_404();
 		if ($input !== FALSE)

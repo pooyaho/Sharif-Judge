@@ -6,7 +6,8 @@
  */
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Notifications extends CI_Controller {
+class Notifications extends CI_Controller
+{
 
 	var $username;
 	var $assignment;
@@ -17,7 +18,8 @@ class Notifications extends CI_Controller {
 	// ------------------------------------------------------------------------
 
 
-	public function __construct(){
+	public function __construct()
+	{
 		parent::__construct();
 		$this->load->driver('session');
 		if ( ! $this->session->userdata('logged_in')) // if not logged in
@@ -33,7 +35,8 @@ class Notifications extends CI_Controller {
 	// ------------------------------------------------------------------------
 
 
-	public function index($input = FALSE){
+	public function index($input = FALSE)
+	{
 		if ($input !== FALSE)
 			show_404();
 		$data = array(
@@ -55,7 +58,8 @@ class Notifications extends CI_Controller {
 	// ------------------------------------------------------------------------
 
 
-	public function add($input = FALSE){
+	public function add($input = FALSE)
+	{
 		if ($input !== FALSE)
 			show_404();
 		if ( $this->user_level <=1)
@@ -96,7 +100,8 @@ class Notifications extends CI_Controller {
 	// ------------------------------------------------------------------------
 
 
-	public function edit($notif_id = FALSE) {
+	public function edit($notif_id = FALSE)
+	{
 		if ($this->user_level <= 1)
 			show_error('You have not enough permission to access this page.');
 		if ($notif_id === FALSE)
@@ -111,7 +116,8 @@ class Notifications extends CI_Controller {
 	// ------------------------------------------------------------------------
 
 
-	public function delete($input = FALSE) {
+	public function delete($input = FALSE)
+	{
 		if ( ! $this->input->is_ajax_request() )
 			show_404();
 		if ($input !== FALSE)
@@ -127,7 +133,8 @@ class Notifications extends CI_Controller {
 	// ------------------------------------------------------------------------
 
 
-	public function check($input = FALSE) {
+	public function check($input = FALSE)
+	{
 		if ( ! $this->input->is_ajax_request() )
 			show_404();
 		if ($input !== FALSE)

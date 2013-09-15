@@ -6,9 +6,12 @@
  */
 defined('BASEPATH') OR exit('No direct script access allowed');
 ?>
+
 <?php $this->view('templates/top_bar'); ?>
 <?php $this->view('templates/side_bar',array('selected'=>'assignments')); ?>
+
 <div id="main_container">
+
 	<div id="page_title">
 		<img src="<?php echo base_url('assets/images/icons/assignments.png') ?>"/>
 		<span><?php echo $title ?></span>
@@ -16,6 +19,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		<span class="title_menu_item"><a href="<?php echo site_url('assignments/add') ?>"><i class="splashy-add_small"></i> Add</a></span>
 		<?php endif ?>
 	</div>
+
 	<div id="main_content">
 
 		<?php foreach ($success_messages as $success_message): ?>
@@ -74,6 +78,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				</div>
 				</div>
 		<?php endforeach ?>
-	</div>
-	</div>
-</div>
+
+	</div> <!-- main_content -->
+
+</div> <!-- main_container -->

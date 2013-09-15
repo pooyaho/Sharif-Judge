@@ -6,11 +6,13 @@
  */
 defined('BASEPATH') OR exit('No direct script access allowed');
 ?>
+
 <pre><?php
 	echo "$file_name  |  User: $view_username  |  Assignment {$view_assignment['id']} ({$view_assignment['name']})  |  Problem {$view_problem['id']} ({$view_problem['name']})";
 	if($file_type==='py2' || $file_type==='py3')
 		$file_type='python';
 ?></pre>
+
 <?php if ($code==1): ?>
 	<pre class="syntax <?php echo $file_type ?>"><?php
 		if (file_exists($file_path))

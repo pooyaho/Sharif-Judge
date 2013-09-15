@@ -6,9 +6,11 @@
  */
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Login extends CI_Controller{
+class Login extends CI_Controller
+{
 
-	public function __construct(){
+	public function __construct()
+	{
 		parent::__construct();
 		$this->load->driver('session');
 	}
@@ -17,8 +19,14 @@ class Login extends CI_Controller{
 	// ------------------------------------------------------------------------
 
 
-	// checks whether a user with this username exists (used for validating registration)
-	public function _username_check($username){
+	/**
+	 * Checks whether a user with this username exists (used for validating registration)
+	 *
+	 * @param $username
+	 * @return bool
+	 */
+	public function _username_check($username)
+	{
 		if ($this->user_model->have_user($username))
 			return FALSE;
 		return TRUE;
@@ -28,7 +36,8 @@ class Login extends CI_Controller{
 	// ------------------------------------------------------------------------
 
 
-	public function _lowercase ($string) {
+	public function _lowercase ($string)
+	{
 		if (strtolower($string) === $string)
 			return TRUE;
 		return FALSE;
@@ -38,7 +47,13 @@ class Login extends CI_Controller{
 	// ------------------------------------------------------------------------
 
 
-	public function _email_check($email){ // checks whether a user with this email exists (used for validating registration)
+	/**
+	 * checks whether a user with this email exists (used for validating registration)
+	 *
+	 * @param $email
+	 * @return bool
+	 */
+	public function _email_check($email){
 		if ($this->user_model->have_email($email))
 			return FALSE;
 		return TRUE;
@@ -48,7 +63,11 @@ class Login extends CI_Controller{
 	// ------------------------------------------------------------------------
 
 
-	public function index($input = FALSE){ // login
+	/**
+	 * Login
+	 */
+	public function index($input = FALSE)
+	{
 		if ($input !== FALSE)
 			show_404();
 		$this->form_validation->set_rules('username', 'Username', 'required|min_length[3]|max_length[20]|alpha_numeric');
@@ -84,7 +103,8 @@ class Login extends CI_Controller{
 	// ------------------------------------------------------------------------
 
 
-	public function register($input = FALSE){
+	public function register($input = FALSE)
+	{
 		if ($input !== FALSE)
 			show_404();
 		if ( ! $this->settings_model->get_setting('enable_registration'))
@@ -120,7 +140,11 @@ class Login extends CI_Controller{
 	// ------------------------------------------------------------------------
 
 
-	public function logout($input = FALSE){ // logging out and redirecting to login page
+	/**
+	 * Logs out and redirects to login page
+	 */
+	public function logout($input = FALSE)
+	{
 		if ($input !== FALSE)
 			show_404();
 		$this->session->sess_destroy();
@@ -131,7 +155,8 @@ class Login extends CI_Controller{
 	// ------------------------------------------------------------------------
 
 
-	public function lost($input = FALSE){
+	public function lost($input = FALSE)
+	{
 		if ($input !== FALSE)
 			show_404();
 		$this->form_validation->set_rules('email', 'email', 'required|max_length[40]|callback__lowercase|valid_email');
@@ -153,7 +178,8 @@ class Login extends CI_Controller{
 	// ------------------------------------------------------------------------
 
 
-	public function reset($passchange_key = FALSE){
+	public function reset($passchange_key = FALSE)
+	{
 		if ($passchange_key === FALSE)
 			show_404();
 		$result = $this->user_model->have_passchange($passchange_key);

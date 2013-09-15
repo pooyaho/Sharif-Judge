@@ -76,13 +76,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		$('.widget_scrollable').nanoScroller();
 	});
 </script>
+
 <?php $this->view('templates/top_bar'); ?>
 <?php $this->view('templates/side_bar', array('selected' => 'dashboard')); ?>
+
 <div id="main_container">
+
 	<div id="page_title">
 		<img src="<?php echo base_url('assets/images/icons/dashboard.png') ?>"/>
 		<span><?php echo $title ?></span>
 	</div>
+
 	<div id="main_content">
 		<?php foreach($errors as $error): ?>
 			<p class="shj_error"><?php echo $error ?></p>
@@ -92,7 +96,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		<div class="gridster">
 			<?php $i = 0; ?>
 			<ul>
-
 				<?php
 				$position = 'data-row="1" data-col="1" data-sizex="1" data-sizey="1"'; //default position
 				if (isset($widget_positions[$i]))
@@ -109,7 +112,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						</div>
 					</div>
 				</li>
-
 
 				<?php
 				$position = 'data-row="1" data-col="2" data-sizex="1" data-sizey="1"'; //default position
@@ -128,7 +130,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					</div>
 				</li>
 
-
 				<?php
 				$position = 'data-row="2" data-col="1" data-sizex="1" data-sizey="1"'; //default position
 				if (isset($widget_positions[$i]))
@@ -140,5 +141,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				</li>
 			</ul>
 		</div>
-	</div>
-</div>
+
+	</div> <!-- main_content -->
+
+</div> <!-- main_container -->

@@ -6,16 +6,20 @@
  */
 defined('BASEPATH') OR exit('No direct script access allowed');
 ?>
+
 <script>
 	$(document).ready(function(){
 		$("#username").focus();
 	});
 </script>
+
 <?php echo form_open('login') ?>
 	<div class="box login">
+
 		<div class="judge_logo">
 			<a href="<?php echo site_url() ?>"><img src="<?php echo base_url("assets/images/banner.png") ?>"/></a>
 		</div>
+
 		<div class="login_form">
 			<div class="login1">
 				<p>
@@ -42,5 +46,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				</p>
 			</div>
 		</div>
+
 	</div>
 </form>

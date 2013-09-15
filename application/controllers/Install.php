@@ -6,9 +6,11 @@
  */
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Install extends CI_Controller {
+class Install extends CI_Controller
+{
 
-	public function __construct(){
+	public function __construct()
+	{
 		parent::__construct();
 		$this->load->database();
 		$this->load->helper('string');
@@ -18,7 +20,8 @@ class Install extends CI_Controller {
 	// ------------------------------------------------------------------------
 
 
-	public function _lowercase($string) {
+	public function _lowercase($string)
+	{
 		if (strtolower($string) === $string)
 			return TRUE;
 		return FALSE;
@@ -28,7 +31,8 @@ class Install extends CI_Controller {
 	// ------------------------------------------------------------------------
 
 
-	public function index($input = FALSE){
+	public function index($input = FALSE)
+	{
 		if ($input !== FALSE)
 			show_404();
 		if ($this->db->table_exists('sessions'))

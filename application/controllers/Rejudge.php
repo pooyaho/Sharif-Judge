@@ -6,7 +6,8 @@
  */
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Rejudge extends CI_Controller {
+class Rejudge extends CI_Controller
+{
 
 	var $username;
 	var $assignment;
@@ -15,7 +16,8 @@ class Rejudge extends CI_Controller {
 	// ------------------------------------------------------------------------
 
 
-	public function __construct(){
+	public function __construct()
+	{
 		parent::__construct();
 		$this->load->driver('session');
 		if ( ! $this->session->userdata('logged_in')) // if not logged in
@@ -32,7 +34,8 @@ class Rejudge extends CI_Controller {
 	// ------------------------------------------------------------------------
 
 
-	public function index($input = FALSE) {
+	public function index($input = FALSE)
+	{
 		if ($input !== FALSE)
 			show_404();
 
@@ -66,7 +69,8 @@ class Rejudge extends CI_Controller {
 	// ------------------------------------------------------------------------
 
 
-	public function rejudge_one($input = FALSE){
+	public function rejudge_one($input = FALSE)
+	{
 		if ( ! $this->input->is_ajax_request() )
 			show_404();
 		if ($input !== FALSE)

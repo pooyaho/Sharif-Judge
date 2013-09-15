@@ -88,12 +88,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		);
 	});
 </script>
+
 <?php $this->view('templates/top_bar'); ?>
 <?php $this->view('templates/side_bar',array('selected'=>"{$view}_submissions")); ?>
 <?php
 $finish = strtotime($assignment['finish_time']);
 ?>
+
 <div id="main_container">
+
 	<div id="page_title">
 		<img src="<?php echo base_url("assets/images/icons/{$view}_submissions.png") ?>"/>
 		<span><?php echo $title ?></span>
@@ -111,6 +114,7 @@ $finish = strtotime($assignment['finish_time']);
 		</span>
 		<?php endif ?>
 	</div>
+
 	<div id="main_content">
 		<p><?php echo ucfirst($view); ?> Submissions of <?php echo $assignment['name']; ?></p>
 		<?php if ($view == "all"): ?>
@@ -273,8 +277,10 @@ $finish = strtotime($assignment['finish_time']);
 		<p>
 		<?php echo $this->pagination->create_links(); ?>
 		</p>
-	</div>
-</div>
+
+	</div> <!-- main_content -->
+
+</div> <!-- main_container -->
 
 <div id="shj_modal" class="reveal-modal xlarge">
 	<div class="modal_inside">

@@ -6,10 +6,13 @@
  */
 defined('BASEPATH') OR exit('No direct script access allowed');
 ?>
+
 <div id="main_container">
+
 	<div id="page_title">
 		<span><?php echo $title ?></span>
 	</div>
+
 	<div id="main_content">
 		<?php if($status=="Installed"): ?>
 			<?php if (!$key_changed): ?>
@@ -55,5 +58,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		</p>
 		</form>
 		<?php endif ?>
-	</div>
-</div>
+
+	</div> <!-- main_content -->
+
+</div> <!-- main_container -->

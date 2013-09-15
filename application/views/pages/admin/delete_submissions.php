@@ -6,13 +6,17 @@
  */
 defined('BASEPATH') OR exit('No direct script access allowed');
 ?>
+
 <?php $this->view('templates/top_bar'); ?>
 <?php $this->view('templates/side_bar',array('selected'=>'users')); ?>
+
 <div id="main_container">
+
 	<div id="page_title">
 		<img src="<?php echo base_url('assets/images/icons/delete_submissions.png') ?>"/>
 		<span><?php echo $title ?></span>
 	</div>
+
 	<div id="main_content">
 		<p>Are you sure you want to delete this user's submitted codes?</p>
 		<p>Username: <?php echo $delete_username ?></p>
@@ -25,5 +29,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			<input type="submit" class="sharif_input" value="Yes, I'm Sure"/> <?php echo anchor('users',"No, I'm not") ?>
 		</p>
 		</form>
-	</div>
-</div>
+
+	</div> <!-- main_content -->
+
+</div> <!-- main_container -->

@@ -6,9 +6,12 @@
  */
 defined('BASEPATH') OR exit('No direct script access allowed');
 ?>
+
 <?php $this->view('templates/top_bar'); ?>
 <?php $this->view('templates/side_bar',array('selected'=>'settings')); ?>
+
 <div id="main_container">
+
 	<div id="page_title">
 		<img src="<?php echo base_url('assets/images/icons/settings.png') ?>"/>
 		<span><?php echo $title ?></span>
@@ -16,6 +19,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			<a href="http://docs.sharifjudge.ir/settings" target="_blank"><i class="splashy-help"></i> Help</a>
 		</span>
 	</div>
+
 	<div id="main_content">
 		<p class="input_p">
 		<?php if ($form_status === 'ok'): ?>
@@ -89,8 +93,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				<span class="form_comment clear">PHP script without <?php echo htmlspecialchars('<?php ?>') ?> tags</span><br>
 				<textarea name="default_late_rule" rows="15" class="sharif_input add_text clear"><?php echo $default_late_rule ?></textarea>
 			</p>
-
-
 
 			<h2 class="shj_form">Email</h2>
 
@@ -174,5 +176,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				<input type="submit" value="Save Changes" class="sharif_input"/>
 			</p>
 		</form>
-	</div>
-</div>
+
+	</div> <!-- main_content -->
+
+</div> <!-- main_container -->

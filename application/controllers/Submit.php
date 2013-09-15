@@ -6,7 +6,8 @@
  */
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Submit extends CI_Controller{
+class Submit extends CI_Controller
+{
 
 	var $data; //data sent to view
 	var $username;
@@ -23,7 +24,8 @@ class Submit extends CI_Controller{
 	// ------------------------------------------------------------------------
 
 
-	public function __construct(){
+	public function __construct()
+	{
 		parent::__construct();
 		$this->load->driver('session');
 		if ( ! $this->session->userdata('logged_in')) // if not logged in
@@ -41,7 +43,8 @@ class Submit extends CI_Controller{
 	// ------------------------------------------------------------------------
 
 
-	public function _language_to_type($language){
+	public function _language_to_type($language)
+	{
 		$language = strtolower ($language);
 		switch ($language) {
 			case 'c': return 'c';
@@ -58,7 +61,8 @@ class Submit extends CI_Controller{
 	// ------------------------------------------------------------------------
 
 
-	public function _match($type, $extension){
+	public function _match($type, $extension)
+	{
 		switch ($type) {
 			case 'c': return ($extension==='c'?TRUE:FALSE);
 			case 'cpp': return ($extension==='cpp'?TRUE:FALSE);
@@ -73,7 +77,8 @@ class Submit extends CI_Controller{
 	// ------------------------------------------------------------------------
 
 
-	public function _check_language($str){
+	public function _check_language($str)
+	{
 		if ($str=='0')
 			return FALSE;
 		if (in_array( strtolower($str),array('c', 'c++', 'python 2', 'python 3', 'java', 'zip')))
@@ -85,7 +90,8 @@ class Submit extends CI_Controller{
 	// ------------------------------------------------------------------------
 
 
-	public function index($input = FALSE){
+	public function index($input = FALSE)
+	{
 		if ($input !== FALSE)
 			show_404();
 		$this->data = array(
@@ -117,7 +123,11 @@ class Submit extends CI_Controller{
 	// ------------------------------------------------------------------------
 
 
-	private function _upload(){
+	/**
+	 * Saves submitted code and adds it to queue for judging
+	 */
+	private function _upload()
+	{
 		$now = shj_now();
 		foreach($this->problems as $item)
 			if ($item['id'] == $this->input->post('problem')){

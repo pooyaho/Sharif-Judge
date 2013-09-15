@@ -6,7 +6,8 @@
  */
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Moss extends CI_Controller{
+class Moss extends CI_Controller
+{
 
 	var $username;
 	var $assignment;
@@ -15,7 +16,8 @@ class Moss extends CI_Controller{
 	// ------------------------------------------------------------------------
 
 
-	public function __construct(){
+	public function __construct()
+	{
 		parent::__construct();
 		$this->load->driver('session');
 		if ( ! $this->session->userdata('logged_in')) // if not logged in
@@ -31,7 +33,8 @@ class Moss extends CI_Controller{
 	// ------------------------------------------------------------------------
 
 
-	public function index($assignment_id = FALSE) {
+	public function index($assignment_id = FALSE)
+	{
 		if ($assignment_id === FALSE)
 			show_404();
 		$data = array(
@@ -63,7 +66,8 @@ class Moss extends CI_Controller{
 	// ------------------------------------------------------------------------
 
 
-	public function update($assignment_id = FALSE) {
+	public function update($assignment_id = FALSE)
+	{
 		if ($assignment_id === FALSE)
 			show_404();
 		$userid = $this->input->post('moss_userid');
@@ -79,7 +83,8 @@ class Moss extends CI_Controller{
 	// ------------------------------------------------------------------------
 
 
-	public function detect($assignment_id = FALSE) {
+	public function detect($assignment_id = FALSE)
+	{
 		if ($assignment_id === FALSE)
 			show_404();
 		$this->load->model('submit_model');

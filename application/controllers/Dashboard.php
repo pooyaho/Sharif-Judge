@@ -6,7 +6,8 @@
  */
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Dashboard extends CI_Controller{
+class Dashboard extends CI_Controller
+{
 
 	var $username;
 	var $assignment;
@@ -16,7 +17,8 @@ class Dashboard extends CI_Controller{
 	// ------------------------------------------------------------------------
 
 
-	public function __construct(){
+	public function __construct()
+	{
 		parent::__construct();
 		if (!$this->db->table_exists('sessions'))
 			redirect('install');
@@ -34,7 +36,8 @@ class Dashboard extends CI_Controller{
 	// ------------------------------------------------------------------------
 
 
-	public function index(){
+	public function index()
+	{
 		$data = array(
 			'username'=>$this->username,
 			'user_level' => $this->user_level,
@@ -71,8 +74,11 @@ class Dashboard extends CI_Controller{
 
 	// ------------------------------------------------------------------------
 
-
-	public function widget_positions(){
+	/**
+	 * Used by ajax request, for saving the user's Dashboard widget positions
+	 */
+	public function widget_positions()
+	{
 		if ( ! $this->input->is_ajax_request() )
 			show_404();
 		if ($this->input->post('positions') !== NULL)

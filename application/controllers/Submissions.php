@@ -6,7 +6,8 @@
  */
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Submissions extends CI_Controller{
+class Submissions extends CI_Controller
+{
 
 	var $username;
 	var $assignment;
@@ -20,7 +21,8 @@ class Submissions extends CI_Controller{
 	// ------------------------------------------------------------------------
 
 
-	public function __construct(){
+	public function __construct()
+	{
 		parent::__construct();
 		$this->load->driver('session');
 		if ( ! $this->session->userdata('logged_in')) // if not logged in
@@ -47,7 +49,8 @@ class Submissions extends CI_Controller{
 	// ------------------------------------------------------------------------
 
 
-	private function _download_excel($view){
+	private function _download_excel($view)
+	{
 
 		$now=date('Y-m-d H:i:s', shj_now());
 		$this->load->library('excel');
@@ -143,11 +146,13 @@ class Submissions extends CI_Controller{
 	// ------------------------------------------------------------------------
 
 
-	public function final_excel(){
+	public function final_excel()
+	{
 		$this->_download_excel('final');
 	}
 
-	public function all_excel(){
+	public function all_excel()
+	{
 		$final = $this->submit_model->get_final_submissions($this->assignment['id'], $this->user_level, $this->username, NULL, $this->filter_user, $this->filter_problem);
 		$this->final_items = array();
 		foreach ($final as $item){
@@ -156,9 +161,12 @@ class Submissions extends CI_Controller{
 		$this->_download_excel('all');
 	}
 
+
 	// ------------------------------------------------------------------------
 
-	public function the_final(){
+
+	public function the_final()
+	{
 
 		if ( ! is_numeric($this->page_number))
 			show_404();
@@ -212,7 +220,9 @@ class Submissions extends CI_Controller{
 
 	// ------------------------------------------------------------------------
 
-	public function all(){
+
+	public function all()
+	{
 
 		$final = $this->submit_model->get_final_submissions($this->assignment['id'], $this->user_level, $this->username, NULL, $this->filter_user, $this->filter_problem);
 		$this->final_items = array();
@@ -272,8 +282,11 @@ class Submissions extends CI_Controller{
 
 	// ------------------------------------------------------------------------
 
-
-	public function select($input = FALSE){ /* used by ajax request (for selecting final submission) */
+	/**
+	 * Used by ajax request (for selecting final submission)
+	 */
+	public function select($input = FALSE)
+	{
 		if ( ! $this->input->is_ajax_request() )
 			show_404();
 		if ($input !== FALSE)
@@ -293,7 +306,11 @@ class Submissions extends CI_Controller{
 	// ------------------------------------------------------------------------
 
 
-	public function view_code($input = FALSE){ /* for "view code" or "view result" or "view log" */
+	/**
+	 * For "view code" or "view result" or "view log"
+	 */
+	public function view_code($input = FALSE)
+	{
 		if ( ! $this->input->is_ajax_request() )
 			show_404();
 		if ($input !== FALSE)

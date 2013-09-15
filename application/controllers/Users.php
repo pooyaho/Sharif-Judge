@@ -6,7 +6,8 @@
  */
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Users extends CI_Controller {
+class Users extends CI_Controller
+{
 
 	var $username;
 	var $assignment;
@@ -16,7 +17,8 @@ class Users extends CI_Controller {
 	// ------------------------------------------------------------------------
 
 
-	public function __construct(){
+	public function __construct()
+	{
 		parent::__construct();
 		$this->load->driver('session');
 		if ( ! $this->session->userdata('logged_in')) // if not logged in
@@ -32,7 +34,8 @@ class Users extends CI_Controller {
 	// ------------------------------------------------------------------------
 
 
-	public function index($input = FALSE){
+	public function index($input = FALSE)
+	{
 		if ($input !== FALSE)
 			show_404();
 		$data = array(
@@ -54,7 +57,8 @@ class Users extends CI_Controller {
 	// ------------------------------------------------------------------------
 
 
-	public function add($input = FALSE){
+	public function add($input = FALSE)
+	{
 		if ($input !== FALSE)
 			show_404();
 		$data = array(
@@ -100,7 +104,8 @@ class Users extends CI_Controller {
 	// ------------------------------------------------------------------------
 
 
-	public function delete($user_id = FALSE) {
+	public function delete($user_id = FALSE)
+	{
 		if ($user_id === FALSE OR ! is_numeric($user_id))
 			show_error('Incorrect user id');
 		$username = $this->user_model->user_id_to_username($user_id);
@@ -136,7 +141,8 @@ class Users extends CI_Controller {
 	// ------------------------------------------------------------------------
 
 
-	public function delete_submissions($user_id = FALSE) {
+	public function delete_submissions($user_id = FALSE)
+	{
 		if ($user_id === FALSE OR ! is_numeric($user_id))
 			show_error('Incorrect user id');
 		$username = $this->user_model->user_id_to_username($user_id);
@@ -177,7 +183,8 @@ class Users extends CI_Controller {
 	// ------------------------------------------------------------------------
 
 
-	public function list_excel($input = FALSE) {
+	public function list_excel($input = FALSE)
+	{
 		if ($input !== FALSE)
 			show_404();
 		$now=date('Y-m-d H:i:s', shj_now());

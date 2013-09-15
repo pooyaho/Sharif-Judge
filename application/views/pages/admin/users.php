@@ -6,9 +6,12 @@
  */
 defined('BASEPATH') OR exit('No direct script access allowed');
 ?>
+
 <?php $this->view('templates/top_bar'); ?>
 <?php $this->view('templates/side_bar',array('selected'=>'users')); ?>
+
 <div id="main_container">
+
 	<div id="page_title">
 		<img src="<?php echo base_url('assets/images/icons/users.png') ?>"/>
 		<span><?php echo $title ?></span>
@@ -16,6 +19,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		<span class="title_menu_item"><a href="<?php echo site_url('users/add') ?>"><i class="splashy-group_blue_add"></i> Add Users</a></span>
 		<span class="title_menu_item"><a href="<?php echo site_url("users/list_excel") ?>"><i class="splashy-document_small_download"></i> Excel</a></span>
 	</div>
+
 	<div id="main_content">
 		<?php if (isset($deleted_user) && $deleted_user===TRUE): ?>
 			<p class="shj_ok">User deleted successfully.</p>
@@ -47,5 +51,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				</tr>
 			<?php endforeach ?>
 		</table>
-	</div>
-</div>
+
+	</div> <!-- main_content -->
+
+</div> <!-- main_container -->

@@ -6,7 +6,8 @@
  */
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Profile extends CI_Controller{
+class Profile extends CI_Controller
+{
 
 	var $username;
 	var $assignment;
@@ -18,7 +19,8 @@ class Profile extends CI_Controller{
 	// ------------------------------------------------------------------------
 
 
-	public function __construct(){
+	public function __construct()
+	{
 		parent::__construct();
 		$this->load->driver('session');
 		if ( ! $this->session->userdata('logged_in')) // if not logged in
@@ -33,7 +35,8 @@ class Profile extends CI_Controller{
 	// ------------------------------------------------------------------------
 
 
-	public function index($user_id = FALSE){
+	public function index($user_id = FALSE)
+	{
 		if ($user_id === FALSE){
 			$user_id = $this->db->get_where('users', array('username' => $this->username))->row()->id;
 		}
@@ -46,7 +49,8 @@ class Profile extends CI_Controller{
 		$user = $query->row();
 		$this->edit_username = $user->username;
 
-		if ($this->user_level <= 2) //Non-admins are not able to update others' profile
+		//Non-admins are not able to update others' profile
+		if ($this->user_level <= 2)
 			if ($this->username != $this->edit_username)
 				show_error('Permission Denied');
 
@@ -86,25 +90,35 @@ class Profile extends CI_Controller{
 	// ------------------------------------------------------------------------
 
 
-	public function _password_check($str){
+	public function _password_check($str)
+	{
 		if (strlen($str) == 0 OR (strlen($str) >= 6 && strlen($str) <= 30))
 			return TRUE;
 		return FALSE;
 	}
 
-	public function _password_again_check($str){
+	public function _password_again_check($str)
+	{
 		if ($this->input->post('password') !== $this->input->post('password_again'))
 			return FALSE;
 		return TRUE;
 	}
 
-	public function _email_check($email){ // checks whether a user with this email exists
+	/**
+	 * Checks whether a user with this email exists
+	 */
+	public function _email_check($email)
+	{
 		if ($this->user_model->have_email($email, $this->edit_username))
 			return FALSE;
 		return TRUE;
 	}
 
-	public function _role_check($role){ // for validating user role
+	/**
+	 * For validating user role
+	 */
+	public function _role_check($role)
+	{
 		// Non-admin users should not be able to change user role:
 		if ($this->user_level <= 2)
 			if($role == '')

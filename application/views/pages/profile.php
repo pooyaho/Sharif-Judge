@@ -6,13 +6,17 @@
  */
 defined('BASEPATH') OR exit('No direct script access allowed');
 ?>
+
 <?php $this->view('templates/top_bar'); ?>
 <?php $this->view('templates/side_bar',array('selected'=>'users')); ?>
+
 <div id="main_container">
+
 	<div id="page_title">
 		<img src="<?php echo base_url('assets/images/icons/profile.png') ?>"/>
 		<span><?php echo $title ?></span>
 	</div>
+
 	<div id="main_content">
 		<p class="input_p">
 		<?php if ($form_status=="ok"): ?>
@@ -66,5 +70,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			<input type="submit" value="Save" class="sharif_input"/>
 		</p>
 		</form>
-	</div>
-</div>
+
+	</div> <!-- main_content -->
+
+</div> <!-- main_container -->

@@ -6,7 +6,8 @@
  */
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Settings extends CI_Controller{
+class Settings extends CI_Controller
+{
 
 	var $username;
 	var $assignment;
@@ -18,7 +19,8 @@ class Settings extends CI_Controller{
 	// ------------------------------------------------------------------------
 
 
-	public function __construct(){
+	public function __construct()
+	{
 		parent::__construct();
 		$this->load->driver('session');
 		if ( ! $this->session->userdata('logged_in')) // if not logged in
@@ -36,7 +38,8 @@ class Settings extends CI_Controller{
 	// ------------------------------------------------------------------------
 
 
-	public function index($input = FALSE){
+	public function index($input = FALSE)
+	{
 		if ($input !== FALSE)
 			show_404();
 		$data = array(
@@ -85,7 +88,8 @@ class Settings extends CI_Controller{
 	// ------------------------------------------------------------------------
 
 
-	public function update($input = FALSE){
+	public function update($input = FALSE)
+	{
 		if ($input !== FALSE)
 			show_404();
 		$this->form_validation->set_rules('timezone', 'timezone', 'required');
