@@ -57,6 +57,10 @@ class Submissions extends CI_Controller
 		$this->excel->set_file_name('judge_'.$view.'_submissions.xls');
 		$this->excel->addHeader(array('Assignment:', $this->assignment['name']));
 		$this->excel->addHeader(array('Time:', $now));
+		if ($this->filter_user)
+			$this->excel->addHeader(array('Username Filter:',$this->filter_user));
+		if ($this->filter_problem)
+			$this->excel->addHeader(array('Problem Filter:',$this->filter_problem));
 		$this->excel->addHeader(NULL); //newline
 		if ($this->user_level === 0)
 			$row=array('Final','Problem','Submit Time','Score','Coefficient','Final Score','Language','Status','#');
