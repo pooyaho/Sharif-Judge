@@ -15,8 +15,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <script>
 	$(document).ready(function(){
 		$(".btn").click(function(){
-			button = $(this);
-			row = button.parents('tr');
+			var button = $(this);
+			var row = button.parents('tr');
 			var view_code_request = $.post(
 				'<?php echo site_url('submissions/view_code') ?>',
 				{
@@ -46,7 +46,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 		});
 		$(".shj_rejudge").click(function(){
-			row = $(this).parents('tr');
+			var row = $(this).parents('tr');
 			$.post(
 				'<?php echo site_url('rejudge/rejudge_one') ?>',
 				{
@@ -64,19 +64,21 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		});
 		$(".set_final").click(
 			function(){
-				var submit_id = $(this).attr('submit_id');
-				var problem = $(this).attr('problem');
+				var row = $(this).parents('tr');
+				var submit_id = row.attr('s');
+				var problem = row.attr('p');
+				var username = row.attr('u');
 				$.post(
 					'<?php echo site_url('submissions/select') ?>',
 					{
 						submit_id:submit_id,
 						problem: problem,
+						username: username,
 						<?php echo $this->security->get_csrf_token_name(); ?>: '<?php echo $this->security->get_csrf_hash(); ?>'
 					},
 					function(a) {
-						//if (a != "shj_failed"){
 						if (a == "shj_success"){
-							$(".set_final.p"+problem).removeClass('checked');
+							$("tr[u='"+username+"'][p='"+problem+"']").find('.set_final').removeClass('checked');
 							$(".set_final#sf"+submit_id+"_"+problem).addClass('checked');
 						}
 						else if (a == "shj_finished" ){
@@ -188,7 +190,7 @@ $finish = strtotime($assignment['finish_time']);
 							if ($final_items[$item['username']][$item['problem']]['submit_id'] == $item['submit_id'])
 								$checked='checked';
 					?>
-					<div title="Set as Final Submission" submit_id="<?php echo $item['submit_id'] ?>" problem="<?php echo $item['problem'] ?>" class="<?php if ($item['username']==$username) echo 'set_final' ?> check p<?php echo $item['problem'] ?> <?php echo $checked ?>" id="<?php echo "sf".$item['submit_id']."_".$item['problem'] ?>"></div>
+					<div title="Set as Final Submission" class="set_final check p<?php echo $item['problem'] ?> <?php echo $checked ?>" id="<?php echo "sf".$item['submit_id']."_".$item['problem'] ?>"></div>
 					<?php //endif ?>
 					</td>
 				<?php endif ?>

@@ -37,7 +37,6 @@ class Assignments extends CI_Controller
 		$this->success_messages = array();
 		$this->edit_assignment = array();
 		$this->edit = FALSE;
-
 	}
 
 

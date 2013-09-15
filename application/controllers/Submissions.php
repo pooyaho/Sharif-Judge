@@ -58,9 +58,9 @@ class Submissions extends CI_Controller
 		$this->excel->addHeader(array('Assignment:', $this->assignment['name']));
 		$this->excel->addHeader(array('Time:', $now));
 		if ($this->filter_user)
-			$this->excel->addHeader(array('Username Filter:',$this->filter_user));
+			$this->excel->addHeader(array('Username Filter:', $this->filter_user));
 		if ($this->filter_problem)
-			$this->excel->addHeader(array('Problem Filter:',$this->filter_problem));
+			$this->excel->addHeader(array('Problem Filter:', $this->filter_problem));
 		$this->excel->addHeader(NULL); //newline
 		if ($this->user_level === 0)
 			$row=array('Final','Problem','Submit Time','Score','Coefficient','Final Score','Language','Status','#');
@@ -286,6 +286,7 @@ class Submissions extends CI_Controller
 
 	// ------------------------------------------------------------------------
 
+
 	/**
 	 * Used by ajax request (for selecting final submission)
 	 */
@@ -295,15 +296,31 @@ class Submissions extends CI_Controller
 			show_404();
 		if ($input !== FALSE)
 			exit('error');
-		if (shj_now() > strtotime($this->assignment['finish_time'])+$this->assignment['extra_time'])
-			exit('shj_finished');
+
+		// Students cannot change their final submission after finish_time + extra_time
+		if ($this->user_level === 0)
+			if ( shj_now() > strtotime($this->assignment['finish_time'])+$this->assignment['extra_time'])
+				exit('shj_finished');
+
 		$this->form_validation->set_rules('submit_id', 'Submit ID', 'integer|greater_than[0]');
 		$this->form_validation->set_rules('problem', 'problem', 'integer|greater_than[0]');
-		//echo $this->input->post('problem'); echo '<br>'; echo $this->input->post('submit_id');
-		if ($this->form_validation->run() && $this->submit_model->set_final_submission($this->username, $this->assignment['id'], $this->input->post('problem'), $this->input->post('submit_id')))
-			echo 'shj_success';
-		else
-			echo 'shj_failed';
+		$this->form_validation->set_rules('username', 'Username', 'required|min_length[3]|max_length[20]|alpha_numeric');
+
+		if ($this->form_validation->run())
+		{
+			$username = $this->input->post('username');
+			if ($this->user_level === 0)
+				$username = $this->username;
+
+			$res = $this->submit_model->set_final_submission(
+				$username,
+				$this->assignment['id'],
+				$this->input->post('problem'),
+				$this->input->post('submit_id')
+			);
+
+			echo ($res?'shj_success':'shj_failed');
+		}
 	}
 
 
@@ -334,10 +351,17 @@ class Submissions extends CI_Controller
 			if ($submission===FALSE)
 				show_404();
 
-			if ($this->user_level==0 && $this->input->post('code')==2)
+			/*
+			 * $this->input->post('code'):
+			 *   0 => result
+			 *   1 => code
+			 *   2 => log
+			 */
+
+			if ($this->user_level === 0 && $this->input->post('code') == 2)
 				show_404();
 
-			if ($this->user_level==0 && $this->username != $submission['username'])
+			if ($this->user_level === 0 && $this->username != $submission['username'])
 				exit('Don\'t try to see other users\' codes. :)');
 
 			$code = $this->input->post('code');
@@ -373,8 +397,6 @@ class Submissions extends CI_Controller
 			exit('Are you trying to see other users\' codes? :)');
 		}
 	}
-
-
 
 
 }

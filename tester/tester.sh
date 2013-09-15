@@ -197,8 +197,12 @@ if [ "$EXT" = "c" ] || [ "$EXT" = "cpp" ]; then
 	judge_log "Compiling as $EXT"
 	if $SANDBOX_ON; then
 		judge_log "Enabling EasySandbox"
-		cp ../easysandbox/EasySandbox.so EasySandbox.so
-		chmod +x EasySandbox.so
+		if cp ../easysandbox/EasySandbox.so EasySandbox.so; then
+			chmod +x EasySandbox.so
+		else
+			judge_log 'EasySandbox is not built. Disabling EasySandbox...'
+			SANDBOX_ON=false
+		fi
 	fi
 	if $C_SHIELD_ON; then
 		judge_log "Enabling Shield"

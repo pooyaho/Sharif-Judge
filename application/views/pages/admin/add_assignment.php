@@ -67,6 +67,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			<p class="shj_error"><?php echo $error_message ?></p>
 		<?php endforeach ?>
 
+		<?php if ($edit): ?>
+		<p>
+			<i class="splashy-information"></i> If you don't want to change tests, just do not upload any file.
+		</p>
+		<?php endif ?>
+
 		<?php echo form_open_multipart($edit?'assignments/edit/'.$edit_assignment['id']:'assignments/add') ?>
 		<div class="panel_left">
 			<input type="hidden" name="number_of_problems" id="nop" value="<?php echo $edit?$edit_assignment['problems']:1; ?>"/>
