@@ -16,6 +16,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 		<div class="login_form">
 			<div class="login1">
+				<?php if ($registration_code_required): ?>
+				<p>
+					<label for="registration_code">Registration Code</label><br/>
+					<input type="text" name="registration_code" class="sharif_input" value="<?php echo set_value('registration_code'); ?>"/>
+					<?php echo form_error('registration_code','<div class="shj_error">','</div>'); ?>
+				</p>
+				<?php endif ?>
 				<p>
 					<label for="username">Username</label><br/>
 					<input type="text" name="username" class="sharif_input" value="<?php echo set_value('username'); ?>"/>

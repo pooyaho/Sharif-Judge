@@ -85,6 +85,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				<span class="form_comment">Open Public Registration.</span>
 			</p>
 			<p class="input_p">
+				<label for="output_size_limit">Registration Code</label>
+				<input type="text" name="registration_code" class="sharif_input medium" value="<?php echo $registration_code ?>"/><br>
+				<p class="form_comment clear">If you want to enable registration (above option), It is better to give a registration code<br>
+					to students in your class for validating registration. Set to 0 to disable.</p>
+				<?php echo form_error('registration_code','<div class="shj_error">','</div>'); ?>
+			</p>
+			<p class="input_p">
 				<input type="checkbox" name="enable_log" value="1" <?php if ($enable_log) echo 'checked' ?>/> <label>Log</label><br>
 				<span class="form_comment">Enable Log</span>
 			</p>

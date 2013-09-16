@@ -64,6 +64,7 @@ class Settings extends CI_Controller
 			'enable_java_policy' => $this->settings_model->get_setting('enable_java_policy'),
 			'enable_log' => $this->settings_model->get_setting('enable_log'),
 			'enable_registration' => $this->settings_model->get_setting('enable_registration'),
+			'registration_code' => $this->settings_model->get_setting('registration_code'),
 			'mail_from' => $this->settings_model->get_setting('mail_from'),
 			'mail_from_name' => $this->settings_model->get_setting('mail_from_name'),
 			'reset_password_mail' => $this->settings_model->get_setting('reset_password_mail'),
@@ -134,6 +135,7 @@ class Settings extends CI_Controller
 			$this->settings_model->set_setting('enable_java_policy', $this->input->post('enable_java_policy')===NULL?0:1);
 			$this->settings_model->set_setting('enable_log', $this->input->post('enable_log')===NULL?0:1);
 			$this->settings_model->set_setting('enable_registration', $this->input->post('enable_registration')===NULL?0:1);
+			$this->settings_model->set_setting('registration_code', $this->input->post('registration_code'));
 			$this->settings_model->set_setting('mail_from', $this->input->post('mail_from'));
 			$this->settings_model->set_setting('mail_from_name', $this->input->post('mail_from_name'));
 			$this->settings_model->set_setting('reset_password_mail', $this->input->post('reset_password_mail'));

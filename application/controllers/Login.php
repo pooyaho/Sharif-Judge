@@ -64,6 +64,23 @@ class Login extends CI_Controller
 
 
 	/**
+	 * checks whether the entered registration code is correct or not
+	 *
+	 */
+	public function _registration_code($code){
+		$rc = $this->settings_model->get_setting('registration_code');
+		if ($rc == 0)
+			return TRUE;
+		if ($rc == $code)
+			return TRUE;
+		return FALSE;
+	}
+
+
+	// ------------------------------------------------------------------------
+
+
+	/**
 	 * Login
 	 */
 	public function index($input = FALSE)
@@ -109,9 +126,11 @@ class Login extends CI_Controller
 			show_404();
 		if ( ! $this->settings_model->get_setting('enable_registration'))
 			show_error('Registration is closed.');
+		$this->form_validation->set_message('_registration_code', 'Invalid %s');
 		$this->form_validation->set_message('_username_check', 'User with same %s exists.');
 		$this->form_validation->set_message('_email_check', 'User with same %s exists.');
 		$this->form_validation->set_message('_lowercase', '%s must be lowercase.');
+		$this->form_validation->set_rules('registration_code', 'registration code', 'callback__registration_code');
 		$this->form_validation->set_rules('username', 'username', 'required|min_length[3]|max_length[20]|alpha_numeric|callback__lowercase|callback__username_check');
 		$this->form_validation->set_rules('email', 'email', 'required|max_length[40]|valid_email|callback__lowercase|callback__email_check');
 		$this->form_validation->set_rules('password', 'password', 'required|min_length[6]|max_length[30]|alpha_numeric');
@@ -119,6 +138,7 @@ class Login extends CI_Controller
 		$data = array(
 			'title' => 'Register',
 			'style' => 'login.css',
+			'registration_code_required' => $this->settings_model->get_setting('registration_code')==0?FALSE:TRUE
 		);
 		$this->load->view('templates/header', $data);
 		if ($this->form_validation->run()){

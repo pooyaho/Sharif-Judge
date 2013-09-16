@@ -187,6 +187,7 @@ class Install extends CI_Controller
 				('enable_log', '1'),
 				('submit_penalty', '300'),
 				('enable_registration', '0'),
+				('registration_code', '0'),
 				('mail_from', 'shj@sharifjudge.ir'),
 				('mail_from_name', 'Sharif Judge'),
 				('reset_password_mail', '<p>\nSomeone requested to reset the password for account with this email address at {SITE_URL}.\n</p>\n<p>\nTo change your password, visit this link:\n</p>\n<p>\n<a href=\"{RESET_LINK}\">Reset Password</a>\n</p>\n<p>\nThe link is valid for {VALID_TIME}. If you don''t want to change your password, just ignore this email.\n</p>'),
