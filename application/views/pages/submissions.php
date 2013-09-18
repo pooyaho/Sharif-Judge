@@ -17,6 +17,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		$(".btn").click(function(){
 			var button = $(this);
 			var row = button.parents('tr');
+			if (button.attr('shj')=='download'){
+				window.location = '<?php echo site_url('submissions') ?>/download_file/'+row.attr('u')+'/'+row.attr('a')+'/'+row.attr('p')+'/'+row.attr('s');
+				return;
+			}
 			var view_code_request = $.post(
 				'<?php echo site_url('submissions/view_code') ?>',
 				{
@@ -246,15 +250,15 @@ $finish = strtotime($assignment['finish_time']);
 						<?php endif ?>
 					</td>
 					<td>
-						<?php if ($item['file_type']=="zip"): ?>
-							---
+						<?php if ($item['file_type'] === 'zip' OR $item['file_type'] === 'pdf'): ?>
+							<div class="btn view_code" shj="download">Download</div>
 						<?php else: ?>
 							<div class="btn view_code" code="1" >Code</div>
 						<?php endif ?>
 					</td>
-					<?php if($view=="final" && $user_level>0): ?>
+					<?php if($view === 'final' && $user_level>0): ?>
 						<td>
-							<?php if ($item['file_type']=="zip"): ?>
+							<?php if ($item['file_type'] === 'zip'): ?>
 								---
 							<?php else: ?>
 								<div class="btn" code="2" >Log</div>

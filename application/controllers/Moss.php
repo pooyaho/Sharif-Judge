@@ -103,7 +103,7 @@ class Moss extends CI_Controller
 			$list = '';
 			$assignment_path = $assignments_path."/assignment_{$assignment_id}";
 			foreach ($group as $item)
-				if ($item['file_type'] !== 'zip')
+				if ($item['file_type'] !== 'zip' && $item['file_type'] !== 'pdf')
 					$list .= "p{$problem_id}/{$item['username']}/{$item['file_name']}".'.'.filetype_to_extension($item['file_type']). " ";
 			$rc = shell_exec("cd $assignment_path; $tester_path/moss $list | grep http >p{$problem_id}/moss_link.txt; echo $?");
 			$this->assignment_model->set_moss_time($assignment_id);

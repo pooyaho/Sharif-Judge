@@ -75,10 +75,12 @@ class Assignment_model extends CI_Model{
 				$item = ucfirst($item2);
 				if ($item2 === 'python2')
 					$item = 'Python 2';
-				if ($item2 === 'python3')
+				elseif ($item2 === 'python3')
 					$item = 'Python 3';
+				elseif ($item2 === 'pdf')
+					$item = 'PDF';
 				$item2 = strtolower($item);
-				if (in_array($item2, array('c','c++','python 2','python 3','java','zip')))
+				if (in_array($item2, array('c','c++','python 2','python 3','java','zip','pdf')))
 					$ft[$i-1] .= $item.",";
 			}
 			$ft[$i-1] = substr($ft[$i-1],0,strlen($ft[$i-1])-1); // remove last ','

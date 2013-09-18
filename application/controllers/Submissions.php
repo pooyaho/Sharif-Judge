@@ -348,7 +348,7 @@ class Submissions extends CI_Controller
 				$this->input->post('problem'),
 				$this->input->post('submit_id')
 			);
-			if ($submission===FALSE)
+			if ($submission === FALSE)
 				show_404();
 
 			/*
@@ -387,7 +387,7 @@ class Submissions extends CI_Controller
 			);
 
 
-			$data['log']=FALSE;
+			$data['log'] = FALSE;
 			if($this->input->post('code')==2)
 				$data['log'] = TRUE;
 
@@ -396,6 +396,36 @@ class Submissions extends CI_Controller
 		else{
 			exit('Are you trying to see other users\' codes? :)');
 		}
+	}
+
+
+	public function download_file(){
+		$username = $this->security->xss_clean($this->uri->segment(3));
+		$assignment = $this->security->xss_clean($this->uri->segment(4));
+		$problem = $this->security->xss_clean($this->uri->segment(5));
+		$submit_id = $this->security->xss_clean($this->uri->segment(6));
+
+		$submission = $this->submit_model->get_submission(
+			$username,
+			$assignment,
+			$problem,
+			$submit_id
+		);
+		if ($submission === FALSE)
+			show_404();
+
+		if ($this->user_level === 0 && $this->username != $submission['username'])
+			exit('Don\'t try to see other users\' codes. :)');
+
+		$file_path = rtrim($this->settings_model->get_setting('assignments_root'),'/').
+		"/assignment_{$submission['assignment']}/p{$submission['problem']}/{$submission['username']}/{$submission['file_name']}.".filetype_to_extension($submission['file_type']);
+
+		$this->load->helper('download');
+		force_download(
+			"{$submission['file_name']}.".filetype_to_extension($submission['file_type']),
+			file_get_contents($file_path)
+		);
+
 	}
 
 

@@ -39,6 +39,7 @@ if ( ! function_exists('filetype_to_extension'))
 			case 'py3': return 'py';
 			case 'java': return 'java';
 			case 'zip': return 'zip';
+			case 'pdf': return 'pdf';
 			default: return FALSE;
 		}
 	}
@@ -61,6 +62,7 @@ if ( ! function_exists('filetype_to_language'))
 			case 'py3': return 'Py 3';
 			case 'java': return 'Java';
 			case 'zip': return 'Zip';
+			case 'pdf': return 'PDF';
 			default: return FALSE;
 		}
 	}
