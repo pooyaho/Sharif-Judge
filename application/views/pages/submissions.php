@@ -157,7 +157,7 @@ $finish = strtotime($assignment['finish_time']);
 					</tr>
 					<tr>
 						<th width="5%" class="score">Score</th>
-						<th width="5%" class="score">%</th>
+						<th width="5%" class="score">Delay<br>%</th>
 						<th width="5%" class="score">Final Score</th>
 					</tr>
 				<?php else: ?>
@@ -171,7 +171,7 @@ $finish = strtotime($assignment['finish_time']);
 					</tr>
 					<tr>
 						<th width="7%" class="score">Score</th>
-						<th width="7%" class="score">%</th>
+						<th width="7%" class="score">Delay<br>%</th>
 						<th width="7%" class="score">Final Score</th>
 					</tr>
 				<?php endif ?>
@@ -236,6 +236,24 @@ $finish = strtotime($assignment['finish_time']);
 						if (!isset($coefficient))
 							$coefficient = 'error';
 						ob_end_clean();
+
+						$neg = FALSE;
+						if ($delay<0){
+							$delay = 0;
+							$neg = TRUE;
+						}
+						$delay /= 60;
+						$h = floor($delay/60);
+						$m = floor($delay%60);
+						if ($h<10)
+							$h="0$h";
+						if ($m<10)
+							$m="0$m";
+
+						echo '<span style="font-size: 80%; '.($neg?'':'color:red;').'">';
+						echo '<span title="Hours">'.$h.'</span>:<span title="Minutes">'.$m.'</span>';
+						echo '</span><br>';
+
 						echo $coefficient;
 					?></td>
 					<td style="font-weight: bold;"><?php echo $final_score ?> </td>
