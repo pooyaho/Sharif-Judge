@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # This file runs a command with given limits
-# usage: ./runcode.sh extension memorylimit timelimit command
+# usage: ./runcode.sh extension memorylimit timelimit timelimit_int command
 
 EXT=$1
 shift
