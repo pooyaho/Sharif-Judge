@@ -69,10 +69,11 @@ if [ ${15} = "1" ]; then
 else
 	JAVA_POLICY=""
 fi
-# DIFFOPTION can be "ignore". In this case, before diff command,
-# all newlines and whitespaces will be removed from both files.
+# DIFFOPTION can also be "ignore" of "exact".
+# ignore: In this case, before diff command, all newlines and whitespaces will be removed from both files
+# identical: diff will compare files without ignoring anything. files must be identical to be accepted
 DIFFARGUMENT=""
-if [ "$DIFFOPTION" != "ignore" ]; then
+if [ "$DIFFOPTION" != "identical" && "$DIFFOPTION" != "ignore" ]; then
 	DIFFARGUMENT=$DIFFOPTION
 fi
 
