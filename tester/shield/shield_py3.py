@@ -2,7 +2,7 @@
 
 def shj_py3_shield():
   BLACKLIST = [
-    '__import__', # deny importing modules
+    #'__import__', # deny importing modules
     'eval', # eval is evil
     'open',
     'file',
@@ -16,9 +16,8 @@ def shj_py3_shield():
     if func in __builtins__.__dict__:
       del __builtins__.__dict__[func]
 
-# If you want to prevent importing modules, you can
-# import modules like "math" for students here:
-
+import sys
+sys.modules['os']=None
 
 # enabling shield:
 shj_py3_shield()

@@ -250,8 +250,11 @@ $finish = strtotime($assignment['finish_time']);
 						if ($m<10)
 							$m="0$m";
 
-						echo '<span style="font-size: 80%; '.($neg?'':'color:red;').'">';
-						echo '<span title="Hours">'.$h.'</span>:<span title="Minutes">'.$m.'</span>';
+						echo '<span style="font-size: 80%; opacity:0.7; '.($neg?'':'color:red;').'">';
+						if ($delay === 0)
+							echo 'No Delay';
+						else
+							echo '<span title="Hours">'.$h.'</span>:<span title="Minutes">'.$m.'</span>';
 						echo '</span><br>';
 
 						echo $coefficient;
