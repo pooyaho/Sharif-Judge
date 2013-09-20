@@ -17,7 +17,7 @@ shift
 
 CMD=$@
 
-if [ "$EXT" != "java" ]; then # TODO memory limit for java
+if [ "$EXT" != "java" ]; then
 	ulimit -v $((MEMLIMIT+10000))
 	ulimit -m $((MEMLIMIT+10000))
 	#ulimit -s $((MEMLIMIT+10000))

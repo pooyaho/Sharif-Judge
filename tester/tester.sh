@@ -272,11 +272,16 @@ for((i=1;i<=TST;i++)); do
 	if [ "$EXT" = "java" ]; then
 		cp ../java.policy java.policy
 		if $PERL_EXISTS; then
-			./runcode.sh $EXT $MEMLIMIT $TIMELIMIT $TIMELIMITINT ./timeout --just-kill -nosandbox -l $OUTLIMIT -t $TIMELIMIT java $JAVA_POLICY $MAINFILENAME  <$PROBLEMPATH/in/input$i.txt >out 2>err
+			./runcode.sh $EXT $MEMLIMIT $TIMELIMIT $TIMELIMITINT ./timeout --just-kill -nosandbox -l $OUTLIMIT -t $TIMELIMIT java -mx"$MEMLIMIT"k $JAVA_POLICY $MAINFILENAME  <$PROBLEMPATH/in/input$i.txt >out 2>err
 		else
-			./runcode.sh $EXT $MEMLIMIT $TIMELIMIT $TIMELIMITINT java $JAVA_POLICY $MAINFILENAME  <$PROBLEMPATH/in/input$i.txt >out 2>err
+			./runcode.sh $EXT $MEMLIMIT $TIMELIMIT $TIMELIMITINT java -mx"$MEMLIMIT"k $JAVA_POLICY $MAINFILENAME  <$PROBLEMPATH/in/input$i.txt >out 2>err
 		fi
 		EXITCODE=$?
+		if grep -iq "Too small initial heap" out; then
+			judge_log "Memory Limit Exceeded"
+			echo "<span class=\"shj_o\">Memory Limit Exceeded</span>" >>$PROBLEMPATH/$UN/result.html
+			continue
+		fi
 	elif [ "$EXT" = "c" ] || [ "$EXT" = "cpp" ]; then
 		#$TIMEOUT ./$FILENAME <$PROBLEMPATH/in/input$i.txt >out 2>/dev/null
 		if $SANDBOX_ON; then
