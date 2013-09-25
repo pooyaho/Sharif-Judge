@@ -100,6 +100,43 @@ class Assignments extends CI_Controller
 
 
 	/**
+	 * Compressing and downloading test data of an assignment to the browser
+	 */
+	public function downloadtests($assignment_id)
+	{
+		if ( $this->user_level <= 1)
+			show_error('You have not enough permission to download test data.');
+
+		$this->load->library('zip');
+
+		$assignment = $this->assignment_model->assignment_info($assignment_id);
+
+		$number_of_problems = $assignment['problems'];
+
+		for ($i=1 ; $i<=$number_of_problems ; $i++)
+		{
+			$root_path = rtrim($this->settings_model->get_setting('assignments_root'),'/').
+				"/assignment_{$assignment_id}";
+
+			$path = $root_path."/p{$i}/in";
+			$this->zip->read_dir($path, FALSE, $root_path);
+
+			$path = $root_path."/p{$i}/out";
+			$this->zip->read_dir($path, FALSE, $root_path);
+
+			$path = $root_path."/p{$i}/tester.cpp";
+			if (file_exists($path))
+				$this->zip->add_data("p{$i}/tester.cpp", file_get_contents($path));
+		}
+
+		$this->zip->download("assignment{$assignment_id}_tests_".date('Y-m-d_H-i',shj_now()).'.zip');
+	}
+
+
+	// ------------------------------------------------------------------------
+
+
+	/**
 	 * Compressing and downloading final codes of an assignment to the browser
 	 */
 	public function download($assignment_id)

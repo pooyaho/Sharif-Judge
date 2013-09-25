@@ -63,8 +63,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						<span style="color: red;">Close</span>
 					<?php endif ?>
 					</div>
+					<?php if ($user_level>=2): ?>
+						<div class="assignment_subitem_zero"><a href="<?php echo site_url('assignments/downloadtests/'.$item['id']) ?>"><i title="Download Tests" class="splashy-folder_classic_down"></i></a></div>
+					<?php endif ?>
 					<?php if ($user_level>=1): ?>
-					<div class="assignment_subitem_zero"><a href="<?php echo site_url('assignments/download/'.$item['id']) ?>"><i title="Download Final Codes" class="splashy-download"></i></a></div>
+						<div class="assignment_subitem_zero"><a href="<?php echo site_url('assignments/download/'.$item['id']) ?>"><i title="Download Final Codes" class="splashy-download"></i></a></div>
 					<?php endif ?>
 					<?php if ($user_level>=2): ?>
 						<div class="assignment_subitem_zero"><a href="<?php echo site_url('moss/'.$item['id']) ?>"><i title="Detect Similar Codes" class="splashy-shield"></i></a></div>
