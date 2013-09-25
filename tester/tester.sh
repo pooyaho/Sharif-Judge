@@ -396,7 +396,7 @@ for((i=1;i<=TST;i++)); do
 			rm -r $JAIL >/dev/null 2>/dev/null
 			exit 0
 		fi
-		./tester $PROBLEMPATH/in/input$i.txt out
+		./tester $PROBLEMPATH/in/input$i.txt $PROBLEMPATH/out/output$i.txt out
 		EC=$?
 		if [ $EC -eq 0 ]; then
 			ACCEPTED=true
