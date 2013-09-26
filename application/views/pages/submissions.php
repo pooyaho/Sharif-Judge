@@ -124,7 +124,7 @@ $finish = strtotime($assignment['finish_time']);
 	<div id="main_content">
 		<p><?php echo ucfirst($view); ?> Submissions of <?php echo $assignment['name']; ?></p>
 		<?php if ($view == "all"): ?>
-		<p>You cannot change your final submissions when assignment finishes.</p>
+		<p><i class="splashy-warning_triangle"></i> You cannot change your final submissions after assignment finishes.</p>
 		<?php endif ?>
 		<table class="sharif_table">
 			<thead>
