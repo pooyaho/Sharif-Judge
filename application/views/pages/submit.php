@@ -47,7 +47,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			<p>Please select an assignment first.</p>
 		<?php elseif ($this->user_model->get_user_level($username)==0 && !$assignment['open']): ?>
 		<?php // if assignment is closed, non-student users (admin, instructors) still can submit ?>
-			<p>Selected assignment has been closed.</p>
+			<p>Selected assignment is closed.</p>
 		<?php elseif ($now < strtotime($assignment['start_time'])): ?>
 			<p>Selected assignment has not started.</p>
 		<?php elseif ($now > strtotime($assignment['finish_time'])+$assignment['extra_time']): // deadline = finish_time + extra_time?>
