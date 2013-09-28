@@ -95,7 +95,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<div id="sidebar_bottom">
 		<p>
 			<a href="http://sharifjudge.ir" target="_blank">&copy; Sharif Judge <?php echo SHJ_VERSION ?></a>
-			<a href="http://docs.sharifjudge.ir" target="_blank">Help</a>
+			<a href="http://docs.sharifjudge.ir" target="_blank">Docs</a>
 		</p>
 		<p class="timer"></p>
 		<div id="shj_collapse">
